@@ -4,3 +4,6 @@
 [submodule "fornax"]
 	path = fornax
 	url = https://github.com/RockefellerArchiveCenter/fornax.git
+[submodule "altair"]
+	path = altair
+	url = https://github.com/RockefellerArchiveCenter/altair.git
