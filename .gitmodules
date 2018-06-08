@@ -1,0 +1,3 @@
+[submodule "aquarius"]
+	path = aquarius
+	url = https://github.com/RockefellerArchiveCenter/aquarius.git
