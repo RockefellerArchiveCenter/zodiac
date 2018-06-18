@@ -5,13 +5,6 @@ from django.views.decorators.csrf import csrf_exempt
 from .forms import apiURLForm
 from django.shortcuts import render, redirect
 
-# # #
-# class Bunch:
-#     def __init__(self, url1, url2, url3):
-#         self.url1 = url1
-#         self.url2 = url2
-#         self.url3 = url3
-
 
 @csrf_exempt
 def index(request):
@@ -27,29 +20,14 @@ def get_URL(request):
         # check whether it's valid:
         if form.is_valid():
             form.save()
-
-            # # # process the data in form.cleaned_data as required/place in a urlbunch
-            # url1 = form.cleaned_data['URL_1']
-            # url2 = form.cleaned_data['URL_2']
-            # url3 = form.cleaned_data['URL_3']
-            # urlbunch = Bunch(url1, url2, url3)
-
-            # # # create payload and send
-            # payload = {'key1': urlbunch.url1, 'key2': urlbunch.url2, 'key3': urlbunch.url3}
-            # r = requests.post('http://localhost:8000/management/results', params=payload)
-            # r = requests.get('http://localhost:8000/management/results', params=payload)
-            # urlbunch.save()
-
-            # # # redirect to a new URL:
-            # return redirect(results)
-
             print(checkForBag(form['url1'].value()))
 
+            # currently trying to get value from database
             url = apiURL.objects
 
             return render(request, 'management/results.html', {'form': form})
 
-    # if a GET (or any other method) call apiURLForm 
+    # if a GET (or any other method) call apiURLForm
     else:
         form = apiURLForm()
     return render(request, 'management/name.html', {'form': form})
@@ -74,22 +52,3 @@ def sendBag(request):
     content = response.content
     print("Sending data to Aquarius...")
     return HttpResponse("The JSON was sent to " + content)
-
-
-# # #
-# @csrf_exempt
-# def results(request):
-#     print("This is the results func")
-#     contentbag = showURL(request)
-#     print(contentbag)
-#     return HttpResponse("This is the results func")
-
-# # #
-# def showURL(request):
-#     if request.method == 'POST':
-#         print("I have received a POST request!")
-#         res = request.POST.get('key1')
-#         # print(res + "              WOW")
-#         # return json.dumps(json_data, indent=4, sort_keys=True)
-#         return HttpResponse("This is a wow")
-
