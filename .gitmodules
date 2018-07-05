@@ -10,3 +10,6 @@
 [submodule "bag-repository"]
 	path = bag-repository
 	url = https://github.com/RockefellerArchiveCenter/bag-repository.git
+[submodule "libra"]
+	path = libra
+	url = https://github.com/RockefellerArchiveCenter/libra.git
