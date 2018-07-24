@@ -11,7 +11,7 @@ services:
     volumes:
       - .:/code
     ports:
-      - "8000:8000"
+      - "8001:8001"
     depends_on:
       - gateway_db
 
@@ -25,7 +25,7 @@ services:
     volumes:
       - .:/code
     ports:
-      - "8001:8001"
+      - "8002:8002"
     depends_on:
       - aquarius_db
 
@@ -39,7 +39,7 @@ services:
     volumes:
       - .:/code
     ports:
-      - "8002:8002"
+      - "8003:8003"
     depends_on:
       - fornax_db
 
@@ -55,9 +55,10 @@ services:
     volumes:
       - .:/code
     ports:
-      - "8003:8003"
+      - "8004:8004"
     depends_on:
       - libra_db
+
 
 volumes:
   gatewaydb:
