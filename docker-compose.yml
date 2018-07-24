@@ -1,11 +1,11 @@
 version: '3'
 
 services:
-  db:
+  gateway_db:
     image: postgres:10.4
     volumes:
       - gatewaydb:/var/lib/postgresql/data/
-  web:
+  gateway_web:
     build: .
     entrypoint: /code/entrypoint.sh
     volumes:
@@ -13,7 +13,22 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - db
+      - gateway_db
+
+  aquarius_db:
+    image: postgres:10.4
+    volumes:
+      - aquariusdb:/var/lib/postgresql/data/
+  aquarius_web:
+    build: aquarius/
+    entrypoint: /code/aquarius/entrypoint.sh
+    volumes:
+      - .:/code
+    ports:
+      - "8001:8001"
+    depends_on:
+      - aquarius_db
 
 volumes:
   gatewaydb:
+  aquariusdb:

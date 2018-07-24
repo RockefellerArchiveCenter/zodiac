@@ -9,6 +9,8 @@ If you have [git](https://git-scm.com/) and [Docker](https://www.docker.com/comm
 
       git clone https://github.com/RockefellerArchiveCenter/ProjectElectronAPIGateway.git
       cd ProjectElectronAPIGateway
+      git submodule init
+      git submodule update
       docker-compose up
 
 To shut down the API Gateway, run:
