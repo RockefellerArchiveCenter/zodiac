@@ -29,6 +29,21 @@ services:
     depends_on:
       - aquarius_db
 
+  fornax_db:
+    image: postgres:10.4
+    volumes:
+      - fornaxdb:/var/lib/postgresql/data/
+  fornax_web:
+    build: fornax/
+    entrypoint: /code/fornax/entrypoint.sh
+    volumes:
+      - .:/code
+    ports:
+      - "8002:8002"
+    depends_on:
+      - fornax_db
+
 volumes:
   gatewaydb:
   aquariusdb:
+  fornaxdb:
