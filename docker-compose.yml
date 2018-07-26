@@ -48,7 +48,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: example
     volumes:
-      - libradb:/var/lib/postgresql/data/
+      - libradb:/var/lib/mysql
   libra_web:
     build: libra/
     entrypoint: /code/libra/entrypoint.sh
@@ -59,9 +59,25 @@ services:
     depends_on:
       - libra_db
 
+  capricorn_db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    volumes:
+      - capricorndb:/var/lib/mysql
+  capricorn_web:
+    build: bag-repository/
+    entrypoint: /code/bag-repository/entrypoint.sh
+    volumes:
+      - .:/code
+    ports:
+      - "8005:8005"
+    depends_on:
+      - capricorn_db
 
 volumes:
   gatewaydb:
   aquariusdb:
   fornaxdb:
   libradb:
+  capricorndb:
