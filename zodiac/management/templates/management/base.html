@@ -1,10 +1,43 @@
+<!DOCTYPE html>
 <html>
+  <head>
+    {% include 'management/head.html' %}
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+      <!-- Main Header -->
+      {% include 'management/header.html' %}
 
-	<head>
+      <!-- Left Sidebar -->
+      {% include 'management/left_sidebar.html' %}
 
-		<title>API Gateway</title>
-	</head>
-	<body>
-		{% block content %}{% endblock %}
-	</body>
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <h1>{% block h1_title %}{% endblock %}</h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+          <div id="messages">{% include 'management/messages.html' %}</div>
+
+	        {% block content %}{% endblock %}
+
+        </section>
+      </div>
+
+      <!-- Main Footer -->
+      {% include 'management/footer.html' %}
+
+      <!-- Modals -->
+      {% block modals %}{% endblock %}
+
+      <!-- Scripts -->
+      {% block extra_js %}{% endblock %}
+
+    </div>
+  </body>
 </html>
