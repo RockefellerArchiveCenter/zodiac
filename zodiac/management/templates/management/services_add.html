@@ -1,0 +1,17 @@
+{% extends "management/base.html" %}
+
+{% block h1_title %}
+  Add Service
+{% endblock %}
+
+{% block content %}
+<p>Welcome to the Project Electron API Gateway management layer. Please enter the API endpoints you would like
+    to receive the bags from. </p>
+
+
+<form action="/management/" method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" />
+</form>
+{% endblock %}
