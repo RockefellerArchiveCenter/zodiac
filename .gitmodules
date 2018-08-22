@@ -10,3 +10,6 @@
 [submodule "ursa_major"]
 	path = ursa_major
 	url = https://github.com/RockefellerArchiveCenter/ursa_major.git
+[submodule "gemini"]
+	path = gemini
+	url = https://github.com/RockefellerArchiveCenter/gemini.git

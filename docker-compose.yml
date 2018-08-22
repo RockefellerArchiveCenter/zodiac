@@ -75,9 +75,24 @@ services:
     depends_on:
       - ursa_major_db
 
+  gemini_db:
+    image: postgres:10.4
+    volumes:
+      - geminidb:/var/lib/postgresql/data/
+  gemini_web:
+    build: gemini/
+    entrypoint: /code/gemini/entrypoint.sh
+    volumes:
+      - .:/code
+    ports:
+      - "8006:8006"
+    depends_on:
+      - gemini_db
+
 volumes:
   gatewaydb:
   aquariusdb:
   fornaxdb:
   libradb:
   ursamajordb:
+  geminidb:
