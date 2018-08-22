@@ -44,11 +44,9 @@ services:
       - fornax_db
 
   libra_db:
-    image: mysql:5.7
-    environment:
-      MYSQL_ROOT_PASSWORD: example
+    image: postgres:10.4
     volumes:
-      - libradb:/var/lib/mysql
+      - libradb:/var/lib/postgresql/data/
   libra_web:
     build: libra/
     entrypoint: /code/libra/entrypoint.sh
