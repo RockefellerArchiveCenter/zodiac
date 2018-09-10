@@ -4,12 +4,12 @@
 [submodule "fornax"]
 	path = fornax
 	url = https://github.com/RockefellerArchiveCenter/fornax.git
-[submodule "altair"]
-	path = altair
-	url = https://github.com/RockefellerArchiveCenter/altair.git
-[submodule "bag-repository"]
-	path = bag-repository
-	url = https://github.com/RockefellerArchiveCenter/bag-repository.git
 [submodule "libra"]
 	path = libra
 	url = https://github.com/RockefellerArchiveCenter/libra.git
+[submodule "ursa_major"]
+	path = ursa_major
+	url = https://github.com/RockefellerArchiveCenter/ursa_major.git
+[submodule "gemini"]
+	path = gemini
+	url = https://github.com/RockefellerArchiveCenter/gemini.git

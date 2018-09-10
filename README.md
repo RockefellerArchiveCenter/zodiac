@@ -1,17 +1,19 @@
-# Project Electron API Gateway
+# Zodiac
 
-An API Gateway for Project Electron microservices.
+API Gateway for Project Electron microservices.
 
 ## Installation
 
 ### Quick Start
 If you have [git](https://git-scm.com/) and [Docker](https://www.docker.com/community-edition) installed:
 
-      git clone https://github.com/RockefellerArchiveCenter/ProjectElectronAPIGateway.git
-      cd ProjectElectronAPIGateway
+      git clone https://github.com/RockefellerArchiveCenter/zodiac.git
+      cd zodiac
+      git submodule init
+      git submodule update
       docker-compose up
 
-To shut down the API Gateway, run:
+To shut down Zodiac, run:
 
       `docker-compose down`
 

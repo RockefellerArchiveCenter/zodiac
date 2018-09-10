@@ -1,0 +1,7 @@
+@import url('https://fonts.googleapis.com/css?family=Eczar');
+
+.main-header .logo {
+	font-family: "Eczar", serif;
+	font-size: 40px;
+	padding-top: 3px;
+}
