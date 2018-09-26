@@ -1,11 +1,11 @@
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['localhost', 'zodiac-web']
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
         'USER': 'postgres',
-        'HOST': 'gateway_db',
+        'HOST': 'gateway-db',
         'PORT': 5432,
     }
 }

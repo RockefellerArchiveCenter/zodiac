@@ -1,91 +1,115 @@
 version: '3'
 
 services:
-  gateway_db:
+  gateway-db:
     image: postgres:10.4
     volumes:
       - gatewaydb:/var/lib/postgresql/data/
-  gateway_web:
+    networks:
+      - microservices
+  gateway-web:
     build: .
     entrypoint: /code/entrypoint.sh
     volumes:
       - .:/code
+    networks:
+      - microservices
     ports:
       - "8001:8001"
     depends_on:
-      - gateway_db
+      - gateway-db
 
-  aquarius_db:
+  aquarius-db:
     image: postgres:10.4
     volumes:
       - aquariusdb:/var/lib/postgresql/data/
-  aquarius_web:
+    networks:
+      - microservices
+  aquarius-web:
     build: aquarius/
     entrypoint: /code/aquarius/entrypoint.sh
     volumes:
       - .:/code
+    networks:
+      - microservices
     ports:
       - "8002:8002"
     depends_on:
-      - aquarius_db
+      - aquarius-db
 
-  fornax_db:
+  fornax-db:
     image: postgres:10.4
     volumes:
       - fornaxdb:/var/lib/postgresql/data/
-  fornax_web:
+    networks:
+      - microservices
+  fornax-web:
     build: fornax/
     entrypoint: /code/fornax/entrypoint.sh
     volumes:
       - .:/code
+    networks:
+      - microservices
     ports:
       - "8003:8003"
     depends_on:
-      - fornax_db
+      - fornax-db
 
-  libra_db:
+  libra-db:
     image: postgres:10.4
     volumes:
       - libradb:/var/lib/postgresql/data/
-  libra_web:
+    networks:
+      - microservices
+  libra-web:
     build: libra/
     entrypoint: /code/libra/entrypoint.sh
     volumes:
       - .:/code
+    networks:
+      - microservices
     ports:
       - "8004:8004"
     depends_on:
-      - libra_db
+      - libra-db
 
-  ursa_major_db:
+  ursa-major-db:
     image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: example
     volumes:
       - ursamajordb:/var/lib/mysql
-  ursa_major_web:
+    networks:
+      - microservices
+  ursa-major-web:
     build: ursa_major/
     entrypoint: /code/ursa_major/entrypoint.sh
     volumes:
       - .:/code
+    networks:
+      - microservices
     ports:
       - "8005:8005"
     depends_on:
-      - ursa_major_db
+      - ursa-major-db
 
-  gemini_db:
+  gemini-db:
     image: postgres:10.4
     volumes:
       - geminidb:/var/lib/postgresql/data/
-  gemini_web:
+    networks:
+      - microservices
+  gemini-web:
     build: gemini/
     entrypoint: /code/gemini/entrypoint.sh
     volumes:
       - .:/code
+    networks:
+      - microservices
     ports:
       - "8006:8006"
     depends_on:
-      - gemini_db
+      - gemini-db
 
 volumes:
   gatewaydb:
@@ -94,3 +118,6 @@ volumes:
   libradb:
   ursamajordb:
   geminidb:
+
+networks:
+  microservices:
