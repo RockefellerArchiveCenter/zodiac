@@ -1,11 +1,11 @@
 {% extends "management/base.html" %}
 
 {% block h1_title %}
-  Systems
+  Services
 {% endblock %}
 
 {% block content %}
-<a class="btn btn-primary" href="{% url 'systems-add' %}">Add System</a>
+<a class="btn btn-primary" href="{% url 'services-add' %}">Add Service</a>
 
   <ul>
   {% for system in object_list %}
@@ -13,7 +13,7 @@
       <a href="{{ system.get_absolute_url }}">{{ system.name }}</a>
     </li>
   {% empty %}
-      <li>No systems yet.</li>
+    <li>No services yet.</li>
   {% endfor %}
   </ul>
 {% endblock %}

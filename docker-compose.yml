@@ -48,8 +48,6 @@ services:
     entrypoint: /code/fornax/entrypoint.sh
     volumes:
       - .:/code
-      - ~/.pe/ursa-major-to-fornax:/uploads/:ro
-      - ~/.am/ss-location-data:/archivematica_transfer_source/
     networks:
       - microservices
     ports:
@@ -76,9 +74,11 @@ services:
       - libra-db
 
   ursa-major-db:
-    image: postgres:10.4
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: example
     volumes:
-      - ursamajordb:/var/lib/postgresql/data/
+      - ursamajordb:/var/lib/mysql
     networks:
       - microservices
   ursa-major-web:
@@ -86,8 +86,6 @@ services:
     entrypoint: /code/ursa_major/entrypoint.sh
     volumes:
       - .:/code
-      - ~/.pe/ursa-major-to-fornax:/storage/
-      - ~/.pe/aurora-to-ursa-major:/landing/:ro
     networks:
       - microservices
     ports:
@@ -112,6 +110,11 @@ services:
       - "8006:8006"
     depends_on:
       - gemini-db
+
+  my-rabbit:
+    image: rabbitmq:3-management
+    networks:
+      - microservices
 
 volumes:
   gatewaydb:

@@ -13,7 +13,15 @@
         <h3 class="box-title">Services</h3>
       </div>
       <div class="box-body">
+        {% if recent_services %}
+          <ul>
+          {% for service in recent_services %}
+              <li><a href="{{ service.get_absolute_url }}">{{ service.name }}</a></li>
+          {% endfor %}
+          </ul>
+        {% else %}
         <p>No active services.</p>
+        {% endif %}
         <a class="btn btn-primary" href="{% url 'services-add' %}">Add Service</a>
       </div>
     </div>
@@ -25,7 +33,15 @@
         <h3 class="box-title">Systems</h3>
       </div>
       <div class="box-body">
-        <p>No configured external systems.</p>
+        {% if recent_systems %}
+          <ul>
+          {% for system in recent_systems %}
+            <li>{{ system.name }}</li>
+          {% endfor %}
+          </ul>
+        {% else %}
+          <p>No configured external systems.</p>
+        {% endif %}
         <a class="btn btn-primary" href="{% url 'systems-add' %}">Add System</a>
       </div>
     </div>

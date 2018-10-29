@@ -1,0 +1,40 @@
+{% extends "management/base.html" %}
+
+{% block h1_title %}
+  System Detail
+{% endblock %}
+
+{% block content %}
+<a href="{{ object.get_update_url }}">edit</a>
+{{ object.name }}
+
+<p>
+  <a href="#" id="trigger-service-btn" class="btn btn-primary">Manually Trigger</a>
+</p>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+  var trigger_url = '{{ object.get_trigger_url }}'
+  $(document).ready(function(){
+    $('#trigger-service-btn').click(function(){
+      $.get(trigger_url,{}, function(resp){
+        if(resp.SUCCESS == 1){
+          alert('it worked, request queued')
+	      retrieve_objects_async_results();
+        }
+      });
+    })
+
+    retrieve_objects_async_results();
+  });
+
+
+  var retrieve_objects_async_results = function(){
+    // ajax request to retrieve queue by objects
+    $.get('{{ object.get_async_results_data_url }}', {}, function(resp){
+      console.log(resp);
+    });
+  }
+</script>
+{% endblock %}

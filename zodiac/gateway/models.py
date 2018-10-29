@@ -6,6 +6,9 @@ from django.utils.translation import ugettext_lazy as _
 from rest_framework.authentication import get_authorization_header, BasicAuthentication
 from rest_framework import HTTP_HEADER_ENCODING
 import urllib.parse as urlparse
+from django.urls import reverse
+
+from .tasks import que_request
 
 
 class Consumer(models.Model):
@@ -21,11 +24,20 @@ class Consumer(models.Model):
 
 class Application(models.Model):
     name = models.CharField(max_length=64, unique=True)
-    service_path = models.CharField(max_length=40)
-    service_port = models.PositiveSmallIntegerField(null=True)
+    is_active = models.BooleanField(default=True)
+    app_host = models.CharField(max_length=40)
+    app_port = models.PositiveSmallIntegerField(null=True, blank=True)
+    created_time = models.DateTimeField(auto_now_add=True)
+    modified_time = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.service_path
+        return self.app_host
+
+    def get_update_url(self):
+        return reverse('systems-update', args=[self.pk])
+
+    def get_absolute_url(self):
+        return reverse('systems-detail', args=[self.pk])
 
 
 class ServiceRegistry(models.Model):
@@ -49,14 +61,65 @@ class ServiceRegistry(models.Model):
     service_route = models.CharField(max_length=40)
     plugin = models.IntegerField(choices=PLUGIN_CHOICE_LIST, default=0)
     consumers = models.ManyToManyField(Consumer, blank=True)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     is_private = models.BooleanField(default=False)
     method = models.CharField(max_length=10,choices=HTTP_REQUESTS_METHODS)
+    callback_service = models.ForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+    created_time = models.DateTimeField(auto_now_add=True)
+    modified_time = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+    def get_update_url(self):
+        return reverse('services-update', args=[self.pk])
+
+    def get_absolute_url(self):
+        return reverse('services-detail', args=[self.pk])
+
+    def get_trigger_url(self):
+        return reverse('services-trigger', args=[self.pk])
+
+    def get_async_results_data_url(self):
+        return reverse('services-async-results', args=[self.pk])
+
+    def retrieve_async_result_logs(self):
+        data = []
+        # can do a flat query here
+        tasks = ServiceRegistryTask.objects.filter(service=self)
+        for task in tasks:
+
+            data.append([task.async_result_id])
+        return data
+
+    def store_async_result(self, async_result_id):
+        record = ServiceRegistryTask(
+            service = self,
+            async_result_id = async_result_id
+        ).save()
+
+
+    def service_active(self):
+        return True if (self.is_active and self.application.is_active) else False
+
+    def can_safely_execute(self):
+        # check actives for service and system
+        if not self.service_active():
+            return False
+        # if self.callback_service:
+        #     if not self.callback_service.service_active():
+        #         return False
+        return True
 
     def check_plugin(self, request):
         if self.plugin == 0:
             return True, ''
-            
+
         elif self.plugin == 1:
             auth = BasicAuthentication()
             try:
@@ -84,17 +147,12 @@ class ServiceRegistry(models.Model):
         else:
             raise NotImplementedError("plugin %d not implemented" % self.plugin)
 
-    def send_request(self, request):
-        headers = {}
-        if self.plugin != 1 and request.META.get('HTTP_AUTHORIZATION'):
-            headers['authorization'] = request.META.get('HTTP_AUTHORIZATION')
-        # headers['content-type'] = request.content_type
+    def render_path(self, uri=''):
 
-        strip = '/api/' + self.external_uri
-        full_path = request.get_full_path()[len(strip):]
-        service_port = (':{}'.format(self.application.service_port) if self.application.service_port > 0 else '')
+        app_port = (':{}'.format(self.application.app_port) if self.application.app_port > 0 else '')
         url = 'http://{}{}/{}{}'.format(
-            self.application.service_path, service_port, self.service_route, full_path)
+            self.application.app_host, app_port, self.service_route, uri)
+        print(url)
         parsed_url = urlparse.urlparse(url)
         parsed_url_parts = list(parsed_url)
 
@@ -102,29 +160,85 @@ class ServiceRegistry(models.Model):
         query['format'] = 'json'
 
         parsed_url_parts[4] = urlparse.urlencode(query)
-        url = urlparse.urlunparse(parsed_url_parts)
 
-        print(url)
+        return urlparse.urlunparse(parsed_url_parts)
 
-        method = request.method.lower()
-        method_map = {
-            'get': requests.get,
-            'post': requests.post,
-            # 'put': requests.put,
-            # 'patch': requests.patch,
-            # 'delete': requests.delete
-        }
+    def send_request(self, request={}):
+        headers = {}
+        files = {}
+        print(request, 'dsfsdfsdffsdfsdf')
+        if request:
+            files = request.FILES
 
-        for k,v in request.FILES.items():
-            request.data.pop(k)
-        
-        if request.content_type and request.content_type.lower()=='application/json':
-            data = json.dumps(request.data)
-            headers['content-type'] = request.content_type
+            if self.plugin != 1 and request.META.get('HTTP_AUTHORIZATION'):
+                headers['authorization'] = request.META.get('HTTP_AUTHORIZATION')
+            # headers['content-type'] = request.content_type
+
+            strip = '/api/' + self.external_uri
+            full_path = request.get_full_path()[len(strip):]
+
+            url = self.render_path(full_path)
+
+            method = request.method.lower()
+
+            for k,v in request.FILES.items():
+                request.data.pop(k)
+
+            #force json
+
+            if request.content_type and request.content_type.lower()=='application/json':
+                data = json.dumps(request.data)
+                headers['content-type'] = request.content_type
+            else:
+                data = request.data
+
         else:
-            data = request.data
+            print('i am heredresdfdssdfsdfsdf')
+            headers['content-type'] = 'application/json'
+            method = 'get'
+            data = {}
+            url = self.render_path('')
 
-        return method_map[method](url, headers=headers, data=data, files=request.FILES)
+
+        # chain exceptions
+        asyncresult = que_request.delay(method, url, headers=headers, data=data, files=files)
+        print(asyncresult, 'this is async')
+
+        # request_result = method_map[method](url, headers=headers, data=data, files=request.FILES)
+
+        return asyncresult.id
+
+
+class RequestLog(models.Model):
+    service = models.ForeignKey(
+        ServiceRegistry,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+    #consumer
+    status_code = models.CharField(max_length=4, blank=True, null=True)
+    request_url = models.URLField(blank=True, null=True)
+    async_result_id = models.CharField(max_length=30, blank=True, null=True)
+    created_time = models.DateTimeField(auto_now_add=True)
+
+    @classmethod
+    def create(cls, service, status_code, request_url, async_result_id=None):
+        record = cls(
+            service = service,
+            status_code = status_code,
+            request_url = request_url,
+            async_result_id = async_result_id
+        ).save()
+        return record
+
+
+class ServiceRegistryTask(models.Model):
+    service = models.ForeignKey(
+        ServiceRegistry,
+        on_delete=models.CASCADE
+    )
+    async_result_id = models.CharField(max_length=40)
 
     def __str__(self):
-        return self.name
+        return self.async_result_id

@@ -1,0 +1,10 @@
+{% extends "management/base.html" %}
+
+{% block h1_title %}
+  System Detail
+{% endblock %}
+
+{% block content %}
+<a href="{{ object.get_update_url }}">edit</a>
+{{ object.name }}
+{% endblock %}
