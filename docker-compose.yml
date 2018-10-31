@@ -74,11 +74,9 @@ services:
       - libra-db
 
   ursa-major-db:
-    image: mysql:5.7
-    environment:
-      MYSQL_ROOT_PASSWORD: example
+    image: postgres:10.4
     volumes:
-      - ursamajordb:/var/lib/mysql
+      - ursamajordb:/var/lib/postgresql/data/
     networks:
       - microservices
   ursa-major-web:
