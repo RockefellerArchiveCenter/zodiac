@@ -1,7 +1,7 @@
 {% extends "management/base.html" %}
 
 {% block h1_title %}
-  Services
+  Results
 {% endblock %}
 
 {% block content %}
@@ -10,13 +10,10 @@
     <div class="box box-primary">
       <div class="box-body no-padding">
         {% if object_list %}
-          {% include 'management/services_list_table.html' %}
+          {% include 'management/results_list_table.html' %}
         {% else %}
-          <li>No services yet.</li>
+          <li>No results yet.</li>
         {% endif %}
-      </div>
-      <div class="box-footer">
-        <a class="btn btn-primary" href="{% url 'services-add' %}">Add Service</a>
       </div>
     </div>
   </div>

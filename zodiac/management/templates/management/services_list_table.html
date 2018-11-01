@@ -1,0 +1,11 @@
+<table class="table table-striped">
+  <tbody>
+    {% for service in object_list %}
+      <tr>
+        <td><a href="{{ service.get_absolute_url }}">{{ service.name }}</a></td>
+        <td>{% include 'management/active_label.html' with status=service.service_active %}</td>
+        <td>{{service.description}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

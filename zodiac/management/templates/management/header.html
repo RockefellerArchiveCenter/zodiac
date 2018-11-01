@@ -19,6 +19,7 @@
     </a>
 
     <!-- Navbar Right Menu -->
+    {% comment %}
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
 
@@ -40,7 +41,6 @@
             </li>
             <!-- Menu Footer-->
             <li class="user-footer">
-              {% comment %}
               <div class="pull-left">
                 <a href="{% url 'users:detail' pk=request.user.id %}" class="btn btn-default btn-flat">Profile</a>
               </div>
@@ -61,11 +61,11 @@
               <div class="pull-left">
                 <a href="/logout" class="btn btn-default btn-flat" id="signout">Sign out</a>
               </div>
-              {% endcomment %}
             </li>
           </ul>
         </li>
       </ul>
     </div>
+    {% endcomment %}
   </nav>
 </header>

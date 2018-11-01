@@ -1,0 +1,11 @@
+<table class="table table-striped">
+  <tbody>
+    {% for system in object_list %}
+      <tr>
+        <td><a href="{{ system.get_absolute_url }}">{{ system.name }}</a></td>
+        <td>{% include 'management/active_label.html' with status=system.is_active %}</td>
+        <td>{{system.app_host}}:{{system.app_port}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

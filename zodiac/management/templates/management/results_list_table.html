@@ -1,0 +1,10 @@
+<table class="table table-striped">
+  <tbody>
+    {% for result in object_list %}
+      <tr>
+        <td><a href="{% url 'results-detail' pk=result.id %}">{{ result.task_id }}</a></td>
+        <td>{{result.status}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

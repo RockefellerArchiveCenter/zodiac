@@ -8,7 +8,7 @@ import requests
 # from gateway.models import ServiceRegistryTask
 
 @shared_task()
-def que_request(method, url, headers, data, files):
+def queue_request(method, url, headers, data, files):
     method_map = {
         'get': requests.get,
         'post': requests.post,

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'gateway',
     'django_celery_results',
     'django_celery_beat',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -132,3 +133,5 @@ REST_FRAMEWORK = {
 
 CELERY_BROKER_URL = CF.CELERY_BROKER_URL
 CELERY_RESULT_BACKEND = CF.CELERY_RESULT_BACKEND
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'

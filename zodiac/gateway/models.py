@@ -8,7 +8,7 @@ from rest_framework import HTTP_HEADER_ENCODING
 import urllib.parse as urlparse
 from django.urls import reverse
 
-from .tasks import que_request
+from .tasks import queue_request
 
 
 class Consumer(models.Model):
@@ -201,7 +201,7 @@ class ServiceRegistry(models.Model):
 
 
         # chain exceptions
-        asyncresult = que_request.delay(method, url, headers=headers, data=data, files=files)
+        asyncresult = queue_request.delay(method, url, headers=headers, data=data, files=files)
         print(asyncresult, 'this is async')
 
         # request_result = method_map[method](url, headers=headers, data=data, files=request.FILES)

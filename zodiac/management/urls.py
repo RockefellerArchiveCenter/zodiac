@@ -20,4 +20,8 @@ urlpatterns = [
     path('systems/edit/<int:pk>/', views.SystemsUpdateView.as_view(), name='systems-update'),
     path('systems/add/', views.SystemsAddView.as_view(), name='systems-add'),
     path('systems/edit/<int:pk>/delete/', views.SystemsDeleteView.as_view(), name='systems-delete'),
+
+    # RESULTS URLS
+    path('results/', views.ResultsListView.as_view(), name='results-list'),
+    path('results/<int:pk>/', views.ResultsDetailView.as_view(), name='results-detail'),
 ]

@@ -5,15 +5,20 @@
 {% endblock %}
 
 {% block content %}
-<a class="btn btn-primary" href="{% url 'systems-add' %}">Add System</a>
-
-  <ul>
-  {% for system in object_list %}
-    <li>
-      <a href="{{ system.get_absolute_url }}">{{ system.name }}</a>
-    </li>
-  {% empty %}
-      <li>No systems yet.</li>
-  {% endfor %}
-  </ul>
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-primary">
+      <div class="box-body no-padding">
+        {% if object_list %}
+          {% include 'management/systems_list_table.html' %}
+        {% else %}
+          <p>No configured services.</p>
+        {% endif %}
+      </div>
+      <div class="box-footer">
+        <a class="btn btn-primary" href="{% url 'systems-add' %}">Add System</a>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

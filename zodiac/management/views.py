@@ -4,6 +4,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.detail import BaseDetailView
 from django.views.generic.list import ListView
 from django.urls import reverse_lazy
+from django_celery_results.models import TaskResult
 
 from management.mixins import JSONResponseMixin
 
@@ -32,6 +33,7 @@ class SplashView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['recent_services'] = ServiceRegistry.objects.all().order_by('-modified_time')
         context['recent_systems'] = Application.objects.all().order_by('-modified_time')
+        context['recent_results'] = TaskResult.objects.all().order_by('-date_done')
         return context
 
 
@@ -115,3 +117,12 @@ class SystemsDeleteView(DeleteView):
     model = Application
     success_url = reverse_lazy('systems-list')
 
+
+class ResultsListView(ListView):
+    template_name = "management/results_list.html"
+    model = TaskResult
+
+
+class ResultsDetailView(DetailView):
+    template_name = "management/results_detail.html"
+    model = TaskResult
