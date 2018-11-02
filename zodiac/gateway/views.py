@@ -43,21 +43,22 @@ class Gateway(APIView):
         # Expects path api/external uri/service_route
         path = request.path_info.split('/')
         if len(path) < 2:
-            return self.bad_request(request=request)
+            return self.bad_request(request=request, msg="No URL path.")
 
         # Application in registry; service route is valid; and request method is registered for route
         registry = ServiceRegistry.objects.filter(external_uri=path[2], method=request.method)
+        print(path[2])
         if registry.count() != 1:
-            return self.bad_request(request=request)
+            return self.bad_request(request=request, msg="No service registry matching path and method.")
 
         valid, msg = registry[0].check_plugin(request)
         if not valid:
-            return self.bad_request(registry[0],msg=msg)
+            return self.bad_request(registry[0], msg=msg)
 
         # Check if service and is_active and system is active
         if not registry[0].can_safely_execute():
             # Internally can log why this is the case
-            return self.bad_request(registry[0],request)
+            return self.bad_request(registry[0], request, msg="Service cannot be executed.")
 
         res = registry[0].send_request(request)
         data = {'SUCCESS': 0}
@@ -72,9 +73,9 @@ class Gateway(APIView):
 
         return Response(data=data)
 
-    def bad_request(self, service=None, request=request, msg='bad request'):
+    def bad_request(self, service=None, request=request, msg=None):
         RequestLog.create(service, status.HTTP_400_BAD_REQUEST, request.META['REMOTE_ADDR'])
-        return Response(msg, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"detail": msg}, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request):
         return self.operation(request)
