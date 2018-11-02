@@ -1,8 +1,8 @@
-{% extends "management/base.html" %}
+{% extends "gateway/base.html" %}
 {% load crispy_forms_tags %}
 
 {% block h1_title %}
-  Edit System
+  Add Service
 {% endblock %}
 
 {% block content %}
@@ -15,9 +15,8 @@
           {{form|crispy}}
         </div>
         <div class="box-footer">
-          <input class="btn btn-primary" type="submit" value="Update" />
-          <a href="{{object.get_absolute_url}}" class="btn btn-danger">Cancel</a>
-          <a href="{% url 'systems-delete' pk=object.pk %}" class="btn btn-warning pull-right">Delete</a>
+          <input class="btn btn-primary" type="submit" value="Save" />
+          <a href="{% url 'services-list' %}" class="btn btn-danger">Cancel</a>
         </div>
       </div>
     </form>

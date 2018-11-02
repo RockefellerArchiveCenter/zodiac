@@ -1,7 +1,7 @@
-{% extends "management/base.html" %}
+{% extends "gateway/base.html" %}
 
 {% block h1_title %}
-  Results
+  Systems
 {% endblock %}
 
 {% block content %}
@@ -10,10 +10,13 @@
     <div class="box box-primary">
       <div class="box-body no-padding">
         {% if object_list %}
-          {% include 'management/results_list_table.html' %}
+          {% include 'gateway/systems_list_table.html' %}
         {% else %}
-          <li>No results yet.</li>
+          <p>No configured services.</p>
         {% endif %}
+      </div>
+      <div class="box-footer">
+        <a class="btn btn-primary" href="{% url 'systems-add' %}">Add System</a>
       </div>
     </div>
   </div>

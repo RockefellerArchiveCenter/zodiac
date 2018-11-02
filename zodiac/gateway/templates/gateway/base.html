@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    {% include 'management/head.html' %}
+    {% include 'gateway/head.html' %}
     {% block extra_css %}{% endblock %}
   </head>
   <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
       <!-- Main Header -->
-      {% include 'management/header.html' %}
+      {% include 'gateway/header.html' %}
 
       <!-- Left Sidebar -->
-      {% include 'management/left_sidebar.html' %}
+      {% include 'gateway/left_sidebar.html' %}
 
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">
@@ -22,7 +22,7 @@
         <!-- Main content -->
         <section class="content">
 
-          <div id="messages">{% include 'management/messages.html' %}</div>
+          <div id="messages">{% include 'gateway/messages.html' %}</div>
 
 	        {% block content %}{% endblock %}
 
@@ -30,13 +30,13 @@
       </div>
 
       <!-- Main Footer -->
-      {% include 'management/footer.html' %}
+      {% include 'gateway/footer.html' %}
 
       <!-- Modals -->
       {% block modals %}{% endblock %}
 
       <!-- Scripts -->
-      {% include 'management/js_scripts.html' %}
+      {% include 'gateway/js_scripts.html' %}
       {% block extra_js %}{% endblock %}
 
     </div>

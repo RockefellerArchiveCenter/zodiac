@@ -1,8 +1,8 @@
-{% extends "management/base.html" %}
+{% extends "gateway/base.html" %}
 
 {% block h1_title %}
   {{object.name}} Service Detail
-  <small>{% include 'management/active_label.html' with status=object.is_active %}</small>
+  <small>{% include 'gateway/active_label.html' with status=object.is_active %}</small>
   {% if object.is_private %}<small><span class="label label-warning">Private</span></small>{% endif %}
 {% endblock %}
 
