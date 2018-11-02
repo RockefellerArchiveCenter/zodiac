@@ -22,7 +22,8 @@ services_registry_fields = [
     'plugin',
     'consumers',
     'is_private',
-    'method'
+    'method',
+    'post_service'
 ]
 
 

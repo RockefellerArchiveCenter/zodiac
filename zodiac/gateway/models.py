@@ -70,6 +70,14 @@ class ServiceRegistry(models.Model):
         null=True,
         blank=True
     )
+    post_service = models.ForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="poster",
+        related_query_name="poster",
+    )
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
 
@@ -152,7 +160,7 @@ class ServiceRegistry(models.Model):
         app_port = (':{}'.format(self.application.app_port) if self.application.app_port > 0 else '')
         url = 'http://{}{}/{}{}'.format(
             self.application.app_host, app_port, self.service_route, uri)
-        print(url)
+
         parsed_url = urlparse.urlparse(url)
         parsed_url_parts = list(parsed_url)
 
@@ -166,7 +174,7 @@ class ServiceRegistry(models.Model):
     def send_request(self, request={}):
         headers = {}
         files = {}
-        print(request, 'dsfsdfsdffsdfsdf')
+
         if request:
             files = request.FILES
 
@@ -193,20 +201,30 @@ class ServiceRegistry(models.Model):
                 data = request.data
 
         else:
-            print('i am heredresdfdssdfsdfsdf')
             headers['content-type'] = 'application/json'
             method = 'get'
             data = {}
             url = self.render_path('')
 
-
         # chain exceptions
-        asyncresult = queue_request.delay(method, url, headers=headers, data=data, files=files)
-        print(asyncresult, 'this is async')
+        async_result = queue_request.delay(
+            method,
+            url,
+            headers=headers,
+            data=data,
+            files=files,
+            params={'post_service_url': self.render_post_service_url()}
+        )
+        print(async_result, 'this is async')
 
-        # request_result = method_map[method](url, headers=headers, data=data, files=request.FILES)
+        return async_result.id
 
-        return asyncresult.id
+    def render_post_service_url(self):
+        if not self.post_service:
+            return ''
+        return self.post_service.render_path()
+
+
 
 
 class RequestLog(models.Model):

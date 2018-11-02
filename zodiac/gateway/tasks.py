@@ -8,7 +8,7 @@ import requests
 # from gateway.models import ServiceRegistryTask
 
 @shared_task()
-def queue_request(method, url, headers, data, files):
+def queue_request(method, url, headers, data, files, params):
     method_map = {
         'get': requests.get,
         'post': requests.post,
@@ -17,7 +17,7 @@ def queue_request(method, url, headers, data, files):
         # 'delete': requests.delete
     }
 
-    r = method_map[method](url, headers=headers, data=data, files=files)
+    r = method_map[method](url, headers=headers, data=data, files=files, params=params)
 
     # VALIDATE REsponse
     #   check for json

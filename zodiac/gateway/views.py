@@ -1,11 +1,9 @@
-import requests
-from django.shortcuts import render
-from django.http import HttpResponse
-from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.views import APIView
-from .models import ServiceRegistry, RequestLog
 from rest_framework.renderers import JSONRenderer
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from .models import ServiceRegistry, RequestLog
 
 
 class Gateway(APIView):
@@ -13,7 +11,6 @@ class Gateway(APIView):
     authentication_classes = ()
     renderer_classes = (JSONRenderer,)
     request = {}
-
 
     def operation(self, request):
         self.request = request
@@ -43,7 +40,6 @@ class Gateway(APIView):
         if res:
             data['SUCCESS'] = 1
 
-
         # try:
         #     data = res.json()
         # except ValueError:
@@ -52,7 +48,7 @@ class Gateway(APIView):
 
         return Response(data=data)
 
-    def bad_request(self, service=None, request=request, msg='bag request'):
+    def bad_request(self, service=None, request=request, msg='bad request'):
         RequestLog.create(service, status.HTTP_400_BAD_REQUEST, request.META['REMOTE_ADDR'])
         return Response(msg, status=status.HTTP_400_BAD_REQUEST)
 
