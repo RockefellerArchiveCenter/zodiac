@@ -1,4 +1,4 @@
-{% extends "management/base.html" %}
+{% extends "gateway/base.html" %}
 
 {% block h1_title %}
   Management Dashboard
@@ -15,7 +15,7 @@
       </div>
       <div class="box-body no-padding">
         {% if recent_services %}
-          {% include 'management/services_list_table.html' with object_list=recent_services %}
+          {% include 'gateway/services_list_table.html' with object_list=recent_services %}
         {% else %}
           <p>No configured services.</p>
         {% endif %}
@@ -31,7 +31,7 @@
       </div>
       <div class="box-body no-padding">
         {% if recent_systems %}
-          {% include 'management/systems_list_table.html' with object_list=recent_systems %}
+          {% include 'gateway/systems_list_table.html' with object_list=recent_systems %}
         {% else %}
           <p>No configured systems.</p>
         {% endif %}
@@ -50,7 +50,7 @@
       </div>
       <div class="box-body no-padding">
         {% if recent_results %}
-          {% include 'management/results_list_table.html' with object_list=recent_results %}
+          {% include 'gateway/results_list_table.html' with object_list=recent_results %}
         {% else %}
           <p>No results.</p>
         {% endif %}
