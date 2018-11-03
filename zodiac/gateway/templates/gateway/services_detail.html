@@ -1,0 +1,70 @@
+{% extends "gateway/base.html" %}
+
+{% block h1_title %}
+  {{object.name}} Service Detail
+  <small>{% include 'gateway/active_label.html' with status=object.is_active %}</small>
+  {% if object.is_private %}<small><span class="label label-warning">Private</span></small>{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-primary">
+      <div class="box-body">
+        <label>Application</label>
+        <p><a href="{{object.application.get_absolute_url}}">{{object.application}}</a></p>
+        <label>Description</label>
+        <p>{{object.description}}</p>
+        <label>External uri</label>
+        <p><code>{{object.method}} {{object.external_uri}}</code></p>
+        <label>Service route</label>
+        <p><code>{{object.method}} {{object.service_route}}</code></p>
+        <label>Plugin</label>
+        <p>{{object.get_plugin_display}}</p>
+        {% if object.consumers.all %}
+        <label>Consumers</label>
+        <ul class="list-unstyled">
+        {% for consumer in object.consumers.all %}
+          <li>{{consumer}}</li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+        {% if object.post_service %}
+        <label>Post Service</label>
+        <p>{{object.post_service}}</p>
+        {% endif %}
+      </div>
+      <div class="box-footer">
+        <a href="{{ object.get_update_url }}" class="btn btn-primary">Edit Service</a>
+        <a href="#" id="trigger-service-btn" class="btn btn-success pull-right">Manually Trigger</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+  var trigger_url = '{{ object.get_trigger_url }}'
+  $(document).ready(function(){
+    $('#trigger-service-btn').click(function(){
+      $.get(trigger_url,{}, function(resp){
+        if(resp.SUCCESS == 1){
+          alert('it worked, request queued')
+	      retrieve_objects_async_results();
+        }
+      });
+    })
+
+    retrieve_objects_async_results();
+  });
+
+
+  var retrieve_objects_async_results = function(){
+    // ajax request to retrieve queue by objects
+    $.get('{{ object.get_async_results_data_url }}', {}, function(resp){
+      console.log(resp);
+    });
+  }
+</script>
+{% endblock %}

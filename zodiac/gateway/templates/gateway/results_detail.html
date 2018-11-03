@@ -1,0 +1,61 @@
+{% extends "gateway/base.html" %}
+
+{% block h1_title %}
+  Result Detail
+  <small>{{object.date_done}}</small>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-primary">
+      <div class="box-body">
+        <label>Identifier</label>
+        <p>{{object.task_id}}</p>
+        <label>Status</label>
+        <p>{{object.status}}</p>
+        {% if object.task_args %}
+          <label>Arguments</label>
+          {{object.task_args}}
+        {% endif %}
+        {% if object.task_kwargs %}
+          <label>Keyword Arguments</label>
+          {{object.task_kwargs}}
+        {% endif %}
+        <label>Result</label>
+        <p><pre><code>{{ object.result }}</code></pre></p>
+        {% if object.traceback %}
+          <label>Traceback</label>
+          <p><pre><code>{{object.traceback}}</code></pre></p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+  var trigger_url = '{{ object.get_trigger_url }}'
+  $(document).ready(function(){
+    $('#trigger-service-btn').click(function(){
+      $.get(trigger_url,{}, function(resp){
+        if(resp.SUCCESS == 1){
+          alert('it worked, request queued')
+	      retrieve_objects_async_results();
+        }
+      });
+    })
+
+    retrieve_objects_async_results();
+  });
+
+
+  var retrieve_objects_async_results = function(){
+    // ajax request to retrieve queue by objects
+    $.get('{{ object.get_async_results_data_url }}', {}, function(resp){
+      console.log(resp);
+    });
+  }
+</script>
+{% endblock %}

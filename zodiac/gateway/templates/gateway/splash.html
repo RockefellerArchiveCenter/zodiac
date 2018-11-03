@@ -1,0 +1,62 @@
+{% extends "gateway/base.html" %}
+
+{% block h1_title %}
+  Management Dashboard
+{% endblock %}
+
+{% block content %}
+<div class="row">
+
+  <div class="col-md-6">
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h3 class="box-title">Services</h3>
+        <a class="btn btn-primary pull-right" href="{% url 'services-add' %}">Add Service</a>
+      </div>
+      <div class="box-body no-padding">
+        {% if recent_services %}
+          {% include 'gateway/services_list_table.html' with object_list=recent_services %}
+        {% else %}
+          <p>No configured services.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h3 class="box-title">Systems</h3>
+        <a class="btn btn-primary pull-right" href="{% url 'systems-add' %}">Add System</a>
+      </div>
+      <div class="box-body no-padding">
+        {% if recent_systems %}
+          {% include 'gateway/systems_list_table.html' with object_list=recent_systems %}
+        {% else %}
+          <p>No configured systems.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="row">
+
+  <div class="col-md-12">
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h3 class="box-title">Results</h3>
+      </div>
+      <div class="box-body no-padding">
+        {% if recent_results %}
+          {% include 'gateway/results_list_table.html' with object_list=recent_results %}
+        {% else %}
+          <p>No results.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

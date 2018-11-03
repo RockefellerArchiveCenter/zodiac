@@ -40,8 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'management',
     'gateway',
+    'django_celery_results',
+    'django_celery_beat',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -119,3 +121,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        # 'rest_framework.renderers.BrowsableAPIRenderer',
+    )
+}
+
+CELERY_BROKER_URL = CF.CELERY_BROKER_URL
+CELERY_RESULT_BACKEND = CF.CELERY_RESULT_BACKEND
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'

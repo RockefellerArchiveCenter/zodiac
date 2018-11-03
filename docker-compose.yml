@@ -48,8 +48,6 @@ services:
     entrypoint: /code/fornax/entrypoint.sh
     volumes:
       - .:/code
-      - ~/.pe/ursa-major-to-fornax:/uploads/:ro
-      - ~/.am/ss-location-data:/archivematica_transfer_source/
     networks:
       - microservices
     ports:
@@ -86,8 +84,6 @@ services:
     entrypoint: /code/ursa_major/entrypoint.sh
     volumes:
       - .:/code
-      - ~/.pe/ursa-major-to-fornax:/storage/
-      - ~/.pe/aurora-to-ursa-major:/landing/:ro
     networks:
       - microservices
     ports:
@@ -112,6 +108,11 @@ services:
       - "8006:8006"
     depends_on:
       - gemini-db
+
+  my-rabbit:
+    image: rabbitmq:3-management
+    networks:
+      - microservices
 
 volumes:
   gatewaydb:
