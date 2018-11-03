@@ -29,6 +29,10 @@
         {% endfor %}
         </ul>
         {% endif %}
+        {% if object.post_service %}
+        <label>Post Service</label>
+        <p>{{object.post_service}}</p>
+        {% endif %}
       </div>
       <div class="box-footer">
         <a href="{{ object.get_update_url }}" class="btn btn-primary">Edit Service</a>
