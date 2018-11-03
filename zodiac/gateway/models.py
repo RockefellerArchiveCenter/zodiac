@@ -202,7 +202,7 @@ class ServiceRegistry(models.Model):
 
         else:
             headers['content-type'] = 'application/json'
-            method = 'get'
+            method = self.method.lower()
             data = {}
             url = self.render_path('')
 
