@@ -155,11 +155,16 @@ class ServiceRegistry(models.Model):
         else:
             raise NotImplementedError("plugin %d not implemented" % self.plugin)
 
-    def render_path(self, uri=''):
+    def render_path(self, uri='', post_service=False):
 
-        app_port = (':{}'.format(self.application.app_port) if self.application.app_port > 0 else '')
-        url = 'http://{}{}/{}{}'.format(
-            self.application.app_host, app_port, self.service_route, uri)
+        if post_service:
+            gateway_port = ':8001'
+            url = 'http://{}{}/{}/{}'.format(
+                'localhost', gateway_port, 'api', self.external_uri)
+        else:
+            app_port = (':{}'.format(self.application.app_port) if self.application.app_port > 0 else '')
+            url = 'http://{}{}/{}{}'.format(
+                self.application.app_host, app_port, self.service_route, uri)
 
         parsed_url = urlparse.urlparse(url)
         parsed_url_parts = list(parsed_url)
@@ -222,9 +227,7 @@ class ServiceRegistry(models.Model):
     def render_post_service_url(self):
         if not self.post_service:
             return ''
-        return self.post_service.render_path()
-
-
+        return self.post_service.render_path(post_service=True)
 
 
 class RequestLog(models.Model):
@@ -234,7 +237,6 @@ class RequestLog(models.Model):
         null=True,
         blank=True
     )
-    #consumer
     status_code = models.CharField(max_length=4, blank=True, null=True)
     request_url = models.URLField(blank=True, null=True)
     async_result_id = models.CharField(max_length=30, blank=True, null=True)
