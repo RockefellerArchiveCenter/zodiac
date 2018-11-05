@@ -19,7 +19,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
+# See https://docs.djangoprojetct.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'tvjqd*-^rr*dfjajo-e3y6uw!qij^@x0+i0hac2+58d2b7u^y6'
@@ -132,5 +132,6 @@ REST_FRAMEWORK = {
 
 CELERY_BROKER_URL = CF.CELERY_BROKER_URL
 CELERY_RESULT_BACKEND = CF.CELERY_RESULT_BACKEND
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'

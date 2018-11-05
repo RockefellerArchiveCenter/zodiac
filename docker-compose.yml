@@ -1,13 +1,13 @@
 version: '3'
 
 services:
-  gateway-db:
+  zodiac-db:
     image: postgres:10.4
     volumes:
-      - gatewaydb:/var/lib/postgresql/data/
+      - zodiacdb:/var/lib/postgresql/data/
     networks:
       - microservices
-  gateway-web:
+  zodiac-web:
     build: .
     entrypoint: /code/entrypoint.sh
     volumes:
@@ -17,7 +17,7 @@ services:
     ports:
       - "8001:8001"
     depends_on:
-      - gateway-db
+      - zodiac-db
 
   aquarius-db:
     image: postgres:10.4
@@ -115,7 +115,7 @@ services:
       - microservices
 
 volumes:
-  gatewaydb:
+  zodiacdb:
   aquariusdb:
   fornaxdb:
   libradb:
