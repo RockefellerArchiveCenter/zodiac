@@ -2,10 +2,12 @@
 from __future__ import absolute_import, unicode_literals
 import requests
 from django.apps import apps
+import urllib.parse as urlparse
 
 from celery import shared_task, current_task
 
 from .models import ServiceRegistry
+from .views_library import render_service_path, render_post_service_url
 
 method_map = {
     'get': requests.get,
@@ -15,19 +17,24 @@ method_map = {
     # 'delete': requests.delete
 }
 
-
 @shared_task()
 def queue_callbacks():
-    completed = []
+    completed = {'detail': {'callbacks': []}}
     for registry in ServiceRegistry.objects.filter(callback_service__isnull=False):
         if registry.service_active(): # TODO: also check to see if last service run was okay
             callback = ServiceRegistry.objects.get(pk=registry.callback_service.pk)
-            # TODO: is there a way to do this without hardcoding?
-            url = 'http://localhost:8001{}'.format(callback.get_trigger_url())
-            r = requests.get(url)
+            url = render_service_path(callback, '')
+            r = queue_request.delay(
+                'post',
+                url,
+                headers={'Content-Type': 'application/json'},
+                data=None,
+                files=None,
+                params={'post_service_url': render_post_service_url(callback)}
+            )
             if r:
-                completed.append(callback.name)
-    return {'detail': 'Callbacks completed: {}'.format(', '.join(completed))}
+                completed['detail']['callbacks'].append({callback.name: r.id})
+    return completed
 
 
 @shared_task()

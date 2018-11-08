@@ -1,31 +1,10 @@
 import requests
 import json
 from rest_framework.authentication import BasicAuthentication
-import urllib.parse as urlparse
 
 from .tasks import queue_request
+from .views_library import render_service_path, render_post_service_url
 from .models import ServiceRegistryTask
-
-
-def render_service_path(service, uri='', post_service=False):
-
-    if post_service:
-        # TODO: find a way to do this without hardcoding
-        url = 'http://localhost:8001/api/{}'.format(service.external_uri)
-    else:
-        app_port = (':{}'.format(service.application.app_port) if service.application.app_port > 0 else '')
-        url = 'http://{}{}/{}{}'.format(
-            service.application.app_host, app_port, service.service_route, uri)
-
-    parsed_url = urlparse.urlparse(url)
-    parsed_url_parts = list(parsed_url)
-
-    query = dict(urlparse.parse_qsl(parsed_url_parts[4]))
-    query['format'] = 'json'
-
-    parsed_url_parts[4] = urlparse.urlencode(query)
-
-    return urlparse.urlunparse(parsed_url_parts)
 
 
 def send_service_request(service, request={}):
@@ -75,12 +54,6 @@ def send_service_request(service, request={}):
     print(async_result, 'this is async')
 
     return async_result.id
-
-
-def render_post_service_url(service):
-    if not service.post_service:
-        return ''
-    return render_service_path(service.post_service, post_service=True)
 
 
 def check_service_plugin(service, request):
