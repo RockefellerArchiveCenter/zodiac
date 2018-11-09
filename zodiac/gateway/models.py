@@ -1,14 +1,8 @@
 # -*- coding: utf-8 -*-
-import requests, json
 from django.db import models
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-from rest_framework.authentication import get_authorization_header, BasicAuthentication
-from rest_framework import HTTP_HEADER_ENCODING
-import urllib.parse as urlparse
 from django.urls import reverse
-
-from .tasks import queue_request
 
 
 class Consumer(models.Model):
@@ -96,22 +90,6 @@ class ServiceRegistry(models.Model):
     def get_async_results_data_url(self):
         return reverse('services-async-results', args=[self.pk])
 
-    def retrieve_async_result_logs(self):
-        data = []
-        # can do a flat query here
-        tasks = ServiceRegistryTask.objects.filter(service=self)
-        for task in tasks:
-
-            data.append([task.async_result_id])
-        return data
-
-    def store_async_result(self, async_result_id):
-        record = ServiceRegistryTask(
-            service = self,
-            async_result_id = async_result_id
-        ).save()
-
-
     def service_active(self):
         return True if (self.is_active and self.application.is_active) else False
 
@@ -123,111 +101,6 @@ class ServiceRegistry(models.Model):
         #     if not self.callback_service.service_active():
         #         return False
         return True
-
-    def check_plugin(self, request):
-        if self.plugin == 0:
-            return True, ''
-
-        elif self.plugin == 1:
-            auth = BasicAuthentication()
-            try:
-                user, password = auth.authenticate(request)
-            except:
-                return False, 'Authentication credentials were not provided'
-
-            if self.consumers.filter(user=user):
-                return True, ''
-            else:
-                return False, 'permission not allowed'
-        elif self.plugin == 2:
-            apikey = request.META.get('HTTP_APIKEY')
-            consumers = self.consumers.all()
-            for consumer in consumers:
-                if apikey == consumer.apikey:
-                    return True, ''
-            return False, 'apikey need'
-        elif self.plugin == 3:
-            consumer = self.consumers.all()
-            if not consumer:
-                return False, 'consumer need'
-            request.META['HTTP_AUTHORIZATION'] = requests.auth._basic_auth_str(consumer[0].user.username, consumer[0].apikey)
-            return True, ''
-        else:
-            raise NotImplementedError("plugin %d not implemented" % self.plugin)
-
-    def render_path(self, uri='', post_service=False):
-
-        if post_service:
-            gateway_port = ':8001'
-            url = 'http://{}{}/{}/{}'.format(
-                'localhost', gateway_port, 'api', self.external_uri)
-        else:
-            app_port = (':{}'.format(self.application.app_port) if self.application.app_port > 0 else '')
-            url = 'http://{}{}/{}{}'.format(
-                self.application.app_host, app_port, self.service_route, uri)
-
-        parsed_url = urlparse.urlparse(url)
-        parsed_url_parts = list(parsed_url)
-
-        query = dict(urlparse.parse_qsl(parsed_url_parts[4]))
-        query['format'] = 'json'
-
-        parsed_url_parts[4] = urlparse.urlencode(query)
-
-        return urlparse.urlunparse(parsed_url_parts)
-
-    def send_request(self, request={}):
-        headers = {}
-        files = {}
-
-        if request:
-            files = request.FILES
-
-            if self.plugin != 1 and request.META.get('HTTP_AUTHORIZATION'):
-                headers['authorization'] = request.META.get('HTTP_AUTHORIZATION')
-            # headers['content-type'] = request.content_type
-
-            strip = '/api/' + self.external_uri
-            full_path = request.get_full_path()[len(strip):]
-
-            url = self.render_path(full_path)
-
-            method = request.method.lower()
-
-            for k,v in request.FILES.items():
-                request.data.pop(k)
-
-            #force json
-
-            if request.content_type and request.content_type.lower()=='application/json':
-                data = json.dumps(request.data)
-                headers['content-type'] = request.content_type
-            else:
-                data = request.data
-
-        else:
-            headers['content-type'] = 'application/json'
-            method = self.method.lower()
-            data = {}
-            url = self.render_path('')
-
-        # chain exceptions
-        async_result = queue_request.delay(
-            method,
-            url,
-            headers=headers,
-            data=data,
-            files=files,
-            params={'post_service_url': self.render_post_service_url()}
-        )
-        print(async_result, 'this is async')
-
-        return async_result.id
-
-    def render_post_service_url(self):
-        if not self.post_service:
-            return ''
-        return self.post_service.render_path(post_service=True)
 
 
 class RequestLog(models.Model):

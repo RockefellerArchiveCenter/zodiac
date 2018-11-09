@@ -23,16 +23,22 @@ or, if you wish to remove all local data:
 
 ## Usage (under active development)
 
-To process the tasks in the queue, first log into the gateway-web container:
+To process the tasks in the queue, first log into the zodiac-web container:
 
 ```
-docker-compose exec gateway-web bash
+$ docker-compose exec zodiac-web bash
 ```
 
 and then run:
 
 ```
-celery -A zodiac worker -l info
+$ celery -A zodiac worker -l info
+```
+
+To run scheduled tasks, log in to the zodiac-web container in a separate console and then run:
+
+```
+$ celery -A zodiac beat -l info
 ```
 
 

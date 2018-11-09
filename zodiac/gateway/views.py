@@ -1,11 +1,7 @@
-import requests
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic.detail import DetailView
-from django.views.generic.detail import BaseDetailView
+from django.views.generic.detail import BaseDetailView, DetailView
 from django.views.generic.list import ListView
-from django.shortcuts import render
-from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django_celery_results.models import TaskResult
 from rest_framework.response import Response
@@ -13,7 +9,7 @@ from rest_framework import status
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.renderers import JSONRenderer
+from .service_library import send_service_request, check_service_plugin, retrieve_async_result_logs, store_async_result
 from .models import Application, ServiceRegistry, RequestLog
 from .mixins import JSONResponseMixin
 
@@ -29,7 +25,8 @@ services_registry_fields = [
     'consumers',
     'is_private',
     'method',
-    'post_service'
+    'post_service',
+    'callback_service',
 ]
 
 
@@ -50,20 +47,19 @@ class Gateway(APIView):
 
         # Application in registry; service route is valid; and request method is registered for route
         registry = ServiceRegistry.objects.filter(external_uri=path[2], method=request.method)
-        print(path[2])
         if registry.count() != 1:
-            return self.bad_request(request=request, msg="No service registry matching path and method.")
+            return self.bad_request(request=request, msg="No service registry matching path {} and method {}.".format(path[2], request.method))
 
-        valid, msg = registry[0].check_plugin(request)
+        valid, msg = check_service_plugin(registry[0], request)
         if not valid:
             return self.bad_request(registry[0], msg=msg)
 
         # Check if service and is_active and system is active
         if not registry[0].can_safely_execute():
             # Internally can log why this is the case
-            return self.bad_request(registry[0], request, msg="Service cannot be executed.")
+            return self.bad_request(registry[0], request, msg="Service {} cannot be executed.".format(registry[0]))
 
-        res = registry[0].send_request(request)
+        res = send_service_request(registry[0], request)
         data = {'SUCCESS': 0}
         if res:
             data['SUCCESS'] = 1
@@ -74,9 +70,10 @@ class Gateway(APIView):
         #     print('Decoding JSON failed')
         #     return self.bad_request(registry[0],request)
 
+        RequestLog.create(registry[0], status.HTTP_200_OK, request.META['REMOTE_ADDR'])
         return Response(data=data)
 
-    def bad_request(self, service=None, request=request, msg=None):
+    def bad_request(self, service=None, request=request, msg="Bad Request."):
         RequestLog.create(service, status.HTTP_400_BAD_REQUEST, request.META['REMOTE_ADDR'])
         return Response({"detail": msg}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -139,13 +136,13 @@ class ServicesTriggerView(JSONResponseMixin, BaseDetailView):
     model = ServiceRegistry
 
     def render_to_response(self, context, **response_kwargs):
-        result = self.object.send_request()
+        result = send_service_request(self.object)
         data = {'SUCCESS': 0}
         # CAN WE CHECK IF IT WAS QUED?
         if result:
             data['SUCCESS'] = 1
             # Store async ID FOR TEMP STorage until it's gone
-            self.object.store_async_result(result)
+            store_async_result(self.object, result)
 
         return self.render_to_json_response(context=data, **response_kwargs)
 
@@ -154,7 +151,7 @@ class ServicesASyncResultsView(JSONResponseMixin, BaseDetailView):
     model = ServiceRegistry
 
     def render_to_response(self, context, **response_kwargs):
-        logs = self.object.retrieve_async_result_logs()
+        logs = retrieve_async_result_logs(self.object)
         data = {'SUCCESS':0}
         if logs:
             data['SUCCESS'] = 1
