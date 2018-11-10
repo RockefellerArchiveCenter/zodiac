@@ -2,12 +2,16 @@
 
 # Apply database migrations
 ../wait-for-it.sh db:5432 -- echo "Apply database migrations"
-python manage.py migrate
+python manage.py makemigrations && python manage.py migrate
 
   if [ ! -f zodiac/config.py ]; then
       echo "Creating config file"
       cp zodiac/config.py.example zodiac/config.py
   fi
+
+# Create initial organizations and users
+echo "Setting up applications and services"
+python manage.py shell < ../setup_services.py
 
 #Start server
 echo "Starting server"
