@@ -1,7 +1,7 @@
 {% extends "gateway/base.html" %}
 
 {% block h1_title %}
-  {{object.name}} System Detail
+  {{object.name}}
 {% endblock %}
 
 {% block content %}
@@ -29,6 +29,7 @@
       </div>
       <div class="box-footer">
         <a href="{{ object.get_update_url }}" class="btn btn-primary">Edit System</a>
+        <a href="{% url 'systems-delete' pk=object.pk %}" class="btn btn-danger">Delete System</a>
       </div>
     </div>
   </div>

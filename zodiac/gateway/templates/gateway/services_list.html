@@ -8,11 +8,11 @@
 <div class="row">
   <div class="col-md-12">
     <div class="box box-primary">
-      <div class="box-body no-padding">
+      <div class="box-body {% if object_list %}no-padding{% endif %}">
         {% if object_list %}
           {% include 'gateway/services_list_table.html' %}
         {% else %}
-          <li>No services yet.</li>
+          <p>No services yet.</p>
         {% endif %}
       </div>
       <div class="box-footer">

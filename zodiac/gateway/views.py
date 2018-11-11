@@ -98,9 +98,9 @@ class SplashView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['recent_services'] = ServiceRegistry.objects.all().order_by('-modified_time')
-        context['recent_systems'] = Application.objects.all().order_by('-modified_time')
-        context['recent_results'] = TaskResult.objects.all().order_by('-date_done')
+        context['recent_services'] = ServiceRegistry.objects.all().order_by('-modified_time')[:5]
+        context['recent_systems'] = Application.objects.all().order_by('-modified_time')[:5]
+        context['recent_results'] = TaskResult.objects.all().order_by('-date_done')[:10]
         return context
 
 

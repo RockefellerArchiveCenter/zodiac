@@ -1,10 +1,17 @@
 <table class="table table-striped">
   <tbody>
+    <thead>
+      <th>Name</th>
+      <th>Active?</th>
+      <th>Available at</th>
+      <th>Services</th>
+    </thead>
     {% for system in object_list %}
       <tr>
         <td><a href="{{ system.get_absolute_url }}">{{ system.name }}</a></td>
         <td>{% include 'gateway/active_label.html' with status=system.is_active %}</td>
-        <td>{{system.app_host}}:{{system.app_port}}</td>
+        <td>http://{{system.app_host}}:{{system.app_port}}</td>
+        <td>{% for service in system.serviceregistry_set.all %}<a href="{{service.get_absolute_url}}">{{service}}</a><br/>{% endfor %}
       </tr>
     {% endfor %}
   </tbody>
