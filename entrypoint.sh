@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo "Starting celery"
+/etc/init.d/celeryd start
+/etc/init.d/celerybeat start
+
 # Apply database migrations
 ../wait-for-it.sh db:5432 -- echo "Apply database migrations"
 python manage.py makemigrations && python manage.py migrate
