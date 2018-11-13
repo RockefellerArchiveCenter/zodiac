@@ -23,23 +23,7 @@ or, if you wish to remove all local data:
 
 ## Usage (under active development)
 
-To process the tasks in the queue, first log into the zodiac-web container:
-
-```
-$ docker-compose exec zodiac-web bash
-```
-
-and then run:
-
-```
-$ celery -A zodiac worker -l info
-```
-
-To run scheduled tasks, log in to the zodiac-web container in a separate console and then run:
-
-```
-$ celery -A zodiac beat -l info
-```
+Celery and Celery Beat are installed and will be running on startup. To process queued callbacks, you will need to add a periodic task using Django Admin.
 
 
 ## License

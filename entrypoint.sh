@@ -13,6 +13,10 @@ python manage.py makemigrations && python manage.py migrate
 echo "Setting up applications and services"
 python manage.py shell < ../setup_services.py
 
+echo "Starting celery"
+/etc/init.d/celeryd start
+/etc/init.d/celerybeat start
+
 #Start server
 echo "Starting server"
 python manage.py runserver 0.0.0.0:8001
