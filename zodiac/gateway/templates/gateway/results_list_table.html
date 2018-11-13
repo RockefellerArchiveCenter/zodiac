@@ -3,7 +3,8 @@
     {% for result in object_list %}
       <tr>
         <td><a href="{% url 'results-detail' pk=result.id %}">{{ result.task_id }}</a></td>
-        <td>{{result.status}}</td>
+        <td>{{result.date_done}}</td>
+        <td>{{result.get_status_display}}</td>
       </tr>
     {% endfor %}
   </tbody>
