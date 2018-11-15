@@ -1,25 +1,29 @@
-# Zodiac
+# zodiac
 
-API Gateway for Project Electron microservices.
+API Gateway for [Project Electron](https://github.com/RockefellerArchiveCenter/project_electron) microservices.
 
-## Installation
+## Setup
 
-### Quick Start
-If you have [git](https://git-scm.com/) and [Docker](https://www.docker.com/community-edition) installed:
+Install [git](https://git-scm.com/) and clone the repository
 
-      git clone https://github.com/RockefellerArchiveCenter/zodiac.git
-      cd zodiac
-      git submodule init
-      git submodule update
-      docker-compose up
+    $ git clone https://github.com/RockefellerArchiveCenter/zodiac.git
+      
+Install [Docker](https://store.docker.com/search?type=edition&offering=community) and run docker-compose from the root directory. You can include all associated microservice submodules.
 
-To shut down Zodiac, run:
+    $ cd zodiac
+    $ git submodule init
+    $ git submodule update
+    $ docker-compose up
+      
+Once the applications start successfully, you should be able to access zodiac in your browser at `http://localhost:8001`
 
-      `docker-compose down`
+When you're done, shut down docker-compose
 
-or, if you wish to remove all local data:
+    $ docker-compose down
 
-      `docker-compose down -v`
+Or, if you want to remove all data
+
+    $ docker-compose down -v
 
 ## Usage (under active development)
 
