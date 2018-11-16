@@ -4,7 +4,6 @@ from rest_framework.authentication import BasicAuthentication
 
 from .tasks import queue_request
 from .views_library import render_service_path, render_post_service_url
-from .models import ServiceRegistryTask
 
 
 def send_service_request(service, request={}):
@@ -86,14 +85,3 @@ def check_service_plugin(service, request):
         return True, ''
     else:
         raise NotImplementedError("plugin %d not implemented" % service.plugin)
-
-
-def retrieve_async_result_logs(service):
-    return list(ServiceRegistryTask.objects.filter(service=service).values_list('async_result_id', flat=True))
-
-
-def store_async_result(service, async_result_id):
-    ServiceRegistryTask.objects.create(
-        service=service,
-        async_result_id=async_result_id
-    )

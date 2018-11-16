@@ -14,7 +14,6 @@ urlpatterns = [
     path('services/add/', views.ServicesAddView.as_view(), name='services-add'),
     path('services/edit/<int:pk>/delete/', views.ServicesDeleteView.as_view(), name='services-delete'),
     path('services/trigger/<int:pk>/', views.ServicesTriggerView.as_view(), name='services-trigger'),
-    path('services/async_results/<int:pk>/', views.ServicesASyncResultsView.as_view(), name='services-async-results'),
 
     # SYSTEMS URLS
     path('systems/', views.SystemsListView.as_view(), name='systems-list'),

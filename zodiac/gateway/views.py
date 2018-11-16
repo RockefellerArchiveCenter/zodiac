@@ -9,7 +9,7 @@ from rest_framework import status
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .service_library import send_service_request, check_service_plugin, retrieve_async_result_logs, store_async_result
+from .service_library import send_service_request, check_service_plugin
 from .models import Application, ServiceRegistry, RequestLog
 from .mixins import JSONResponseMixin
 
@@ -141,21 +141,7 @@ class ServicesTriggerView(JSONResponseMixin, BaseDetailView):
         # CAN WE CHECK IF IT WAS QUED?
         if result:
             data['SUCCESS'] = 1
-            # Store async ID FOR TEMP STorage until it's gone
-            store_async_result(self.object, result)
 
-        return self.render_to_json_response(context=data, **response_kwargs)
-
-
-class ServicesASyncResultsView(JSONResponseMixin, BaseDetailView):
-    model = ServiceRegistry
-
-    def render_to_response(self, context, **response_kwargs):
-        logs = retrieve_async_result_logs(self.object)
-        data = {'SUCCESS':0}
-        if logs:
-            data['SUCCESS'] = 1
-            data['logs'] = logs
         return self.render_to_json_response(context=data, **response_kwargs)
 
 

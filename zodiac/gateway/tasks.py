@@ -44,7 +44,6 @@ def queue_request(method, url, headers, data, files, params):
     # VALIDATE REsponse
     #   check for json
     #   if request OK
-    #       save ServiceRegistryTask with result
 
     # print(current_task.request.id, 'id of current task')
     # print(async_result_id)

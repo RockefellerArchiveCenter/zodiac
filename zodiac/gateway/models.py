@@ -124,14 +124,3 @@ class RequestLog(models.Model):
             async_result_id = async_result_id
         ).save()
         return record
-
-
-class ServiceRegistryTask(models.Model):
-    service = models.ForeignKey(
-        ServiceRegistry,
-        on_delete=models.CASCADE
-    )
-    async_result_id = models.CharField(max_length=40)
-
-    def __str__(self):
-        return self.async_result_id
