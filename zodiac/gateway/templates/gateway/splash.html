@@ -19,6 +19,11 @@
           <p>No configured services.</p>
         {% endif %}
       </div>
+      {% if recent_services %}
+      <div class="box-footer text-center">
+        <a href="{% url 'services-list' %}" class="btn btn-default">View all services</a>
+      </div>
+      {% endif %}
     </div>
   </div>
 </div>
@@ -37,6 +42,11 @@
           <p>No configured systems.</p>
         {% endif %}
       </div>
+      {% if recent_systems %}
+      <div class="box-footer text-center">
+        <a href="{% url 'systems-list' %}" class="btn btn-default">View all systems</a>
+      </div>
+      {% endif %}
     </div>
   </div>
 </div>
@@ -54,6 +64,11 @@
           <p>No results.</p>
         {% endif %}
       </div>
+      {% if recent_results %}
+      <div class="box-footer text-center">
+        <a href="{% url 'results-list' %}" class="btn btn-default">View all results</a>
+      </div>
+      {% endif %}
     </div>
   </div>
 </div>
