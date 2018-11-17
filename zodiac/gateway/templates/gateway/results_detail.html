@@ -42,20 +42,10 @@
       $.get(trigger_url,{}, function(resp){
         if(resp.SUCCESS == 1){
           alert('it worked, request queued')
-	      retrieve_objects_async_results();
         }
       });
     })
-
-    retrieve_objects_async_results();
   });
 
-
-  var retrieve_objects_async_results = function(){
-    // ajax request to retrieve queue by objects
-    $.get('{{ object.get_async_results_data_url }}', {}, function(resp){
-      console.log(resp);
-    });
-  }
 </script>
 {% endblock %}

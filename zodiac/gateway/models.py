@@ -87,9 +87,6 @@ class ServiceRegistry(models.Model):
     def get_trigger_url(self):
         return reverse('services-trigger', args=[self.pk])
 
-    def get_async_results_data_url(self):
-        return reverse('services-async-results', args=[self.pk])
-
     def service_active(self):
         return True if (self.is_active and self.application.is_active) else False
 
