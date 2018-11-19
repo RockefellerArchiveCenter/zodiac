@@ -16,7 +16,7 @@ SERVICES = [
      'plugin': 0, 'method': 'POST', 'callback_service': None, 'post_service': None,},
     {'name': 'Store Accessions', 'application': 'Ursa Major',
      'description': 'Stores incoming accession data and creates associated transfer objects.',
-     'external_uri': 'store-accessions/', 'service_route': 'accessions/',
+     'external_uri': 'store-accessions', 'service_route': 'accessions',
      'plugin': 0, 'method': 'POST', 'callback_service': 'Ursa Major.Discover Bags', 'post_service': None,},
     {'name': 'Discover Bags', 'application': 'Ursa Major',
      'description': 'Checks for transfer files and, if found, moves them to storage.',
