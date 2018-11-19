@@ -3,13 +3,9 @@ from __future__ import absolute_import, unicode_literals
 import urllib.parse as urlparse
 
 
-def render_post_service_url(service):
-    if not service.post_service:
-        return ''
-    return render_service_path(service.post_service)
-
-
 def render_service_path(service, uri=''):
+    if not service:
+        return ''
 
     app_port = (':{}'.format(service.application.app_port) if service.application.app_port > 0 else '')
     url = 'http://{}{}/{}{}'.format(
