@@ -3,7 +3,7 @@ import json
 from rest_framework.authentication import BasicAuthentication
 
 from .tasks import queue_request
-from .views_library import render_service_path, render_post_service_url
+from .views_library import render_service_path
 
 
 def send_service_request(service, request={}):
@@ -27,8 +27,6 @@ def send_service_request(service, request={}):
         for k, v in request.FILES.items():
             request.data.pop(k)
 
-        #force json
-
         if request.content_type and request.content_type.lower() == 'application/json':
             data = json.dumps(request.data)
             headers['content-type'] = request.content_type
@@ -48,10 +46,8 @@ def send_service_request(service, request={}):
         headers=headers,
         data=data,
         files=files,
-        params={'post_service_url': render_post_service_url(service)}
+        params={'post_service_url': render_service_path(service.post_service)}
     )
-    print(async_result, 'this is async')
-
     return async_result.id
 
 

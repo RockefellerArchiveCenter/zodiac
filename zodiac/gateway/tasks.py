@@ -7,7 +7,7 @@ import urllib.parse as urlparse
 from celery import shared_task, current_task
 
 from .models import ServiceRegistry
-from .views_library import render_service_path, render_post_service_url
+from .views_library import render_service_path
 
 method_map = {
     'get': requests.get,
@@ -30,7 +30,7 @@ def queue_callbacks():
                 headers={'Content-Type': 'application/json'},
                 data=None,
                 files=None,
-                params={'post_service_url': render_post_service_url(callback)}
+                params={'post_service_url': render_service_path_url(callback)}
             )
             if r:
                 completed['detail']['callbacks'].append({callback.name: r.id})

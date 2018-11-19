@@ -18,7 +18,8 @@
         {% if object.post_service or object.callback_service %}<label>Callbacks</label>{% endif %}
         {% if object.post_service %}
         <p>Delivers <code>{{object.post_service.method}}</code> request to <a href="{{object.post_service.get_absolute_url}}">{{object.post_service}}</a></p>
-        {% elif object.callback_service %}
+        {% endif %}
+        {% if object.callback_service %}
         <p>Queues <code>{{object.callback_service.method}}</code> request for <a href="{{object.callback_service.get_absolute_url}}">{{object.callback_service}}</a></p>
         {% endif %}
         <label>Application</label>

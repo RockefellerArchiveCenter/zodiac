@@ -48,6 +48,8 @@ services:
     entrypoint: /code/fornax/entrypoint.sh
     volumes:
       - .:/code
+      - ~/.pe-shared/ursamajor-fornax:/src/:ro
+      - ~/.pe-shared/fornax-am:/dest/
     networks:
       - microservices
     ports:
@@ -84,6 +86,8 @@ services:
     entrypoint: /code/ursa_major/entrypoint.sh
     volumes:
       - .:/code
+      - ~/.pe-shared/aurora-ursamajor:/src/:ro
+      - ~/.pe-shared/ursamajor-fornax:/dest/
     networks:
       - microservices
     ports:

@@ -115,9 +115,9 @@ class RequestLog(models.Model):
     @classmethod
     def create(cls, service, status_code, request_url, async_result_id=None):
         record = cls(
-            service = service,
-            status_code = status_code,
-            request_url = request_url,
-            async_result_id = async_result_id
+            service=service,
+            status_code=status_code,
+            request_url=request_url,
+            async_result_id=async_result_id
         ).save()
         return record
