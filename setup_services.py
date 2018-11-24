@@ -119,10 +119,10 @@ if len(ServiceRegistry.objects.all()) == 0:
         )
         print("Created service: {}".format(service['name']))
 
-    # Add callbacks
+    # Add callbacks and post services
     for service in SERVICES:
         object = ServiceRegistry.objects.get(name=service['name'])
         object.callback_service = ServiceRegistry.objects.get(application__name=service['callback_service'].split('.')[0], name=service['callback_service'].split('.')[1]) if service['callback_service'] else None
         object.post_service = ServiceRegistry.objects.get(application__name=service['post_service'].split('.')[0], name=service['post_service'].split('.')[1]) if service['post_service'] else None
         object.save()
-    print("Callbacks, POST Services and Cleanup Services linked")
+    print("Callbacks and POST Services linked")

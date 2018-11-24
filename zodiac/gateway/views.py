@@ -2,6 +2,7 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import BaseDetailView, DetailView
 from django.views.generic.list import ListView
+from django_datatables_view.base_datatable_view import BaseDatatableView
 from django.urls import reverse_lazy
 from django_celery_results.models import TaskResult
 from rest_framework.response import Response
@@ -14,7 +15,7 @@ from .models import Application, ServiceRegistry, RequestLog
 from .mixins import JSONResponseMixin
 
 
-systems_update_fields = ['name', 'app_host', 'app_port']
+applications_update_fields = ['name', 'app_host', 'app_port']
 services_registry_fields = [
     'name',
     'application',
@@ -99,7 +100,7 @@ class SplashView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['recent_services'] = ServiceRegistry.objects.all().order_by('-modified_time')[:5]
-        context['recent_systems'] = Application.objects.all().order_by('-modified_time')[:5]
+        context['recent_applications'] = Application.objects.all().order_by('-modified_time')[:5]
         context['recent_results'] = TaskResult.objects.all().order_by('-date_done')[:10]
         return context
 
@@ -128,7 +129,7 @@ class ServicesUpdateView(UpdateView):
 
 class ServicesDeleteView(DeleteView):
     template_name = "gateway/services_delete.html"
-    model = Application
+    model = ServiceRegistry
     success_url = reverse_lazy('services-list')
 
 
@@ -145,37 +146,52 @@ class ServicesTriggerView(JSONResponseMixin, BaseDetailView):
         return self.render_to_json_response(context=data, **response_kwargs)
 
 
-class SystemsAddView(CreateView):
-    template_name = "gateway/systems_add.html"
+class ApplicationsAddView(CreateView):
+    template_name = "gateway/applications_add.html"
     model = Application
-    fields = systems_update_fields
+    fields = applications_update_fields
 
 
-class SystemsDetailView(DetailView):
-    template_name = "gateway/systems_detail.html"
-    model = Application
-
-
-class SystemsListView(ListView):
-    template_name = "gateway/systems_list.html"
+class ApplicationsDetailView(DetailView):
+    template_name = "gateway/applications_detail.html"
     model = Application
 
 
-class SystemsUpdateView(UpdateView):
-    template_name = "gateway/systems_update.html"
+class ApplicationsListView(ListView):
+    template_name = "gateway/applications_list.html"
     model = Application
-    fields = systems_update_fields + ['is_active']
 
 
-class SystemsDeleteView(DeleteView):
-    template_name = "gateway/systems_delete.html"
+class ApplicationsUpdateView(UpdateView):
+    template_name = "gateway/applications_update.html"
     model = Application
-    success_url = reverse_lazy('systems-list')
+    fields = applications_update_fields + ['is_active']
 
 
-class ResultsListView(ListView):
+class ApplicationsDeleteView(DeleteView):
+    template_name = "gateway/applications_delete.html"
+    model = Application
+    success_url = reverse_lazy('applications-list')
+
+
+class ResultsListView(TemplateView):
     template_name = "gateway/results_list.html"
+
+
+class ResultsDatatableView(BaseDatatableView):
     model = TaskResult
+    columns = ['task_id', 'date_done', 'status']
+    order_columns = ['task_id', 'date_done', 'status']
+    max_display_length = 500
+
+    def get_filter_method(self): return self.FILTER_ICONTAINS
+
+    def render_column(self, row, column):
+        if column == 'task_id':
+            url = str(reverse_lazy('results-detail', kwargs={"pk":row.id}))
+            return '<a href="'+url+'">'+row.task_id+'</a>'
+        else:
+            return super(ResultsDatatableView, self).render_column(row, column)
 
 
 class ResultsDetailView(DetailView):

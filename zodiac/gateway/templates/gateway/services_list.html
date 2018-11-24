@@ -2,6 +2,7 @@
 
 {% block h1_title %}
   Services
+  <a class="btn btn-primary pull-right" href="{% url 'services-add' %}">Add Service</a>
 {% endblock %}
 
 {% block content %}
@@ -14,9 +15,6 @@
         {% else %}
           <p>No services yet.</p>
         {% endif %}
-      </div>
-      <div class="box-footer">
-        <a class="btn btn-primary" href="{% url 'services-add' %}">Add Service</a>
       </div>
     </div>
   </div>

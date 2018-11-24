@@ -32,19 +32,19 @@
   <div class="col-md-12">
     <div class="box box-primary">
       <div class="box-header with-border">
-        <h3 class="box-title">Recent Systems</h3>
-        <a class="btn btn-primary pull-right" href="{% url 'systems-add' %}">Add System</a>
+        <h3 class="box-title">Recent Applications</h3>
+        <a class="btn btn-primary pull-right" href="{% url 'applications-add' %}">Add Application</a>
       </div>
-      <div class="box-body {% if recent_systems %}no-padding{% endif %}">
-        {% if recent_systems %}
-          {% include 'gateway/systems_list_table.html' with object_list=recent_systems %}
+      <div class="box-body {% if recent_applications %}no-padding{% endif %}">
+        {% if recent_applications %}
+          {% include 'gateway/applications_list_table.html' with object_list=recent_applications %}
         {% else %}
-          <p>No configured systems.</p>
+          <p>No configured applications.</p>
         {% endif %}
       </div>
-      {% if recent_systems %}
+      {% if recent_applications %}
       <div class="box-footer text-center">
-        <a href="{% url 'systems-list' %}" class="btn btn-default">View all systems</a>
+        <a href="{% url 'applications-list' %}" class="btn btn-default">View all applications</a>
       </div>
       {% endif %}
     </div>

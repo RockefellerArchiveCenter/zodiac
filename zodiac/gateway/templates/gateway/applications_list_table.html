@@ -1,0 +1,18 @@
+<table class="table table-striped">
+  <tbody>
+    <thead>
+      <th>Name</th>
+      <th>Active?</th>
+      <th>Available at</th>
+      <th>Services</th>
+    </thead>
+    {% for application in object_list %}
+      <tr>
+        <td><a href="{{ application.get_absolute_url }}">{{ application.name }}</a></td>
+        <td>{% include 'gateway/active_label.html' with status=application.is_active %}</td>
+        <td>http://{{application.app_host}}:{{application.app_port}}</td>
+        <td>{% for service in application.serviceregistry_set.all %}<a href="{{service.get_absolute_url}}">{{service}}</a><br/>{% endfor %}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

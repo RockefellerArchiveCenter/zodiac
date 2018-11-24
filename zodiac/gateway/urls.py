@@ -12,17 +12,18 @@ urlpatterns = [
     path('services/<int:pk>/', views.ServicesDetailView.as_view(), name='services-detail'),
     path('services/edit/<int:pk>/', views.ServicesUpdateView.as_view(), name='services-update'),
     path('services/add/', views.ServicesAddView.as_view(), name='services-add'),
-    path('services/edit/<int:pk>/delete/', views.ServicesDeleteView.as_view(), name='services-delete'),
+    path('services/delete/<int:pk>/', views.ServicesDeleteView.as_view(), name='services-delete'),
     path('services/trigger/<int:pk>/', views.ServicesTriggerView.as_view(), name='services-trigger'),
 
-    # SYSTEMS URLS
-    path('systems/', views.SystemsListView.as_view(), name='systems-list'),
-    path('systems/<int:pk>/', views.SystemsDetailView.as_view(), name='systems-detail'),
-    path('systems/edit/<int:pk>/', views.SystemsUpdateView.as_view(), name='systems-update'),
-    path('systems/add/', views.SystemsAddView.as_view(), name='systems-add'),
-    path('systems/edit/<int:pk>/delete/', views.SystemsDeleteView.as_view(), name='systems-delete'),
+    # APPLICATIONS URLS
+    path('applications/', views.ApplicationsListView.as_view(), name='applications-list'),
+    path('applications/<int:pk>/', views.ApplicationsDetailView.as_view(), name='applications-detail'),
+    path('applications/edit/<int:pk>/', views.ApplicationsUpdateView.as_view(), name='applications-update'),
+    path('applications/add/', views.ApplicationsAddView.as_view(), name='applications-add'),
+    path('applications/delete/<int:pk>/', views.ApplicationsDeleteView.as_view(), name='applications-delete'),
 
     # RESULTS URLS
     path('results/', views.ResultsListView.as_view(), name='results-list'),
+    path('results-data/', views.ResultsDatatableView.as_view(), name='results-data'),
     path('results/<int:pk>/', views.ResultsDetailView.as_view(), name='results-detail'),
 ]
