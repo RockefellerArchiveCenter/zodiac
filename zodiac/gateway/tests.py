@@ -1,6 +1,9 @@
-from django.test import TestCase
+from django.test import TestCase, Client
+from django.urls import reverse
 
 from .models import Application, ServiceRegistry
+from .tasks import queue_callbacks
+from .views import ServicesTriggerView
 
 APPLICATIONS = [
     {'name': 'Ursa Major', 'host': 'ursa-major-web', 'port': 8005},
@@ -29,7 +32,11 @@ SERVICES = [
 
 class GatewayTestCase(TestCase):
 
+    def setUp(self):
+        self.client = Client()
+
     def create_applications(self):
+        print("Creating applications")
         for application in APPLICATIONS:
             Application.objects.create(
                 name=application['name'],
@@ -37,10 +44,10 @@ class GatewayTestCase(TestCase):
                 app_host=application['host'],
                 app_port=application['port'],
             )
-            print("Created application: {}".format(application['name']))
         self.assertEqual(len(Application.objects.all()), len(APPLICATIONS))
 
     def create_services(self):
+        print("Creating services")
         for service in SERVICES:
             ServiceRegistry.objects.create(
                 name=service['name'],
@@ -53,9 +60,20 @@ class GatewayTestCase(TestCase):
                 is_private=False,
                 method=service['method'],
             )
-            print("Created service: {}".format(service['name']))
+        for service in SERVICES:
+            object = ServiceRegistry.objects.get(name=service['name'])
+            object.callback_service = ServiceRegistry.objects.get(application__name=service['callback_service'].split('.')[0], name=service['callback_service'].split('.')[1]) if service['callback_service'] else None
+            object.post_service = ServiceRegistry.objects.get(application__name=service['post_service'].split('.')[0], name=service['post_service'].split('.')[1]) if service['post_service'] else None
+            object.save()
         self.assertEqual(len(ServiceRegistry.objects.all()), len(SERVICES))
+
+    def queue_tasks(self):
+        for service in ServiceRegistry.objects.all():
+            print(service)
+            trigger = self.client.get(reverse('services-trigger', kwargs={'pk': service.id}))
+            self.assertEqual(trigger.status_code, 200, "Wrong HTTP response code")
 
     def test_gateway(self):
         self.create_applications()
         self.create_services()
+        self.queue_tasks()
