@@ -68,8 +68,8 @@ class GatewayTestCase(TestCase):
         self.assertEqual(len(ServiceRegistry.objects.all()), len(SERVICES))
 
     def queue_tasks(self):
+        print("Queueing tasks")
         for service in ServiceRegistry.objects.all():
-            print(service)
             trigger = self.client.get(reverse('services-trigger', kwargs={'pk': service.id}))
             self.assertEqual(trigger.status_code, 200, "Wrong HTTP response code")
 
