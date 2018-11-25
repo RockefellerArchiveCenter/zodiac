@@ -30,7 +30,7 @@ The first time you start zodiac, a set of Applications and Services will be crea
 
 ## Usage
 
-zodiac provides a unified interface for microservices, allowing users to both administer these services and the applications to which they belong as well as track activity within the microservice layer.
+zodiac provides a unified interface for microservices, allowing users to both administer these services and the applications to which they belong as well as track activity within the microservice layer. It also includes a message queue which improves service scalability and activity monitoring.
 
 ### Applications
 Applications are clusters of services which share some common code. In the context of Project Electron, these are a series of Django projects. However, zodiac doesn't care how these applications are implemented as long as the services they provide are available via REST endpoints.
