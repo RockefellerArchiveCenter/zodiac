@@ -39,7 +39,7 @@ Applications are clusters of services which share some common code. In the conte
 Services provide small and clearly-defined functionality, which are called via REST endpoints. If the service requires it, zodiac can pass an additional URL to a service (via a `post_service_url` parameter) so it can trigger another service via a POST request. This is especially useful if a service needs to deliver a payload to another service.
 
 ### Message Queue
-zodiac includes a messaging layer to queue and process tasks. It does this via Celery and Celery Beat, which are installed as daemons in the Docker container and run on startup. To process queued callbacks, you will need to add a periodic task using the Django Admin interface. Task results are available in the user interface.
+zodiac includes a messaging layer to queue and process tasks. It does this via [Celery](https://github.com/celery/celery/) and [Celery Beat](https://github.com/celery/django-celery-beat), which are installed as daemons in the Docker container and run on startup. To process queued callbacks, you will need to add a periodic task using the Django Admin interface. Task results are available in the user interface.
 
 
 ## License
