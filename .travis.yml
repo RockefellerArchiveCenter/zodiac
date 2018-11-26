@@ -10,7 +10,7 @@ before_install:
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
-  - cp zodiac/config.py.example zodiac/config.py
+  - cp zodiac/zodiac/config.py.example zodiac/zodiac/config.py
   - docker-compose up -d
   - sleep 20s
 install: true
