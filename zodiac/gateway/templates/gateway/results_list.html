@@ -9,13 +9,45 @@
   <div class="col-md-12">
     <div class="box box-primary">
       <div class="box-body {% if object_list %}no-padding{% endif %}">
-        {% if object_list %}
-          {% include 'gateway/results_list_table.html' %}
-        {% else %}
-          <p>No results yet.</p>
-        {% endif %}
+        <table id="results-table" class="table table-striped dataTable">
+          <thead>
+            <tr>
+              <td>Identifier</td>
+              <td>Date done</td>
+              <td>Status</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+  $(document).ready(function() {
+		// $.fn.dataTable.moment( 'MMM D, YYYY h:mm A' );
+    $('#results-table').DataTable({
+			'stateSave'   : true,
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : true,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : true,
+      'pageLength'  : 25,
+			'processing': true,
+      'serverSide': true,
+      'ajax': '{% url "results-data" %}'
+    });
+  });
+  </script>
 {% endblock %}

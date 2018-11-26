@@ -44,14 +44,33 @@
     $('#trigger-service-btn').click(function(){
       $.get(trigger_url,{}, function(resp){
         if(resp.SUCCESS == 1){
-          alert('it worked, request queued')
-	      retrieve_objects_async_results();
+          displayMessage('success', "Service successfully triggered.")
+	        retrieve_objects_async_results();
+        }
+        else {
+          displayMessage('danger', "There was a problem triggering this service.")
         }
       });
     })
 
     retrieve_objects_async_results();
   });
+
+  function displayMessage(type, message) {
+    $('#messages').empty()
+    $('#messages').append(
+      '<div class="row">\
+      	<div class="col-md-12">\
+          <div class="alert alert-'+type+' alert-dismissible">\
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>\
+              <i class="icon fa fa-check"></i>'+message+'\
+          </div>\
+        </div>\
+      </div>').fadeIn(300);
+      setTimeout(function(){
+  			$('#messages').fadeOut(1300);
+  		}, 8000);
+  }
 
 
   var retrieve_objects_async_results = function(){

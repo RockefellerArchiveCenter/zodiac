@@ -1,7 +1,8 @@
 {% extends "gateway/base.html" %}
 
 {% block h1_title %}
-  Systems
+  Applications
+  <a class="btn btn-primary pull-right" href="{% url 'applications-add' %}">Add Application</a>
 {% endblock %}
 
 {% block content %}
@@ -10,13 +11,10 @@
     <div class="box box-primary">
       <div class="box-body {% if object_list %}no-padding{% endif %}">
         {% if object_list %}
-          {% include 'gateway/systems_list_table.html' %}
+          {% include 'gateway/applications_list_table.html' %}
         {% else %}
-          <p>No configured services.</p>
+          <p>No configured applications.</p>
         {% endif %}
-      </div>
-      <div class="box-footer">
-        <a class="btn btn-primary" href="{% url 'systems-add' %}">Add System</a>
       </div>
     </div>
   </div>

@@ -28,10 +28,10 @@ class Application(models.Model):
         return self.app_host
 
     def get_update_url(self):
-        return reverse('systems-update', args=[self.pk])
+        return reverse('applications-update', args=[self.pk])
 
     def get_absolute_url(self):
-        return reverse('systems-detail', args=[self.pk])
+        return reverse('applications-detail', args=[self.pk])
 
 
 class ServiceRegistry(models.Model):
