@@ -10,24 +10,22 @@
   <div class="col-md-12">
     <div class="box box-primary">
       <div class="box-body">
-        <label>Identifier</label>
-        <p>{{object.task_id}}</p>
-        <label>Status</label>
-        <p>{{object.status}}</p>
-        {% if object.task_args %}
-          <label>Arguments</label>
-          {{object.task_args}}
-        {% endif %}
-        {% if object.task_kwargs %}
-          <label>Keyword Arguments</label>
-          {{object.task_kwargs}}
-        {% endif %}
-        <label>Result</label>
-        <p><pre><code>{{ object.result }}</code></pre></p>
-        {% if object.traceback %}
-          <label>Traceback</label>
-          <p><pre><code>{{object.traceback }}</code></pre></p>
-        {% endif %}
+        <dl>
+          <dt>Identifier</dt>
+          <dd>{{object.task_id}}</dd>
+          <dt>Status</dt>
+          <dd>{{object.status}}</dd>
+          <dt>Arguments</dt>
+          <dd>{{object.task_args}}</dd>
+          <dt>Keyword Arguments</dt>
+          <dd>{{object.task_kwargs}}</dd>
+          <dt>Result</dt>
+          <dd><pre><code>{{ object.result }}</code></pre></dd>
+          {% if object.traceback %}
+            <dt>Traceback</dt>
+            <dd><pre><code>{{object.traceback }}</code></pre></dd>
+          {% endif %}
+        </dl>
       </div>
     </div>
   </div>

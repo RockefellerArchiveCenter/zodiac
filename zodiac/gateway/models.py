@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
+import ast
+
 from django.db import models
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse
+
+from django_celery_results.models import TaskResult
 
 
 class Consumer(models.Model):
@@ -89,6 +93,13 @@ class ServiceRegistry(models.Model):
 
     def service_active(self):
         return True if (self.is_active and self.application.is_active) else False
+
+    def has_active_task(self):
+        for task in TaskResult.objects.filter(status__in=["PENDING", "STARTED", "RETRY"]):
+            if (ast.literal_eval(task.task_kwargs).get('service_id') == self.pk):
+                print("Active task discovered", task)
+                return True
+        return False
 
     def can_safely_execute(self):
         # check actives for service and system

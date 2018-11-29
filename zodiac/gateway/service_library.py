@@ -10,6 +10,9 @@ def send_service_request(service, request={}):
     headers = {}
     files = {}
 
+    if service.has_active_task():
+        return False
+
     if request:
         files = request.FILES
 
@@ -46,7 +49,8 @@ def send_service_request(service, request={}):
         headers=headers,
         data=data,
         files=files,
-        params={'post_service_url': render_service_path(service.post_service)}
+        params={'post_service_url': render_service_path(service.post_service)},
+        service_id=service.pk,
     )
     return async_result.id
 
