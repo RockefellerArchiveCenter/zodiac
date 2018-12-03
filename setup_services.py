@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User;
+from django.contrib.auth.models import User
 from gateway.models import Application, ServiceRegistry
 
 APPLICATIONS = [
@@ -57,11 +57,11 @@ SERVICES = [
     {'name': 'Store Package', 'application': 'Gemini',
      'description': 'Stores packages in Fedora',
      'external_uri': 'store-packages', 'service_route': 'store/',
-     'plugin': 0, 'method': 'POST', 'callback_service': None, 'post_service': 'Gemini.Request SIP Cleanup',},
+     'plugin': 0, 'method': 'POST', 'callback_service': 'Gemini.Request SIP Cleanup', 'post_service': 'Aquarius.Store Package Data',},
     {'name': 'Request SIP Cleanup', 'application': 'Gemini',
      'description': 'Requests deletion of processed SIPs from source directory.',
      'external_uri': 'request-sip-cleanup/', 'service_route': 'request-cleanup/',
-     'plugin': 0, 'method': 'POST', 'callback_service': 'Aquarius.Store Package Data', 'post_service': 'Fornax.Cleanup SIPs',},
+     'plugin': 0, 'method': 'POST', 'callback_service': None, 'post_service': 'Fornax.Cleanup SIPs',},
     {'name': 'Store Package Data', 'application': 'Aquarius',
      'description': 'Stores incoming transfer objects',
      'external_uri': 'store-data/', 'service_route': 'packages/',
