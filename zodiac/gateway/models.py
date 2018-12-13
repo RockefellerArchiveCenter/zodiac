@@ -9,6 +9,11 @@ from django.urls import reverse
 from django_celery_results.models import TaskResult
 
 
+class taskID(models.Model):
+    task_ID = models.CharField(max_length=64, unique=True)
+    is_active = models.BooleanField(default=False)
+
+
 class Consumer(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
