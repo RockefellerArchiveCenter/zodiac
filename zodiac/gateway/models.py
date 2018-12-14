@@ -9,11 +9,6 @@ from django.urls import reverse
 from django_celery_results.models import TaskResult
 
 
-class taskID(models.Model):
-    task_ID = models.CharField(max_length=64, unique=True)
-    is_active = models.BooleanField(default=False)
-
-
 class Consumer(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
@@ -100,8 +95,9 @@ class ServiceRegistry(models.Model):
         return True if (self.is_active and self.application.is_active) else False
 
     def has_active_task(self):
-        for task in TaskResult.objects.filter(status__in=["PENDING", "STARTED", "RETRY"]):
-            if (ast.literal_eval(task.task_kwargs).get('service_id') == self.pk):
+        for log in RequestLog.objects.filter(service=self.pk):
+            task = TaskResult.objects.get(task_id=log.async_result_id)
+            if task.status in ["PENDING", "STARTED", "RETRY"]:
                 print("Active task discovered", task)
                 return True
         return False
@@ -125,7 +121,7 @@ class RequestLog(models.Model):
     )
     status_code = models.CharField(max_length=4, blank=True, null=True)
     request_url = models.URLField(blank=True, null=True)
-    async_result_id = models.CharField(max_length=30, blank=True, null=True)
+    async_result_id = models.CharField(max_length=36, blank=True, null=True)
     created_time = models.DateTimeField(auto_now_add=True)
 
     @classmethod

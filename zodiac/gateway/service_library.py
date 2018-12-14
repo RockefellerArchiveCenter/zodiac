@@ -4,7 +4,6 @@ from rest_framework.authentication import BasicAuthentication
 
 from .tasks import queue_request
 from .views_library import render_service_path
-from .models import taskID
 
 def send_service_request(service, request={}):
     headers = {}
@@ -52,16 +51,6 @@ def send_service_request(service, request={}):
         params={'post_service_url': render_service_path(service.post_service)},
         service_id=service.pk,
     )
-
-    print("async task id:", async_result.id)
-
-    x = taskID(task_ID=async_result.id, is_active=async_result.status)
-
-    print('TASK ID FROM TASK OBJECT IS ', x.task_ID)
-
-    print('TASK STATUS FROM TASK OBJECT IS ', x.is_active)
-
-    print(taskID.objects.all())
 
     return async_result.id
 

@@ -47,20 +47,23 @@ class Gateway(APIView):
             return self.bad_request(request=request, msg="No URL path.")
 
         # Application in registry; service route is valid; and request method is registered for route
-        registry = ServiceRegistry.objects.filter(external_uri=path[2], method=request.method)
-        if registry.count() != 1:
+        try:
+            registry = ServiceRegistry.objects.get(external_uri=path[2], method=request.method)
+        except ServiceRegistry.DoesNotExist:
             return self.bad_request(request=request, msg="No service registry matching path {} and method {}.".format(path[2], request.method))
+        except ServiceRegistry.MultipleObjectsReturned:
+            return self.bad_request(request=request, msg="More than one service registry matching path {} and method {}.".format(path[2], request.method))
 
-        valid, msg = check_service_plugin(registry[0], request)
+        valid, msg = check_service_plugin(registry, request)
         if not valid:
-            return self.bad_request(registry[0], msg=msg)
+            return self.bad_request(registry, msg=msg)
 
         # Check if service and is_active and system is active
-        if not registry[0].can_safely_execute():
+        if not registry.can_safely_execute():
             # Internally can log why this is the case
-            return self.bad_request(registry[0], request, msg="Service {} cannot be executed.".format(registry[0]))
+            return self.bad_request(registry, request, msg="Service {} cannot be executed.".format(registry))
 
-        res = send_service_request(registry[0], request)
+        res = send_service_request(registry, request)
         data = {'SUCCESS': 0}
         if res:
             data['SUCCESS'] = 1
@@ -71,7 +74,7 @@ class Gateway(APIView):
         #     print('Decoding JSON failed')
         #     return self.bad_request(registry[0],request)
 
-        RequestLog.create(registry[0], status.HTTP_200_OK, request.META['REMOTE_ADDR'])
+        RequestLog.create(registry, status.HTTP_200_OK, request.META['REMOTE_ADDR'], res)
         return Response(data=data)
 
     def bad_request(self, service=None, request=request, msg="Bad Request."):
@@ -143,6 +146,7 @@ class ServicesTriggerView(JSONResponseMixin, BaseDetailView):
         if result:
             data['SUCCESS'] = 1
 
+        RequestLog.create(self.object, status.HTTP_200_OK, self.request.META['REMOTE_ADDR'], result)
         return self.render_to_json_response(context=data, **response_kwargs)
 
 
