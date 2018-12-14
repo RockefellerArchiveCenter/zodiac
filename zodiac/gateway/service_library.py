@@ -9,7 +9,7 @@ def send_service_request(service, request={}):
     headers = {}
     files = {}
 
-    if service.has_active_task():
+    if service.has_active_task:
         return False
 
     if request:

@@ -45,11 +45,4 @@ def queue_callbacks():
 @shared_task()
 def queue_request(method, url, headers, data, files, params, service_id):
     r = method_map[method](url, headers=headers, data=data, files=files, params=params)
-
-    # VALIDATE REsponse
-    #   check for json
-    #   if request OK
-
-    # print(current_task.request.id, 'id of current task')
-    # print(async_result_id)
     return r.text

@@ -61,7 +61,8 @@ class ServiceRegistry(models.Model):
     consumers = models.ManyToManyField(Consumer, blank=True)
     is_active = models.BooleanField(default=True)
     is_private = models.BooleanField(default=False)
-    method = models.CharField(max_length=10,choices=HTTP_REQUESTS_METHODS)
+    has_active_task = models.BooleanField(default=False)
+    method = models.CharField(max_length=10, choices=HTTP_REQUESTS_METHODS)
     callback_service = models.ForeignKey(
         'self',
         on_delete=models.CASCADE,
@@ -93,14 +94,6 @@ class ServiceRegistry(models.Model):
 
     def service_active(self):
         return True if (self.is_active and self.application.is_active) else False
-
-    def has_active_task(self):
-        for log in RequestLog.objects.filter(service=self.pk):
-            task = TaskResult.objects.get(task_id=log.async_result_id)
-            if task.status in ["PENDING", "STARTED", "RETRY"]:
-                print("Active task discovered", task)
-                return True
-        return False
 
     def can_safely_execute(self):
         # check actives for service and system

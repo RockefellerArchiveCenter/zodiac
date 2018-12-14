@@ -67,14 +67,8 @@ class Gateway(APIView):
         data = {'SUCCESS': 0}
         if res:
             data['SUCCESS'] = 1
+            RequestLog.create(registry, status.HTTP_200_OK, request.META['REMOTE_ADDR'], res)
 
-        # try:
-        #     data = res.json()
-        # except ValueError:
-        #     print('Decoding JSON failed')
-        #     return self.bad_request(registry[0],request)
-
-        RequestLog.create(registry, status.HTTP_200_OK, request.META['REMOTE_ADDR'], res)
         return Response(data=data)
 
     def bad_request(self, service=None, request=request, msg="Bad Request."):
@@ -145,8 +139,8 @@ class ServicesTriggerView(JSONResponseMixin, BaseDetailView):
         # CAN WE CHECK IF IT WAS QUED?
         if result:
             data['SUCCESS'] = 1
+            RequestLog.create(self.object, status.HTTP_200_OK, self.request.META['REMOTE_ADDR'], result)
 
-        RequestLog.create(self.object, status.HTTP_200_OK, self.request.META['REMOTE_ADDR'], result)
         return self.render_to_json_response(context=data, **response_kwargs)
 
 
