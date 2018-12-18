@@ -21,8 +21,7 @@ method_map = {
 @shared_task()
 def queue_callbacks():
     completed = {'detail': {'callbacks': []}}
-    n = 1
-    for registry in ServiceRegistry.objects.all().filter(callback_service__isnull=False, has_active_task=False).order_by('callback_service__modified_time'):
+    for registry in ServiceRegistry.objects.filter(callback_service__isnull=False, has_active_task=False).order_by('callback_service__modified_time')[:settings.MAX_SERVICES]:
         if registry.service_active(): # TODO: also check to see if last service run was okay
             callback = ServiceRegistry.objects.get(pk=registry.callback_service.pk)
             if not callback.has_active_task:
@@ -38,8 +37,6 @@ def queue_callbacks():
                 )
                 if r:
                     completed['detail']['callbacks'].append({callback.name: r.id})
-                    n += 1
-                    if n > settings.MAX_SERVICES: break
     return completed
 
 
