@@ -1,12 +1,12 @@
 <table class="table table-striped">
+  <thead>
+    <th>Name</th>
+    <th>Active?</th>
+    <th>Application</th>
+    <th>Description</th>
+    <th>Callbacks</th>
+  </thead>
   <tbody>
-    <thead>
-      <th>Name</th>
-      <th>Active?</th>
-      <th>Application</th>
-      <th>Description</th>
-      <th>Callbacks</th>
-    </thead>
     {% for service in object_list %}
       <tr>
         <td><a href="{{ service.get_absolute_url }}">{{ service.name }}</a></td>
