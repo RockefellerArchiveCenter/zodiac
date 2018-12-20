@@ -43,4 +43,4 @@ def queue_callbacks():
 @shared_task()
 def queue_request(method, url, headers, data, files, params, service_id):
     r = method_map[method](url, headers=headers, data=data, files=files, params=params)
-    return r.text
+    return r.json()
