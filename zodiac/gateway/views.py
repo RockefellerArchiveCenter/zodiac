@@ -1,11 +1,10 @@
+from dateutil import tz
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import BaseDetailView, DetailView
 from django.views.generic.list import ListView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 from django.urls import reverse_lazy
-from django_celery_results.models import TaskResult
-from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
@@ -67,7 +66,6 @@ class Gateway(APIView):
         data = {'SUCCESS': 0}
         if res:
             data['SUCCESS'] = 1
-            RequestLog.create(registry, status.HTTP_200_OK, request.META['REMOTE_ADDR'], res)
 
         return Response(data=data)
 
@@ -98,7 +96,7 @@ class SplashView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['recent_services'] = ServiceRegistry.objects.all().order_by('-modified_time')[:5]
         context['recent_applications'] = Application.objects.all().order_by('-modified_time')[:5]
-        context['recent_results'] = TaskResult.objects.all().order_by('-date_done')[:10]
+        context['recent_results'] = RequestLog.objects.all().order_by('-task_result__date_done')[:10]
         return context
 
 
@@ -116,6 +114,11 @@ class ServicesListView(ListView):
 class ServicesDetailView(DetailView):
     template_name = "gateway/services_detail.html"
     model = ServiceRegistry
+
+    def get_context_data(self, **kwargs):
+        context = super(ServicesDetailView, self).get_context_data(**kwargs)
+        context['service_results'] = RequestLog.objects.filter(service=self.object.pk).order_by('-task_result__date_done')[:5]
+        return context
 
 
 class ServicesUpdateView(UpdateView):
@@ -139,7 +142,6 @@ class ServicesTriggerView(JSONResponseMixin, BaseDetailView):
         # CAN WE CHECK IF IT WAS QUED?
         if result:
             data['SUCCESS'] = 1
-            RequestLog.create(self.object, status.HTTP_200_OK, self.request.META['REMOTE_ADDR'], result)
 
         return self.render_to_json_response(context=data, **response_kwargs)
 
@@ -177,21 +179,27 @@ class ResultsListView(TemplateView):
 
 
 class ResultsDatatableView(BaseDatatableView):
-    model = TaskResult
-    columns = ['task_id', 'date_done', 'status']
-    order_columns = ['task_id', 'date_done', 'status']
+    model = RequestLog
+    columns = ['async_result_id', 'service__name', 'task_result__result', 'task_result__date_done']
+    order_columns = ['async_result_id', 'service__name', 'task_result__result', 'task_result__date_done']
     max_display_length = 500
 
     def get_filter_method(self): return self.FILTER_ICONTAINS
 
-    def render_column(self, row, column):
-        if column == 'task_id':
-            url = str(reverse_lazy('results-detail', kwargs={"pk":row.id}))
-            return '<a href="'+url+'">'+row.task_id+'</a>'
-        else:
-            return super(ResultsDatatableView, self).render_column(row, column)
+    def prepare_results(self, qs):
+        json_data = []
+        for result in qs:
+            print(result.task_result)
+            result.refresh_from_db()
+            json_data.append([
+                '<a href="'+str(reverse_lazy('results-detail', kwargs={"pk": result.id}))+'">'+result.async_result_id+'</a>',
+                '<a href="'+str(reverse_lazy('services-detail', kwargs={"pk": result.service.id}))+'">'+result.service.name+'</a>' if result.service else '',
+                '<pre>'+result.task_result.result+'</pre>' if result.task_result else '',
+                result.task_result.date_done.astimezone(tz.tzlocal()).strftime('%b %e, %Y %I:%M:%S %p') if result.task_result else '',
+            ])
+        return json_data
 
 
 class ResultsDetailView(DetailView):
     template_name = "gateway/results_detail.html"
-    model = TaskResult
+    model = RequestLog

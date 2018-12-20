@@ -2,7 +2,7 @@
 
 {% block h1_title %}
   Result Detail
-  <small>{{object.date_done}}</small>
+  <small>{{object.task_result.date_done}}</small>
 {% endblock %}
 
 {% block content %}
@@ -12,18 +12,20 @@
       <div class="box-body">
         <dl>
           <dt>Identifier</dt>
-          <dd>{{object.task_id}}</dd>
-          <dt>Status</dt>
-          <dd>{{object.status}}</dd>
+          <dd>{{object.async_result_id}}</dd>
+          <dt>Service</dt>
+          <dd><a href="{% url 'services-detail' pk=object.service.pk %}">{{object.service.name}}</a></dd>
+          <dt>URL</dt>
+          <dd>{{object.request_url}}</dd>
           <dt>Arguments</dt>
-          <dd>{{object.task_args}}</dd>
+          <dd><pre>{{object.task_result.task_args}}</pre></dd>
           <dt>Keyword Arguments</dt>
-          <dd>{{object.task_kwargs}}</dd>
+          <dd><pre>{{object.task_result.task_kwargs}}</pre></dd>
           <dt>Result</dt>
-          <dd><pre><code>{{ object.result }}</code></pre></dd>
-          {% if object.traceback %}
+          <dd><pre><code>{{ object.task_result.result }}</code></pre></dd>
+          {% if object.task_result.traceback %}
             <dt>Traceback</dt>
-            <dd><pre><code>{{object.traceback }}</code></pre></dd>
+            <dd><pre><code>{{object.task_result.traceback }}</code></pre></dd>
           {% endif %}
         </dl>
       </div>

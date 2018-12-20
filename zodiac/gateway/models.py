@@ -116,13 +116,15 @@ class RequestLog(models.Model):
     request_url = models.URLField(blank=True, null=True)
     async_result_id = models.CharField(max_length=36, blank=True, null=True)
     created_time = models.DateTimeField(auto_now_add=True)
+    task_result = models.ForeignKey(TaskResult, on_delete=models.CASCADE, blank=True, null=True, related_name='request_log')
 
     @classmethod
-    def create(cls, service, status_code, request_url, async_result_id=None):
+    def create(cls, service, status_code, request_url, async_result_id=None, task_result=None):
         record = cls(
             service=service,
             status_code=status_code,
             request_url=request_url,
-            async_result_id=async_result_id
+            async_result_id=async_result_id,
+            task_result=task_result
         ).save()
         return record
