@@ -14,19 +14,21 @@
 
       <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">
+
         <!-- Content Header (Page header) -->
         <section class="content-header">
           <h1>{% block h1_title %}{% endblock %}</h1>
         </section>
 
         <!-- Main content -->
-        <section class="content">
+        <main class="content">
 
           <div id="messages">{% include 'gateway/messages.html' %}</div>
 
 	        {% block content %}{% endblock %}
 
-        </section>
+        </main>
+        
       </div>
 
       <!-- Main Footer -->
