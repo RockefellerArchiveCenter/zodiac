@@ -1,11 +1,10 @@
+from dateutil import tz
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import BaseDetailView, DetailView
 from django.views.generic.list import ListView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 from django.urls import reverse_lazy
-from django_celery_results.models import TaskResult
-from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
@@ -47,31 +46,27 @@ class Gateway(APIView):
             return self.bad_request(request=request, msg="No URL path.")
 
         # Application in registry; service route is valid; and request method is registered for route
-        registry = ServiceRegistry.objects.filter(external_uri=path[2], method=request.method)
-        if registry.count() != 1:
+        try:
+            registry = ServiceRegistry.objects.get(external_uri=path[2], method=request.method)
+        except ServiceRegistry.DoesNotExist:
             return self.bad_request(request=request, msg="No service registry matching path {} and method {}.".format(path[2], request.method))
+        except ServiceRegistry.MultipleObjectsReturned:
+            return self.bad_request(request=request, msg="More than one service registry matching path {} and method {}.".format(path[2], request.method))
 
-        valid, msg = check_service_plugin(registry[0], request)
+        valid, msg = check_service_plugin(registry, request)
         if not valid:
-            return self.bad_request(registry[0], msg=msg)
+            return self.bad_request(registry, msg=msg)
 
         # Check if service and is_active and system is active
-        if not registry[0].can_safely_execute():
+        if not registry.can_safely_execute():
             # Internally can log why this is the case
-            return self.bad_request(registry[0], request, msg="Service {} cannot be executed.".format(registry[0]))
+            return self.bad_request(registry, request, msg="Service {} cannot be executed.".format(registry))
 
-        res = send_service_request(registry[0], request)
+        res = send_service_request(registry, request)
         data = {'SUCCESS': 0}
         if res:
             data['SUCCESS'] = 1
 
-        # try:
-        #     data = res.json()
-        # except ValueError:
-        #     print('Decoding JSON failed')
-        #     return self.bad_request(registry[0],request)
-
-        RequestLog.create(registry[0], status.HTTP_200_OK, request.META['REMOTE_ADDR'])
         return Response(data=data)
 
     def bad_request(self, service=None, request=request, msg="Bad Request."):
@@ -101,7 +96,7 @@ class SplashView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['recent_services'] = ServiceRegistry.objects.all().order_by('-modified_time')[:5]
         context['recent_applications'] = Application.objects.all().order_by('-modified_time')[:5]
-        context['recent_results'] = TaskResult.objects.all().order_by('-date_done')[:10]
+        context['recent_results'] = RequestLog.objects.all().order_by('-task_result__date_done')[:10]
         return context
 
 
@@ -119,6 +114,11 @@ class ServicesListView(ListView):
 class ServicesDetailView(DetailView):
     template_name = "gateway/services_detail.html"
     model = ServiceRegistry
+
+    def get_context_data(self, **kwargs):
+        context = super(ServicesDetailView, self).get_context_data(**kwargs)
+        context['service_results'] = RequestLog.objects.filter(service=self.object.pk).order_by('-task_result__date_done')[:5]
+        return context
 
 
 class ServicesUpdateView(UpdateView):
@@ -179,21 +179,27 @@ class ResultsListView(TemplateView):
 
 
 class ResultsDatatableView(BaseDatatableView):
-    model = TaskResult
-    columns = ['task_id', 'date_done', 'status']
-    order_columns = ['task_id', 'date_done', 'status']
+    model = RequestLog
+    columns = ['async_result_id', 'service__name', 'task_result__result', 'task_result__date_done']
+    order_columns = ['async_result_id', 'service__name', 'task_result__result', 'task_result__date_done']
     max_display_length = 500
 
     def get_filter_method(self): return self.FILTER_ICONTAINS
 
-    def render_column(self, row, column):
-        if column == 'task_id':
-            url = str(reverse_lazy('results-detail', kwargs={"pk":row.id}))
-            return '<a href="'+url+'">'+row.task_id+'</a>'
-        else:
-            return super(ResultsDatatableView, self).render_column(row, column)
+    def prepare_results(self, qs):
+        json_data = []
+        for result in qs:
+            print(result.task_result)
+            result.refresh_from_db()
+            json_data.append([
+                '<a href="'+str(reverse_lazy('results-detail', kwargs={"pk": result.id}))+'">'+result.async_result_id+'</a>',
+                '<a href="'+str(reverse_lazy('services-detail', kwargs={"pk": result.service.id}))+'">'+result.service.name+'</a>' if result.service else '',
+                '<pre>'+result.task_result.result+'</pre>' if result.task_result else '',
+                result.task_result.date_done.astimezone(tz.tzlocal()).strftime('%b %e, %Y %I:%M:%S %p') if result.task_result else '',
+            ])
+        return json_data
 
 
 class ResultsDetailView(DetailView):
     template_name = "gateway/results_detail.html"
-    model = TaskResult
+    model = RequestLog

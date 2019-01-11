@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
+import ast
+
 from django.db import models
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse
+
+from django_celery_results.models import TaskResult
 
 
 class Consumer(models.Model):
@@ -57,7 +61,8 @@ class ServiceRegistry(models.Model):
     consumers = models.ManyToManyField(Consumer, blank=True)
     is_active = models.BooleanField(default=True)
     is_private = models.BooleanField(default=False)
-    method = models.CharField(max_length=10,choices=HTTP_REQUESTS_METHODS)
+    has_active_task = models.BooleanField(default=False)
+    method = models.CharField(max_length=10, choices=HTTP_REQUESTS_METHODS)
     callback_service = models.ForeignKey(
         'self',
         on_delete=models.CASCADE,
@@ -109,15 +114,17 @@ class RequestLog(models.Model):
     )
     status_code = models.CharField(max_length=4, blank=True, null=True)
     request_url = models.URLField(blank=True, null=True)
-    async_result_id = models.CharField(max_length=30, blank=True, null=True)
+    async_result_id = models.CharField(max_length=36, blank=True, null=True)
     created_time = models.DateTimeField(auto_now_add=True)
+    task_result = models.ForeignKey(TaskResult, on_delete=models.CASCADE, blank=True, null=True, related_name='request_log')
 
     @classmethod
-    def create(cls, service, status_code, request_url, async_result_id=None):
+    def create(cls, service, status_code, request_url, async_result_id=None, task_result=None):
         record = cls(
             service=service,
             status_code=status_code,
             request_url=request_url,
-            async_result_id=async_result_id
+            async_result_id=async_result_id,
+            task_result=task_result
         ).save()
         return record
