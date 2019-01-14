@@ -11,14 +11,14 @@
       <div class="box-body {% if object_list %}no-padding{% endif %}">
         <table id="results-table" class="table table-striped dataTable">
           <thead>
-            <tr>
-              <td>Identifier</td>
-              <td>Date done</td>
-              <td>Status</td>
-            </tr>
+            <th>Identifier</th>
+            <th>Service</th>
+            <th>Result</th>
+            <th>Date</th>
           </thead>
           <tbody>
             <tr>
+              <td></td>
               <td></td>
               <td></td>
               <td></td>
@@ -36,11 +36,17 @@
   $(document).ready(function() {
 		// $.fn.dataTable.moment( 'MMM D, YYYY h:mm A' );
     $('#results-table').DataTable({
+      "columnDefs": [
+        {
+          width: "50%",
+          targets: [2] }
+      ],
 			'stateSave'   : true,
       'paging'      : true,
       'lengthChange': false,
       'searching'   : true,
       'ordering'    : true,
+      'order'       : [[ 3, 'desc' ]],
       'info'        : true,
       'autoWidth'   : true,
       'pageLength'  : 25,

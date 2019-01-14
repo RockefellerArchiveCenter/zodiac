@@ -2,7 +2,7 @@
 
 {% block h1_title %}
   Result Detail
-  <small>{{object.date_done}}</small>
+  <small>{{object.task_result.date_done}}</small>
 {% endblock %}
 
 {% block content %}
@@ -10,24 +10,24 @@
   <div class="col-md-12">
     <div class="box box-primary">
       <div class="box-body">
-        <label>Identifier</label>
-        <p>{{object.task_id}}</p>
-        <label>Status</label>
-        <p>{{object.status}}</p>
-        {% if object.task_args %}
-          <label>Arguments</label>
-          {{object.task_args}}
-        {% endif %}
-        {% if object.task_kwargs %}
-          <label>Keyword Arguments</label>
-          {{object.task_kwargs}}
-        {% endif %}
-        <label>Result</label>
-        <p><pre><code>{{ object.result }}</code></pre></p>
-        {% if object.traceback %}
-          <label>Traceback</label>
-          <p><pre><code>{{object.traceback }}</code></pre></p>
-        {% endif %}
+        <dl>
+          <dt>Identifier</dt>
+          <dd>{{object.async_result_id}}</dd>
+          <dt>Service</dt>
+          <dd><a href="{% url 'services-detail' pk=object.service.pk %}">{{object.service.name}}</a></dd>
+          <dt>URL</dt>
+          <dd>{{object.request_url}}</dd>
+          <dt>Arguments</dt>
+          <dd><pre>{{object.task_result.task_args}}</pre></dd>
+          <dt>Keyword Arguments</dt>
+          <dd><pre>{{object.task_result.task_kwargs}}</pre></dd>
+          <dt>Result</dt>
+          <dd><pre><code>{{ object.task_result.result }}</code></pre></dd>
+          {% if object.task_result.traceback %}
+            <dt>Traceback</dt>
+            <dd><pre><code>{{object.task_result.traceback }}</code></pre></dd>
+          {% endif %}
+        </dl>
       </div>
     </div>
   </div>
