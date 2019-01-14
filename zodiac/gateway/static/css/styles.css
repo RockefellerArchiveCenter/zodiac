@@ -1,9 +1,88 @@
 @import url('https://fonts.googleapis.com/css?family=Eczar');
 
+
+a:focus, .dropdown-toggle:focus {
+	outline: auto;
+}
+
+a {
+    color: #0073b7;
+}
+
+.h1 .small, .h1 small, .h2 .small, .h2 small,
+.h3 .small, .h3 small, .h4 .small, .h4 small,
+.h5 .small, .h5 small, .h6 .small, .h6 small,
+h1 .small, h1 small, h2 .small, h2 small,
+h3 .small, h3 small, h4 .small, h4 small,
+h5 .small, h5 small, h6 .small, h6 small {
+	color: #555;
+}
+
 .main-header .logo {
 	font-family: "Eczar", serif;
 	font-size: 40px;
 	padding-top: 3px;
+}
+
+.content-header > .breadcrumb {
+	display: block;
+	position: relative;
+}
+
+.skin-blue .sidebar a {
+    color: #d5e1e6;
+}
+
+.sidebar-menu {
+	font-size: 1.5rem;
+}
+
+.skin-blue .sidebar-menu>li.header {
+    color: #b8c7ce;
+    background: #1a2226;
+		font-size:1.3rem;
+}
+
+.navbar-nav > .user-menu > .dropdown-menu > li.user-header {
+	height: auto;
+	background-color: #5ea6d1;
+}
+
+.navbar-nav > .user-menu > .dropdown-menu > .user-footer {
+	padding-left: 10px;
+	padding-top: 10px;
+	padding-right: 10px;
+	display: table;
+}
+
+.navbar-nav > .user-menu > .dropdown-menu > .user-footer .btn-default {
+	margin-bottom: 10px;
+	width: 180px;
+}
+
+.navbar-custom-menu > .navbar-nav > li > .dropdown-menu {
+	width: 200px;
+	padding: 0;
+	border: none;
+	margin-top: 2px;
+}
+
+#welcomeli {
+    color: white;
+    line-height: 32px;
+    font-size: 16px;
+		font-weight: 400;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.navbar-nav {
+    margin-right: 40px;
+}
+
+/* Increases contrast of table striping */
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: rgba(0,0,0,.06);
 }
 
 pre {
