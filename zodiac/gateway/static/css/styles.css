@@ -18,51 +18,12 @@ h5 .small, h5 small, h6 .small, h6 small {
 	color: #555;
 }
 
-.top-button-blk {
-	margin-bottom: 20px;
-}
-
-.pointer-row {
-	cursor: pointer;
-}
-
-.pointer-row:hover {
-	background-color: #ccc !important;
-}
-
-.mar-top20 {
-	margin-top: 20px;
-}
-
-.mar-top10{
-	margin-top: 10px;
-}
-
-.box-comments {
-    background: #ffffff;
-}
-
-.box-comment-icon {
-	width: 30px;
-	height: 30px;
-	float: left !important;
-	display: inline;
-}
-.box-comments .comment-text {
-	margin-left: 50px;
-}
-
-.box-comments .comment-text p {
-	margin-bottom: 0;
-}
-
 .main-header .logo {
 	font-family: "Eczar", serif;
 	font-size: 40px;
 	padding-top: 3px;
 }
 
-<<<<<<< HEAD
 .content-header > .breadcrumb {
 	display: block;
 	position: relative;
@@ -106,12 +67,6 @@ h5 .small, h5 small, h6 .small, h6 small {
 	margin-top: 2px;
 }
 
-.container {
-    width: 98%;
-    margin-left: 15px;
-    margin-right: 15px;
-}
-
 #welcomeli {
     color: white;
     line-height: 32px;
@@ -130,29 +85,9 @@ h5 .small, h5 small, h6 .small, h6 small {
     background-color: rgba(0,0,0,.06);
 }
 
-div.dataTables_wrapper div.dataTables_filter {
-    background: rgba(0, 0, 0, .12);
-    padding: 1rem;
-    border-radius: 3px;
-		float: right;
-}
-
-div.dataTables_wrapper div.dataTables_filter label {
-    font-size: 1.5rem;
-    margin-bottom: 0;
-}
-
-div.dataTables_wrapper div.dataTables_filter input {
-    width: 30rem;
-}
-
-.list-label {
-	font-weight: 600;
-=======
 pre {
 	white-space: pre-wrap;
 	white-space: -moz-pre-wrap;
 	white-space: -pre-wrap;
 	white-space: -o-pre-wrap;
->>>>>>> master
 }
