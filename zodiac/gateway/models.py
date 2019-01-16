@@ -9,7 +9,7 @@ from django.urls import reverse
 from django_celery_results.models import TaskResult
 
 
-class Consumer(models.Model):
+class Source(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
@@ -39,11 +39,15 @@ class Application(models.Model):
 
 
 class ServiceRegistry(models.Model):
+    REMOTE_AUTH = 0
+    BASIC_AUTH = 1
+    KEY_AUTH = 2
+    SERVER_AUTH = 3
     PLUGIN_CHOICE_LIST = (
-        (0, _('Remote auth')),
-        (1, _('Basic auth')),
-        (2, _('Key auth')),
-        (3, _('Server auth'))
+        (REMOTE_AUTH, _('Remote auth')),
+        (BASIC_AUTH, _('Basic auth')),
+        (KEY_AUTH, _('Key auth')),
+        (SERVER_AUTH, _('Server auth'))
     )
     HTTP_REQUESTS_METHODS = (
         ('GET', 'GET'),
@@ -58,7 +62,7 @@ class ServiceRegistry(models.Model):
     external_uri = models.CharField(max_length=40)
     service_route = models.CharField(max_length=40)
     plugin = models.IntegerField(choices=PLUGIN_CHOICE_LIST, default=0)
-    consumers = models.ManyToManyField(Consumer, blank=True)
+    sources = models.ManyToManyField(Source, blank=True)
     is_active = models.BooleanField(default=True)
     is_private = models.BooleanField(default=False)
     has_active_task = models.BooleanField(default=False)
