@@ -22,7 +22,7 @@ services_registry_fields = [
     'external_uri',
     'service_route',
     'plugin',
-    'consumers',
+    'sources',
     'is_private',
     'method',
     'post_service',
@@ -39,13 +39,12 @@ class Gateway(APIView):
     def operation(self, request):
         self.request = request
 
-        # CHECKs
-        # Expects path api/external uri/service_route
+        # Checks to ensure URL is correctly formatted. Expects path api/external uri/service_route
         path = request.path_info.split('/')
         if len(path) < 2:
             return self.bad_request(request=request, msg="No URL path.")
 
-        # Application in registry; service route is valid; and request method is registered for route
+        # Checks that application is in registry, service route is valid, and request method is registered for route
         try:
             registry = ServiceRegistry.objects.get(external_uri=path[2], method=request.method)
         except ServiceRegistry.DoesNotExist:
@@ -53,13 +52,13 @@ class Gateway(APIView):
         except ServiceRegistry.MultipleObjectsReturned:
             return self.bad_request(request=request, msg="More than one service registry matching path {} and method {}.".format(path[2], request.method))
 
+        # Checks authentication
         valid, msg = check_service_plugin(registry, request)
         if not valid:
-            return self.bad_request(registry, msg=msg)
+            return self.bad_request(service=registry, request=request, msg=msg)
 
-        # Check if service and is_active and system is active
+        # Checks if both service and system are active
         if not registry.can_safely_execute():
-            # Internally can log why this is the case
             return self.bad_request(registry, request, msg="Service {} cannot be executed.".format(registry))
 
         res = send_service_request(registry, request)

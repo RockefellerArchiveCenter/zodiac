@@ -32,6 +32,8 @@
           <dd><a href="{{object.application.get_absolute_url}}">{{object.application.name}}</a></dd>
           <dt>Authentication</dt>
           <dd>{{object.get_plugin_display}}</dd>
+          <dt>Sources</dt>
+          {% for source in object.sources.all %}<dd>User <code>{{source.user.username}}</code> identified by API Key <code>{{source.apikey}}</code></dd>{% endfor %}
         </dl>
       </div>
       <div class="box-footer">

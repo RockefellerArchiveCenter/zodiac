@@ -2,8 +2,10 @@ import requests
 import json
 from rest_framework.authentication import BasicAuthentication
 
+from .models import ServiceRegistry
 from .tasks import queue_request
 from .views_library import render_service_path
+
 
 def send_service_request(service, request={}):
     headers = {}
@@ -56,32 +58,32 @@ def send_service_request(service, request={}):
 
 
 def check_service_plugin(service, request):
-    if service.plugin == 0:
+    if service.plugin == ServiceRegistry.REMOTE_AUTH:
         return True, ''
 
-    elif service.plugin == 1:
+    elif service.plugin == ServiceRegistry.BASIC_AUTH:
         auth = BasicAuthentication()
         try:
             user, password = auth.authenticate(request)
         except:
-            return False, 'Authentication credentials were not provided'
+            return False, 'Authentication credentials were not provided.'
 
-        if service.consumers.filter(user=user):
+        if service.source.filter(user=user):
             return True, ''
         else:
-            return False, 'permission not allowed'
-    elif service.plugin == 2:
+            return False, 'Permission not allowed'
+    elif service.plugin == ServiceRegistry.KEY_AUTH:
         apikey = request.META.get('HTTP_APIKEY')
-        consumers = service.consumers.all()
-        for consumer in consumers:
-            if apikey == consumer.apikey:
+        sources = service.sources.all()
+        for source in sources:
+            if apikey == source.apikey:
                 return True, ''
-        return False, 'apikey need'
-    elif service.plugin == 3:
-        consumer = service.consumers.all()
-        if not consumer:
-            return False, 'consumer need'
-        request.META['HTTP_AUTHORIZATION'] = requests.auth._basic_auth_str(consumer[0].user.username, consumer[0].apikey)
+        return False, 'API Key needed.'
+    elif service.plugin == ServiceRegistry.SERVER_AUTH:
+        source = service.sources.all()
+        if not source:
+            return False, 'Source needed.'
+        request.META['HTTP_AUTHORIZATION'] = requests.auth._basic_auth_str(source[0].user.username, source[0].apikey)
         return True, ''
     else:
-        raise NotImplementedError("plugin %d not implemented" % service.plugin)
+        raise NotImplementedError("Plugin %d not implemented" % service.plugin)
