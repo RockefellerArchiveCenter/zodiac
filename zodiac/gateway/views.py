@@ -6,12 +6,15 @@ from django.views.generic.list import ListView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 from django.urls import reverse_lazy
 from rest_framework import status
+from rest_framework.decorators import detail_route
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.generics import RetrieveAPIView
 from .service_library import send_service_request, check_service_plugin
 from .models import Application, ServiceRegistry, RequestLog
 from .mixins import JSONResponseMixin
+from .serializers import ServiceRegistrySerializer
 
 
 applications_update_fields = ['name', 'app_host', 'app_port']
@@ -118,6 +121,12 @@ class ServicesDetailView(DetailView):
         context = super(ServicesDetailView, self).get_context_data(**kwargs)
         context['service_results'] = RequestLog.objects.filter(service=self.object.pk).order_by('-task_result__date_done')[:5]
         return context
+
+
+class ServicesJSONView(RetrieveAPIView):
+    model = ServiceRegistry
+    queryset = ServiceRegistry.objects.all()
+    serializer_class = ServiceRegistrySerializer
 
 
 class ServicesUpdateView(UpdateView):

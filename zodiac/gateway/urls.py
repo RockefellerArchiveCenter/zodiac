@@ -10,6 +10,7 @@ urlpatterns = [
     # SERVICES URLS
     path('services/', views.ServicesListView.as_view(), name='services-list'),
     path('services/<int:pk>/', views.ServicesDetailView.as_view(), name='services-detail'),
+    path('services/<int:pk>.json', views.ServicesJSONView.as_view(), name='services-json'),
     path('services/edit/<int:pk>/', views.ServicesUpdateView.as_view(), name='services-update'),
     path('services/add/', views.ServicesAddView.as_view(), name='services-add'),
     path('services/delete/<int:pk>/', views.ServicesDeleteView.as_view(), name='services-delete'),
