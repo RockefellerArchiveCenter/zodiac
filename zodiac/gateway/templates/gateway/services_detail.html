@@ -8,6 +8,17 @@
 
 {% block content %}
 <div id="service">
+  <template v-if=error>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="alert alert-danger alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <i class="icon fa fa-times"></i>There was a problem triggering this service.
+        </div>
+      </div>
+    </div>
+  </template>
+
   <div class="row">
     <div class="col-md-12">
       <div class="box box-primary">
@@ -66,9 +77,9 @@
                 <th>Date</th>
               </thead>
               <tbody name="results-table" is="transition-group">
-                <tr v-for="r in results" v-bind:key="r.id">
-                  <td>[[ r.id ]]</td>
-                  <td>[[ r.task_result ? r.task_result.result : '' ]]</td>
+                <tr v-for="r in results.slice(0,5)" v-bind:key="r.id">
+                  <td><a v-bind:href="/results/+r.id">[[ r.async_result_id ]]</a></td>
+                  <td><pre>[[ r.task_result ? r.task_result.result : '' ]]</pre></td>
                   <td>[[ r.task_result ? r.task_result.date_done : '' ]]</td>
                 </tr>
               </tbody>
@@ -90,7 +101,8 @@
     delimiters: ['[[', ']]'],
     el: '#service',
     data: {
-      results: null
+      results: null,
+      error: false
     },
 
     created: function () {
@@ -114,26 +126,13 @@
         xhr.onload = function () {
           resp = JSON.parse(xhr.responseText)
           if (resp.SUCCESS != 1) {
-            self.showErrorMessage()
+            self.error = true
+          } else {
+            self.error = false
           }
         }
         xhr.send()
         setTimeout(function() {self.fetchData();}, 500)
-      },
-      showErrorMessage: function () {
-        $('#messages').empty()
-        $('#messages').append(
-          '<div class="row">\
-          	<div class="col-md-12">\
-              <div class="alert alert-danger alert-dismissible">\
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>\
-                  <i class="icon fa fa-times"></i>There was a problem triggering this service.\
-              </div>\
-            </div>\
-          </div>').fadeIn(300);
-          setTimeout(function(){
-      			$('#messages').fadeOut(1300);
-      		}, 8000);
       }
     },
     computed: {
