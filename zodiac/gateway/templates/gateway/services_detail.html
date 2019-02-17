@@ -55,24 +55,24 @@
       		<h2 class="box-title">Recent Results</h2>
         </div>
         <div class="box-body">
-          <template v-if=results>
+          <template v-if="isEmpty">
+            <p>No results for this service.</p>
+          </template>
+          <template v-else>
             <table class="table table-striped">
               <thead>
                 <th>Identifier</th>
                 <th>Result</th>
                 <th>Date</th>
               </thead>
-              <tbody>
-                <tr v-for="r in results">
+              <tbody name="results-table" is="transition-group">
+                <tr v-for="r in results" v-bind:key="r.id">
                   <td>[[ r.id ]]</td>
                   <td>[[ r.task_result ? r.task_result.result : '' ]]</td>
                   <td>[[ r.task_result ? r.task_result.date_done : '' ]]</td>
                 </tr>
               </tbody>
             </table>
-          </template>
-          <template v-else>
-            <p>No results for this service.</p>
           </template>
         </div>
         <div class="box-footer text-center">
@@ -95,7 +95,6 @@
 
     created: function () {
       this.fetchData()
-      this.interval = setInterval(() => this.fetchData(), 1000);
     },
 
     methods: {
@@ -117,10 +116,9 @@
           if (resp.SUCCESS != 1) {
             self.showErrorMessage()
           }
-          console.log(self.results)
         }
         xhr.send()
-        setTimeout(function(){self.fetchData();}, 500);
+        setTimeout(function() {self.fetchData();}, 500)
       },
       showErrorMessage: function () {
         $('#messages').empty()
@@ -137,7 +135,12 @@
       			$('#messages').fadeOut(1300);
       		}, 8000);
       }
-    }
+    },
+    computed: {
+       isEmpty: function () {
+          return jQuery.isEmptyObject(this.results)
+       }
+   }
   })
 </script>
 {% endblock %}
