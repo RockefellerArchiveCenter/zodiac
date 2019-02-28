@@ -53,7 +53,7 @@
         <div class="box-footer">
           <a href="{{ object.get_update_url }}" class="btn btn-primary">Edit Service</a>
           <a href="{% url 'services-delete' pk=object.pk %}" class="btn btn-danger">Delete Service</a>
-          <a href="#" id="trigger-service-btn" class="btn btn-success pull-right" v-on:click.prevent="triggerService">Manually Trigger</a>
+          <a href="#" id="trigger-service-btn" class="btn btn-success pull-right" v-on:click.prevent="triggerService" disabled>Manually Trigger</a>
         </div>
       </div>
     </div>
@@ -85,6 +85,28 @@
               </tbody>
             </table>
           </template>
+          <noscript>
+            {% if service_results %}
+            <table class="table table-striped">
+              <thead>
+                <th>Identifier</th>
+                <th>Result</th>
+                <th>Date</th>
+              </thead>
+              <tbody>
+                {% for result in service_results %}
+                  <tr>
+                    <td><a href="{% url 'results-detail' pk=result.id %}">{{ result.async_result_id }}</a></td>
+                    <td style="width:60%"><pre>{{result.task_result.result}}</pre></td>
+                    <td>{{result.task_result.date_done}}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% else %}
+            <p>No results for this service.</p>
+            {% endif %}
+          </noscript>
         </div>
         <div class="box-footer text-center">
           <a href="{% url 'results-list' %}" class="btn btn-default">View all results</a>
@@ -97,6 +119,10 @@
 
 {% block extra_js %}
 <script type="text/javascript">
+  $(function(){
+      $('#trigger-service-btn').attr('disabled', false);
+    });
+
   var app = new Vue({
     delimiters: ['[[', ']]'],
     el: '#service',
@@ -107,6 +133,7 @@
 
     created: function () {
       this.fetchData()
+      this.interval = setInterval(() => this.fetchData(), 5000);
     },
 
     methods: {
@@ -129,10 +156,11 @@
             self.error = true
           } else {
             self.error = false
+            self.fetchData();
           }
         }
         xhr.send()
-        setTimeout(function() {self.fetchData();}, 500)
+        setTimeout(function() {self.fetchData();}, 1000)
       }
     },
     computed: {
