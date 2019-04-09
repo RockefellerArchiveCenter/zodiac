@@ -34,8 +34,7 @@
 {% block extra_js %}
 <script type="text/javascript">
   $(document).ready(function() {
-		// $.fn.dataTable.moment( 'MMM D, YYYY h:mm A' );
-    $('#results-table').DataTable({
+    var table = $('#results-table').DataTable({
       "columnDefs": [
         {
           width: "50%",
@@ -54,6 +53,9 @@
       'serverSide': true,
       'ajax': '{% url "results-data" %}'
     });
+    setInterval( function () {
+      table.ajax.reload( null, false );
+    }, 5000 );
   });
   </script>
 {% endblock %}

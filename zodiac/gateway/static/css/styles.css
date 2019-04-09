@@ -91,3 +91,10 @@ pre {
 	white-space: -pre-wrap;
 	white-space: -o-pre-wrap;
 }
+
+.results-table-enter-active, .results-table-leave-active {
+  transition: all 1s;
+}
+.results-table-enter, .results-table-leave-to {
+  opacity: 0;
+}

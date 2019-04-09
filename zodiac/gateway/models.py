@@ -114,7 +114,8 @@ class RequestLog(models.Model):
         ServiceRegistry,
         on_delete=models.CASCADE,
         null=True,
-        blank=True
+        blank=True,
+        related_name='requestlog'
     )
     status_code = models.CharField(max_length=4, blank=True, null=True)
     request_url = models.URLField(blank=True, null=True)
