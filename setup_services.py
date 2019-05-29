@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django_celery_beat.models import CrontabSchedule, PeriodicTask
 from gateway.models import Application, ServiceRegistry, Source
 
 APPLICATIONS = [
@@ -168,3 +169,16 @@ if len(ServiceRegistry.objects.all()) == 0:
         object.post_service = ServiceRegistry.objects.get(application__name=service['post_service'].split('.')[0], name=service['post_service'].split('.')[1]) if service['post_service'] else None
         object.save()
     print("Callbacks and POST Services linked")
+
+if len(PeriodicTask.objects.all()) == 0:
+    every_minute, _ = CrontabSchedule.objects.get_or_create(minute='*', hour='*',
+                                                        day_of_week='*', day_of_month='*',
+                                                        month_of_year='*')
+    daily, _ = CrontabSchedule.objects.get_or_create(minute='0', hour='4',
+                                                      day_of_week='*', day_of_month='*',
+                                                      month_of_year='*')
+    PeriodicTask.objects.create(crontab=every_minute, name="Process queued callbacks",
+                                task="gateway.tasks.queue_callbacks")
+    PeriodicTask.objects.create(crontab=daily, name="Delete successful results",
+                                task="gateway.tasks.delete_successful")
+    print("Tasks scheduled")
