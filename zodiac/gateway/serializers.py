@@ -23,7 +23,7 @@ class RequestLogSerializer(serializers.ModelSerializer):
 
 
 class ServiceRegistrySerializer(serializers.ModelSerializer):
-    results = RequestLogSerializer(source='requestlog', many=True)
+    results = serializers.SerializerMethodField()
 
     class Meta:
         model = ServiceRegistry
@@ -31,3 +31,10 @@ class ServiceRegistrySerializer(serializers.ModelSerializer):
                   'plugin', 'is_active', 'is_private', 'has_active_task', 'method',
                   'application', 'callback_service', 'post_service', 'sources',
                   'created_time', 'modified_time', 'results')
+
+    def get_results(self, obj):
+        data = []
+        for res in obj.requestlog.all().order_by('-task_result__date_done')[:5]:
+            serializer = RequestLogSerializer(res)
+            data.append(serializer.data)
+        return data
