@@ -197,7 +197,6 @@ class ResultsDatatableView(BaseDatatableView):
     def prepare_results(self, qs):
         json_data = []
         for result in qs:
-            print(result.task_result)
             result.refresh_from_db()
             json_data.append([
                 '<a href="'+str(reverse_lazy('results-detail', kwargs={"pk": result.id}))+'">'+result.async_result_id+'</a>',
