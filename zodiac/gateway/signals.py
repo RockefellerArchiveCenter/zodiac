@@ -24,11 +24,12 @@ def on_task_postrun(task_id=None, task=None, retval=None, state=None, *args, **k
         return None
 
     # Add result to request log
-    task_result = TaskResult.objects.get(task_id=task_id)
-    request_log = RequestLog.create(
-        service=update_service(kwargs),
-        status_code=None,
-        request_url=kwargs['args'][1],
-        async_result_id=task_id,
-        task_result=task_result
-    )
+    if len(kwargs['args']) > 0:
+        task_result = TaskResult.objects.get(task_id=task_id)
+        request_log = RequestLog.create(
+            service=update_service(kwargs),
+            status_code=None,
+            request_url=kwargs['args'][1],
+            async_result_id=task_id,
+            task_result=task_result
+        )

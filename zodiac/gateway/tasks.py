@@ -2,9 +2,11 @@
 from __future__ import absolute_import, unicode_literals
 import requests
 from django.apps import apps
+from django.utils import timezone
 import urllib.parse as urlparse
 
 from celery import shared_task, current_task
+from django_celery_results.models import TaskResult
 
 from zodiac import settings
 from .models import ServiceRegistry
@@ -46,3 +48,8 @@ def queue_request(method, url, headers, data, files, params, service_id):
     if r.status_code == 200:
         return r.json()
     raise Exception(r.json())
+
+
+@shared_task()
+def delete_successful():
+    TaskResult.objects.filter(status="SUCCESS", date_done__lte=timezone.now()-timezone.timedelta(days=1)).delete()
