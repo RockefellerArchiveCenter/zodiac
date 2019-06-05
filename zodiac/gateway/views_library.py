@@ -11,6 +11,10 @@ def render_service_path(service, uri=''):
     url = 'http://{}{}/{}{}'.format(
         service.application.app_host, app_port, service.service_route, uri)
 
+    # add slash to URL end
+    if url[-1] != '/':
+        url = '{}/'.format(url) 
+
     parsed_url = urlparse.urlparse(url)
     parsed_url_parts = list(parsed_url)
 
