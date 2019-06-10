@@ -10,5 +10,7 @@ DATABASES = {
     }
 }
 
+STATIC_ROOT = '/static'
+
 CELERY_BROKER_URL = 'pyamqp://guest:guest@my-rabbit:5672//'
 CELERY_RESULT_BACKEND = 'django-db'
