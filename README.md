@@ -29,6 +29,10 @@ Or, if you want to remove all data
 
 The first time you start zodiac, a set of Applications and Services will be created. You can recreate this default set of services and applications by removing all data as described above, and then running `docker-compose up`.
 
+These Applications and Services will be sequenced in the order illustrated in this diagram:
+
+![Application and service sequence diagram](service_sequence.png)
+
 
 ## Usage
 
