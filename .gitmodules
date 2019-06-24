@@ -13,3 +13,6 @@
 [submodule "gemini"]
 	path = gemini
 	url = https://github.com/RockefellerArchiveCenter/gemini.git
+[submodule "pisces"]
+	path = pisces
+	url = https://github.com/RockefellerArchiveCenter/pisces

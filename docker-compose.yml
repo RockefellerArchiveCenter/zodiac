@@ -115,6 +115,45 @@ services:
     depends_on:
       - gemini-db
 
+  pisces-db:
+    image: postgres:10.4
+    volumes:
+      - piscesdb:/var/lib/postgresql/data/
+    networks:
+      - microservices
+  pisces-web:
+    build: pisces/
+    entrypoint: /code/pisces/entrypoint.sh
+    volumes:
+      - .:/code/
+    networks:
+      - microservices
+    ports:
+      - "8007:8007"
+    depends_on:
+      - pisces-db
+
+  elasticsearch:
+    image: elasticsearch:6.6.1
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - http.cors.enabled=true
+      - http.cors.allow-origin=http://localhost:8080
+      - http.cors.allow-headers=Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With
+      - http.cors.allow-credentials=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearch:/usr/share/elasticsearch/data
+    networks:
+      - microservices
+    ports:
+      - 9200:9200
+
   my-rabbit:
     image: rabbitmq:3-management
     networks:
@@ -127,8 +166,8 @@ volumes:
   libradb:
   ursamajordb:
   geminidb:
+  piscesdb:
+  elasticsearch:
 
 networks:
   microservices:
-  # aurora_default:
-  #   external: true
