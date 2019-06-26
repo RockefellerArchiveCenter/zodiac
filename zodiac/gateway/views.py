@@ -40,8 +40,6 @@ class Gateway(APIView):
     request = {}
 
     def operation(self, request):
-        self.request = request
-
         # Checks to ensure URL is correctly formatted. Expects path api/external uri/service_route
         path = request.path_info.split('/')
         if len(path) < 2:
