@@ -1,7 +1,9 @@
 # Create your tasks here
 from __future__ import absolute_import, unicode_literals
+import json
 import requests
 from django.apps import apps
+from django.urls import reverse
 from django.utils import timezone
 import urllib.parse as urlparse
 
@@ -50,6 +52,45 @@ def queue_request(method, url, headers, data, files, params, service_id):
     if r.status_code == 200:
         return r.json()
     raise Exception(r.json())
+
+
+@shared_task()
+def fetch_archivesspace_changes():
+    service = ServiceRegistry.objects.get(name="Fetch ArchivesSpace Changes") #this is janky
+    if service.service_active():
+        url = render_service_path(service, '')
+        for object_type in ['resource', 'subject', 'archival_object', 'person', 'organization', 'family']:
+            # We call apply_async(), which is a more verbose version of delay(), in order to add callback argument
+            r = queue_request.apply_async(
+                args=('post', url),
+                kwargs={'headers': {'Content-Type': 'application/json'},
+                        'data': json.dumps({'object_type': object_type}),
+                        'files': None,
+                        'params': {'post_service_url': render_service_path(service.post_service)},
+                        'service_id': service.id},
+                link=process_archivesspace_changes.s())
+
+
+@shared_task()
+def process_archivesspace_changes(data):
+    for obj in data.get('updated'):
+        print("UPDATE", obj)
+    for obj in data.get('deleted'):
+        print("DELETE", obj)
+    # service = ServiceRegistry.objects.get(name="Process ArchivesSpace Changes")
+    #
+    # if service.service_active():
+    #     url = render_service_path(registry, '')
+    #     for object_type in ['resource', 'subject', 'archival_object', 'person', 'organization', 'family']:
+    #         r = queue_request.delay(
+    #             'post',
+    #             url,
+    #             headers={'Content-Type': 'application/json'},
+    #             data=json.dumps({'object_type': object_type}),
+    #             files=None,
+    #             params={'post_service_url': render_service_path(service.post_service)},
+    #             service_id=service.id
+    #         )
 
 
 @shared_task()

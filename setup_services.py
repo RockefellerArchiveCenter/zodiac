@@ -8,6 +8,7 @@ APPLICATIONS = [
     {'name': 'Gemini', 'host': 'gemini-web', 'port': 8006},
     {'name': 'Aquarius', 'host': 'aquarius-web', 'port': 8002},
     {'name': 'Aurora', 'host': 'localhost', 'port': 8000},
+    {'name': 'Pisces', 'host': 'pisces-web', 'port': 8007},
 ]
 
 SERVICES = [
@@ -116,6 +117,11 @@ SERVICES = [
      'external_uri': 'update-transfers/', 'service_route': 'send-update/',
      'plugin': 0, 'method': 'POST', 'callback_service': None, 'post_service':
      'Aurora.Update Transfers', 'sources': None,},
+    {'name': 'Fetch ArchivesSpace Changes', 'application': 'Pisces',
+     'description': 'Fetches updated and deleted data from ArchivesSpace.',
+     'external_uri': 'fetch-archivesspace-changes/', 'service_route': 'fetch/archivesspace/',
+     'plugin': 0, 'method': 'POST', 'callback_service': None, 'post_service':
+     None, 'sources': None,},
 ]
 
 # Create users
@@ -177,8 +183,10 @@ if len(PeriodicTask.objects.all()) == 0:
     daily, _ = CrontabSchedule.objects.get_or_create(minute='0', hour='4',
                                                       day_of_week='*', day_of_month='*',
                                                       month_of_year='*')
-    PeriodicTask.objects.create(crontab=every_minute, name="Process queued callbacks",
-                                task="gateway.tasks.queue_callbacks")
+    # PeriodicTask.objects.create(crontab=every_minute, name="Process queued callbacks",
+    #                             task="gateway.tasks.queue_callbacks")
+    PeriodicTask.objects.create(crontab=every_minute, name="Fetch ArchivesSpace changes",
+                                task="gateway.tasks.fetch_archivesspace_changes")
     PeriodicTask.objects.create(crontab=daily, name="Delete successful results",
                                 task="gateway.tasks.delete_successful")
     print("Tasks scheduled")

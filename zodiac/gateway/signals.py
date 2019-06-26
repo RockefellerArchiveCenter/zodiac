@@ -24,7 +24,7 @@ def on_task_postrun(task_id=None, task=None, retval=None, state=None, *args, **k
         return None
 
     # Add result to request log
-    if len(kwargs['args']) > 0:
+    if len(kwargs['args']) > 1:
         task_result = TaskResult.objects.get(task_id=task_id)
         request_log = RequestLog.create(
             service=update_service(kwargs),
