@@ -2,10 +2,7 @@
 from __future__ import absolute_import, unicode_literals
 import json
 import requests
-from django.apps import apps
-from django.urls import reverse
 from django.utils import timezone
-import urllib.parse as urlparse
 
 from celery import shared_task, current_task, group, chain
 from django_celery_results.models import TaskResult
@@ -58,89 +55,46 @@ def queue_request(method, url, headers, data, files, params, service_id):
 def fetch_archivesspace_changes():
     service = ServiceRegistry.objects.get(name="Fetch ArchivesSpace Changes") #this is janky
     if service.service_active():
-        url = render_service_path(service, '')
         for object_type in ['resource', 'subject', 'archival_object', 'person', 'organization', 'family']:
-            # We call apply_async(), which is a more verbose version of delay(), in order to add callback argument
+            # We call apply_async(), which is a more verbose version of delay(), in order to add `link` argument
             r = queue_request.apply_async(
-                args=('post', url),
+                args=('post', render_service_path(service, '')),
                 kwargs={'headers': {'Content-Type': 'application/json'},
                         'data': json.dumps({'object_type': object_type}),
                         'files': None,
-                        'params': {'post_service_url': render_service_path(service.post_service)},
+                        'params': {'post_service_url': render_service_path(service.post_service, '')},
                         'service_id': service.id},
                 link=process_archivesspace_changes.s())
 
 
 @shared_task()
 def process_archivesspace_changes(data):
-    updated = group(chain(fetch_archivesspace_uri.s(uri) | transform_archivesspace.s() | index_add.s() for uri in data.get('updated')))
-    deleted = group(index_delete.s() for uri in data.get('deleted'))
-    updated.delay()
-    deleted.delay()
+    if len(data.get('updated')) > 0:
+            uri = data.get('updated')[0]
+            updated = group(
+                        chain(queue_task_by_name.s(uri, "Fetch ArchivesSpace URI", service_id=ServiceRegistry.objects.get(name="Fetch ArchivesSpace URI").pk),
+                              queue_task_by_name.s("Transform ArchivesSpace Data", service_id=ServiceRegistry.objects.get(name="Transform ArchivesSpace Data").pk),
+                              queue_task_by_name.s("Add to Index", service_id=ServiceRegistry.objects.get(name="Add to Index").pk))() for uri in data.get('updated'))
+            updated.delay()
+    if len(data.get('deleted')) > 0:
+        deleted = group(queue_task_by_name.s(uri, "Delete from Index", service_id=ServiceRegistry.objects.get(name="Delete From Index").pk) for uri in data.get('deleted'))
+        deleted.delay()
 
 
 @shared_task()
-def fetch_archivesspace_uri(uri):
-    service = ServiceRegistry.objects.get(name="Fetch ArchivesSpace URI") # ugh
+def queue_task_by_name(data, name, service_id):
+    service = ServiceRegistry.objects.get(name=name)
     if service.service_active():
-        url = render_service_path(service, '')
-        return queue_request.delay(
-            'post',
-            url,
-            headers={'Content-Type': 'application/json'},
-            data=json.dumps({'uri': uri}),
-            files=None,
-            params={'post_service_url': render_service_path(service.post_service)},
-            service_id=service.id
-        )
-
-
-@shared_task()
-def transform_archivesspace(data):
-    service = ServiceRegistry.objects.get(name="Transform ArchivesSpace Data") # hate this
-    if service.service_active():
-        url = render_service_path(service, '')
-        return queue_request.delay(
-            'post',
-            url,
+        r = method_map['post'](
+            render_service_path(service, ''),
             headers={'Content-Type': 'application/json'},
             data=json.dumps({'data': data}),
             files=None,
             params={'post_service_url': render_service_path(service.post_service)},
-            service_id=service.id
-        )
-
-
-@shared_task()
-def index_add(data):
-    service = ServiceRegistry.objects.get(name="Add to Index") # hate this
-    if service.service_active():
-        url = render_service_path(service, '')
-        return queue_request.delay(
-            'post',
-            url,
-            headers={'Content-Type': 'application/json'},
-            data=json.dumps({'data': data}),
-            files=None,
-            params={'post_service_url': render_service_path(service.post_service)},
-            service_id=service.id
-        )
-
-
-@shared_task()
-def index_delete(data):
-    service = ServiceRegistry.objects.get(name="Delete from Index") # hate this
-    if service.service_active():
-        url = render_service_path(service, '')
-        return queue_request.delay(
-            'post',
-            url,
-            headers={'Content-Type': 'application/json'},
-            data=json.dumps({'data': data}),
-            files=None,
-            params={'post_service_url': render_service_path(service.post_service)},
-            service_id=service.id
-        )
+            )
+        if r.status_code == 200:
+            return r.json()
+        raise Exception(r.json())
 
 
 @shared_task()
