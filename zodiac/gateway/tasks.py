@@ -72,18 +72,18 @@ def process_archivesspace_changes(data):
     if len(data.get('updated')) > 0:
             uri = data.get('updated')[0]
             updated = group(
-                        chain(queue_task_by_name.s(uri, "Fetch ArchivesSpace URI", service_id=ServiceRegistry.objects.get(name="Fetch ArchivesSpace URI").pk),
-                              queue_task_by_name.s("Transform ArchivesSpace Data", service_id=ServiceRegistry.objects.get(name="Transform ArchivesSpace Data").pk),
-                              queue_task_by_name.s("Add to Index", service_id=ServiceRegistry.objects.get(name="Add to Index").pk))() for uri in data.get('updated'))
+                        chain(queue_request_by_id.s(uri, ServiceRegistry.objects.get(name="Fetch ArchivesSpace URI").pk),
+                              queue_request_by_id.s(ServiceRegistry.objects.get(name="Transform ArchivesSpace Data").pk),
+                              queue_request_by_id.s(ServiceRegistry.objects.get(name="Add to Index").pk))() for uri in data.get('updated'))
             updated.delay()
     if len(data.get('deleted')) > 0:
-        deleted = group(queue_task_by_name.s(uri, "Delete from Index", service_id=ServiceRegistry.objects.get(name="Delete From Index").pk) for uri in data.get('deleted'))
+        deleted = group(queue_request_by_name.s(uri, "Delete from Index", service_id=ServiceRegistry.objects.get(name="Delete From Index").pk) for uri in data.get('deleted'))
         deleted.delay()
 
 
 @shared_task()
-def queue_task_by_name(data, name, service_id):
-    service = ServiceRegistry.objects.get(name=name)
+def queue_request_by_id(data, service_id):
+    service = ServiceRegistry.objects.get(pk=service_id)
     if service.service_active():
         r = method_map['post'](
             render_service_path(service, ''),
