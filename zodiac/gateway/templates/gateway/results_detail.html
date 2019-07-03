@@ -13,8 +13,10 @@
         <dl>
           <dt>Identifier</dt>
           <dd>{{object.async_result_id}}</dd>
+          {% if object.service %}
           <dt>Service</dt>
           <dd><a href="{% url 'services-detail' pk=object.service.pk %}">{{object.service.name}}</a></dd>
+          {% endif %}
           <dt>URL</dt>
           <dd>{{object.request_url}}</dd>
           <dt>Arguments</dt>
