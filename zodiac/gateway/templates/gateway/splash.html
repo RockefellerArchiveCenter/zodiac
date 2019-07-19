@@ -6,24 +6,64 @@
 
 {% block content %}
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-6">
     <div class="box box-primary">
       <div class="box-header with-border">
-        <h2 class="box-title">Recent Services</h2>
-        <a class="btn btn-primary pull-right" href="{% url 'services-add' %}">Add Service</a>
+        <h2 class="box-title">Systems</h2>
       </div>
-      <div class="box-body {% if recent_services %}no-padding{% endif %}">
-        {% if recent_services %}
-          {% include 'gateway/services_list_table.html' with object_list=recent_services %}
+      <div class="box-body">
+        {% if systems %}
+          {% for system in systems %}
+            <div class="system">
+              <a href="{% url 'applications-detail' pk=system.id %}">
+                <div class="col-md-12">
+                  <div class="col-md-4">
+                    <p class="box-title">{{ system.name }}</p>
+                  </div>
+                  <div class="col-md-6">
+                    <p>{{system.serviceregistry_set.all|length}} services</p>
+                  </div>
+                  <div class="col-md-2">
+                    {% include 'gateway/active_label.html' with status=system.is_active %}
+                  </div>
+                </div>
+              </a>
+            </div>
+          {% endfor %}
         {% else %}
-          <p>No configured services.</p>
+          <p>No systems are configured.</p>
         {% endif %}
       </div>
-      {% if recent_services %}
-      <div class="box-footer text-center">
-        <a href="{% url 'services-list' %}" class="btn btn-primary">View all services</a>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h2 class="box-title">Recent Errors</h2>
       </div>
-      {% endif %}
+      <div class="box-body">
+        {% if recent_errors %}
+          {% for result in recent_errors %}
+            <div class="error">
+              <a href="{% url 'results-detail' pk=result.id %}">
+                <div class="col-md-12">
+                  <div class="col-md-4">
+                    <p>{{result.task_result.date_done|date:"SHORT_DATETIME_FORMAT"}}</p>
+                  </div>
+                  <div class="col-md-8">
+                    <p>
+                      {% for e in result.error_messages %}{{e}}{% endfor %}
+                    </p>
+                  </div>
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p>No recent errors.</p>
+        {% endif %}
+      </div>
     </div>
   </div>
 </div>
@@ -32,44 +72,63 @@
   <div class="col-md-12">
     <div class="box box-primary">
       <div class="box-header with-border">
-        <h2 class="box-title">Recent Applications</h2>
-        <a class="btn btn-primary pull-right" href="{% url 'applications-add' %}">Add Application</a>
+        <h2 class="box-title">Services</h2>
       </div>
-      <div class="box-body {% if recent_applications %}no-padding{% endif %}">
-        {% if recent_applications %}
-          {% include 'gateway/applications_list_table.html' with object_list=recent_applications %}
-        {% else %}
-          <p>No configured applications.</p>
-        {% endif %}
-      </div>
-      {% if recent_applications %}
-      <div class="box-footer text-center">
-        <a href="{% url 'applications-list' %}" class="btn btn-primary">View all applications</a>
-      </div>
-      {% endif %}
-    </div>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-md-12">
-    <div class="box box-primary">
-      <div class="box-header with-border">
-        <h2 class="box-title">Recent Results</h2>
-      </div>
-      <div class="box-body {% if recent_results %}no-padding{% endif %}">
-        {% if recent_results %}
-          {% include 'gateway/results_list_table.html' with object_list=recent_results %}
-        {% else %}
-          <p>No results.</p>
-        {% endif %}
-      </div>
-      {% if recent_results %}
-      <div class="box-footer text-center">
-        <a href="{% url 'results-list' %}" class="btn btn-primary">View all results</a>
-      </div>
-      {% endif %}
+      <div class="box-body">
+        <div class="graph">
+          <svg width="100%"><g></g></svg>
+        </div>
     </div>
   </div>
 </div>
 {% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+  $(document).ready(function() {
+    // Create a new directed graph
+    var g = new dagreD3.graphlib.Graph().setGraph({});
+    g.graph().rankDir = 'LR';
+    g.graph().ranksep = '20'
+
+    colors = {
+      "Aquarius": "blue",
+      "Aurora": "red",
+      "Fornax": "pink",
+      "Gemini": "orange",
+      "Pisces": "brown",
+      "Ursa Major": "magenta"
+    }
+
+    // Automatically label each of the nodes
+    {% for s in services %}
+      g.setNode("{{s.name}}", { label: "{{s.name}}", application: "{{s.application.name}}"});
+    {% endfor %}
+
+    // Set up the edges
+    {% for s in services %}
+      {% if s.callback_service %}g.setEdge("{{s.name}}", "{{s.callback_service.name}}", { label: "" });{% endif %}
+      {% if s.post_service %}g.setEdge("{{s.name}}", "{{s.post_service.name}}", { label: "" }){% endif %}
+    {% endfor %}
+
+    // Set some general styles
+    g.nodes().forEach(function(v) {
+      var node = g.node(v);
+      var color = colors[node['application']]
+      node['style'] = "fill:" + color
+      node.rx = node.ry = 5;
+    });
+
+    var svg = d3.select("svg"),
+        inner = svg.select("g");
+
+    // Create the renderer
+    var render = new dagreD3.render();
+
+    // Run the renderer. This is what draws the final graph.
+    render(inner, g)
+    svg.attr('height', g.graph().height);
+    svg.attr('width', g.graph().width);
+  });
+</script>
+{% endblock extra_js %}
