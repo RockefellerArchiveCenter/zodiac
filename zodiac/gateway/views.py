@@ -61,7 +61,7 @@ class Gateway(APIView):
             return self.bad_request(service=registry, request=request, msg=msg)
 
         # Checks if both service and system are active
-        if not registry.can_safely_execute():
+        if not registry.service_active():
             return self.bad_request(registry, request, msg="Service {} cannot be executed.".format(registry))
 
         res = send_service_request(registry, request)
