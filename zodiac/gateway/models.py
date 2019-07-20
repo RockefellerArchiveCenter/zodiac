@@ -99,15 +99,6 @@ class ServiceRegistry(models.Model):
     def service_active(self):
         return True if (self.is_active and self.application.is_active) else False
 
-    def can_safely_execute(self):
-        # check actives for service and system
-        if not self.service_active():
-            return False
-        # if self.callback_service:
-        #     if not self.callback_service.service_active():
-        #         return False
-        return True
-
 
 class RequestLog(models.Model):
     service = models.ForeignKey(
