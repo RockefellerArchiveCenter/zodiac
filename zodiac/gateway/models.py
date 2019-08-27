@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import ast
+import json
 
 from django.db import models
 from django.conf import settings
@@ -99,15 +99,6 @@ class ServiceRegistry(models.Model):
     def service_active(self):
         return True if (self.is_active and self.application.is_active) else False
 
-    def can_safely_execute(self):
-        # check actives for service and system
-        if not self.service_active():
-            return False
-        # if self.callback_service:
-        #     if not self.callback_service.service_active():
-        #         return False
-        return True
-
 
 class RequestLog(models.Model):
     service = models.ForeignKey(
@@ -122,6 +113,16 @@ class RequestLog(models.Model):
     async_result_id = models.CharField(max_length=36, blank=True, null=True)
     created_time = models.DateTimeField(auto_now_add=True)
     task_result = models.ForeignKey(TaskResult, on_delete=models.CASCADE, blank=True, null=True, related_name='request_log')
+
+    def error_messages(self):
+        errors = []
+        for e in json.loads(self.task_result.result).get('exc_message'):
+            try:
+                emess = e.get('detail')
+            except:
+                emess = e
+            errors.append(emess)
+        return errors
 
     @classmethod
     def create(cls, service, status_code, request_url, async_result_id=None, task_result=None):

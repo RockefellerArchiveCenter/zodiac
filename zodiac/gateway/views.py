@@ -40,8 +40,6 @@ class Gateway(APIView):
     request = {}
 
     def operation(self, request):
-        self.request = request
-
         # Checks to ensure URL is correctly formatted. Expects path api/external uri/service_route
         path = request.path_info.split('/')
         if len(path) < 2:
@@ -61,7 +59,7 @@ class Gateway(APIView):
             return self.bad_request(service=registry, request=request, msg=msg)
 
         # Checks if both service and system are active
-        if not registry.can_safely_execute():
+        if not registry.service_active():
             return self.bad_request(registry, request, msg="Service {} cannot be executed.".format(registry))
 
         res = send_service_request(registry, request)
@@ -96,9 +94,9 @@ class SplashView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['recent_services'] = ServiceRegistry.objects.all().order_by('-modified_time')[:5]
-        context['recent_applications'] = Application.objects.all().order_by('-modified_time')[:5]
-        context['recent_results'] = RequestLog.objects.all().order_by('-task_result__date_done')[:10]
+        context['systems'] = Application.objects.all().order_by('name')
+        context['services'] = ServiceRegistry.objects.exclude(application__name='Pisces')
+        context['recent_errors'] = RequestLog.objects.exclude(task_result__status='SUCCESS').order_by('-task_result__date_done')[:5]
         return context
 
 

@@ -98,3 +98,32 @@ pre {
 .results-table-enter, .results-table-leave-to {
   opacity: 0;
 }
+
+.system, .error {
+	padding: 1rem;
+	float:left;
+	width: 100%
+}
+
+.system h3 {
+	margin: 0;
+}
+
+.system:nth-of-type(odd), .error:nth-of-type(odd) {
+	background-color: rgba(0,0,0,.06);
+}
+
+.graph {
+	overflow-x: scroll;
+}
+
+.graph .node rect {
+stroke: #333;
+fill: #fff;
+}
+
+.graph .edgePath path {
+stroke: #333;
+fill: #333;
+stroke-width: 1.5px;
+}

@@ -179,6 +179,7 @@ if len(PeriodicTask.objects.all()) == 0:
                                                       month_of_year='*')
     PeriodicTask.objects.create(crontab=every_minute, name="Process queued callbacks",
                                 task="gateway.tasks.queue_callbacks")
-    PeriodicTask.objects.create(crontab=daily, name="Delete successful results",
+    PeriodicTask.objects.create(crontab=every_minute, name="Delete successful results",
                                 task="gateway.tasks.delete_successful")
+
     print("Tasks scheduled")

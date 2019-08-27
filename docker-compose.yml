@@ -126,9 +126,7 @@ volumes:
   fornaxdb:
   libradb:
   ursamajordb:
-  geminidb:
+  geminidb: 
 
 networks:
   microservices:
-  # aurora_default:
-  #   external: true
