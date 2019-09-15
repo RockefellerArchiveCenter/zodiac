@@ -1,5 +1,3 @@
-# Create your tasks here
-from __future__ import absolute_import, unicode_literals
 import urllib.parse as urlparse
 
 
@@ -13,7 +11,7 @@ def render_service_path(service, uri=''):
 
     # add slash to URL end
     if url[-1] != '/':
-        url = '{}/'.format(url) 
+        url = '{}/'.format(url)
 
     parsed_url = urlparse.urlparse(url)
     parsed_url_parts = list(parsed_url)
