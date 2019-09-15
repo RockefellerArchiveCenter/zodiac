@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import json
 
 from django.db import models
@@ -113,6 +112,7 @@ class RequestLog(models.Model):
     async_result_id = models.CharField(max_length=36, blank=True, null=True)
     created_time = models.DateTimeField(auto_now_add=True)
     task_result = models.ForeignKey(TaskResult, on_delete=models.CASCADE, blank=True, null=True, related_name='request_log')
+    task_result_status = models.CharField(max_length=100, choices=(('success', 'Success'), ('error', 'Error'), ('idle', 'Idle')), blank=True, null=True)
 
     def error_messages(self):
         errors = []
@@ -123,14 +123,3 @@ class RequestLog(models.Model):
                 emess = e
             errors.append(emess)
         return errors
-
-    @classmethod
-    def create(cls, service, status_code, request_url, async_result_id=None, task_result=None):
-        record = cls(
-            service=service,
-            status_code=status_code,
-            request_url=request_url,
-            async_result_id=async_result_id,
-            task_result=task_result
-        ).save()
-        return record
