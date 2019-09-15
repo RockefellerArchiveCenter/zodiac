@@ -59,4 +59,5 @@ def queue_request(method, url, headers, data, files, params, service_id):
 
 @shared_task()
 def delete_successful():
-    TaskResult.objects.filter(status="SUCCESS", date_done__lte=timezone.now()-timezone.timedelta(days=1)).delete()
+    TaskResult.objects.filter(status="SUCCESS",
+                              date_done__lte=timezone.now()-timezone.timedelta(hours=settings.DELETE_SUCCESSFUL_AFTER)).delete()
