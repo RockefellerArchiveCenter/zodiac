@@ -113,6 +113,10 @@ pre {
 	background-color: rgba(0,0,0,.06);
 }
 
+.service-title {
+	font-weight: bold;
+}
+
 .graph {
 	overflow-x: scroll;
 }

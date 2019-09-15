@@ -49,6 +49,7 @@
               <a href="{% url 'results-detail' pk=result.id %}">
                 <div class="col-md-12">
                   <div class="col-md-4">
+                    <p class="service-title">{{result.service.name}}</p>
                     <p>{{result.task_result.date_done|date:"SHORT_DATETIME_FORMAT"}}</p>
                   </div>
                   <div class="col-md-8">
