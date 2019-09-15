@@ -6,6 +6,24 @@
 
 {% block content %}
 <div class="row">
+  <div class="col-md-12 type-filters">
+    <p>Show result types:</p>
+    <label>
+      <div aria-checked="true" aria-disabled="false">
+        <input id="success" type="checkbox" checked> Success
+      </div>
+    </label>
+    <label>
+      <div aria-checked="true" aria-disabled="false">
+        <input id="error" type="checkbox" checked> Error
+      </div>
+    </label>
+    <label>
+      <div aria-checked="true" aria-disabled="false">
+        <input id="idle" type="checkbox" checked> Idle
+      </div>
+    </label>
+  </div>
   <div class="col-md-12">
     <div class="box box-primary">
       <div class="box-body {% if object_list %}no-padding{% endif %}">
@@ -13,11 +31,13 @@
           <thead>
             <th>Identifier</th>
             <th>Service</th>
+            <th>Category</th>
             <th>Result</th>
             <th>Date</th>
           </thead>
           <tbody>
             <tr>
+              <td></td>
               <td></td>
               <td></td>
               <td></td>
@@ -38,7 +58,7 @@
       "columnDefs": [
         {
           width: "50%",
-          targets: [2] }
+          targets: [3] }
       ],
 			'stateSave'   : true,
       'paging'      : true,
@@ -55,7 +75,18 @@
     });
     setInterval( function () {
       table.ajax.reload( null, false );
-    }, 5000 );
+    }, 10000 );
+    $('.type-filters').on('click', function() {
+      filters = []
+      active_types = $(this).find('input[type=checkbox]').each(function(){
+        if ($(this).prop("checked")) {
+          filters.push($(this).attr('id'))
+        }
+      });
+      search = filters.join('|')
+      // need to do some business in Ajax to facilitate this
+      table.columns(2).search(search, true, false).draw()
+    })
   });
   </script>
 {% endblock %}
