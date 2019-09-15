@@ -25,8 +25,9 @@ def queue_callbacks():
     completed = {'detail': {'callbacks': []}}
 
     for registry in ServiceRegistry.objects.filter(callback_service__isnull=False,
-                                                   callback_service__service_active=True,
-                                                   callback_service__has_active_task=False).order_by('callback_service__modified_time')[:settings.MAX_SERVICES]:
+                                                   callback_service__is_active=True,
+                                                   callback_service__has_active_task=False,
+                                                   callback_service__application__is_active=True).order_by('callback_service__modified_time')[:settings.MAX_SERVICES]:
         callback = ServiceRegistry.objects.get(pk=registry.callback_service.pk)
         url = render_service_path(callback, '')
         r = queue_request.delay(
