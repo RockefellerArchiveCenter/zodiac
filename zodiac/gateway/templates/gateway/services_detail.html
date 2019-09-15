@@ -53,7 +53,10 @@
         <div class="box-footer">
           <a href="{{ object.get_update_url }}" class="btn btn-primary">Edit Service</a>
           <a href="{% url 'services-delete' pk=object.pk %}" class="btn btn-danger">Delete Service</a>
-          <a href="#" id="trigger-service-btn" class="btn btn-success pull-right" v-on:click.prevent="triggerService" disabled>Manually Trigger</a>
+          <div class="footer-right pull-right">
+            <a href="#" id="trigger-service-btn" class="btn btn-success" v-on:click.prevent="triggerService" disabled>Manually Trigger</a>
+            <a href="#" id="clear-errors-btn" class="btn btn-warning" v-on:click.prevent="clearErrors">Clear Errors</a>
+          </div>
         </div>
       </div>
     </div>
@@ -133,7 +136,7 @@
 
     created: function () {
       this.fetchData()
-      this.interval = setInterval(() => this.fetchData(), 5000);
+      this.interval = setInterval(() => this.fetchData(), 10000);
     },
 
     methods: {
@@ -150,6 +153,21 @@
         var xhr = new XMLHttpRequest()
         var self = this
         xhr.open('GET', '{{ object.get_trigger_url }}')
+        xhr.onload = function () {
+          resp = JSON.parse(xhr.responseText)
+          if (resp.SUCCESS != 1) {
+            self.error = true
+          } else {
+            self.error = false
+          }
+        }
+        xhr.send()
+        setTimeout(function() {self.fetchData();}, 1000)
+      },
+      clearErrors: function () {
+        var xhr = new XMLHttpRequest()
+        var self = this
+        xhr.open('GET', '{{ object.get_clear_errors_url }}')
         xhr.onload = function () {
           resp = JSON.parse(xhr.responseText)
           if (resp.SUCCESS != 1) {

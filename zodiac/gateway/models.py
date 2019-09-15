@@ -92,6 +92,9 @@ class ServiceRegistry(models.Model):
     def get_absolute_url(self):
         return reverse('services-detail', args=[self.pk])
 
+    def get_clear_errors_url(self):
+        return reverse('services-clear-errors', args=[self.pk])
+
     def get_trigger_url(self):
         return reverse('services-trigger', args=[self.pk])
 

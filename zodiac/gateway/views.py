@@ -1,6 +1,7 @@
 import json
 from dateutil import tz
 
+from django_celery_results.models import TaskResult
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import BaseDetailView, DetailView
@@ -147,11 +148,22 @@ class ServicesTriggerView(JSONResponseMixin, BaseDetailView):
     def render_to_response(self, context, **response_kwargs):
         result = send_service_request(self.object)
         data = {'SUCCESS': 0}
-        # CAN WE CHECK IF IT WAS QUED?
         if result:
             data['SUCCESS'] = 1
 
         return self.render_to_json_response(context=data, **response_kwargs)
+
+
+class ServicesClearErrorsView(JSONResponseMixin, BaseDetailView):
+    model = ServiceRegistry
+
+    def render_to_response(self, context, **kwargs):
+        try:
+            TaskResult.objects.filter(status='FAILURE', request_log__service=self.object).delete()
+            data = {'SUCCESS': 1}
+        except Exception as e:
+            data = {'SUCCESS': 0}
+        return self.render_to_json_response(context=data, **kwargs)
 
 
 class ApplicationsAddView(CreateView):

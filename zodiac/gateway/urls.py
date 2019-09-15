@@ -15,6 +15,7 @@ urlpatterns = [
     path('services/add/', views.ServicesAddView.as_view(), name='services-add'),
     path('services/delete/<int:pk>/', views.ServicesDeleteView.as_view(), name='services-delete'),
     path('services/trigger/<int:pk>/', views.ServicesTriggerView.as_view(), name='services-trigger'),
+    path('services/clear-errors/<int:pk>/', views.ServicesClearErrorsView.as_view(), name='services-clear-errors'),
 
     # APPLICATIONS URLS
     path('applications/', views.ApplicationsListView.as_view(), name='applications-list'),
