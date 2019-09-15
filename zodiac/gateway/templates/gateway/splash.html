@@ -9,29 +9,29 @@
   <div class="col-md-6">
     <div class="box box-primary">
       <div class="box-header with-border">
-        <h2 class="box-title">Systems</h2>
+        <h2 class="box-title">Applications</h2>
       </div>
       <div class="box-body">
-        {% if systems %}
-          {% for system in systems %}
-            <div class="system">
-              <a href="{% url 'applications-detail' pk=system.id %}">
+        {% if applications %}
+          {% for app in applications %}
+            <div class="application">
+              <a href="{% url 'applications-detail' pk=app.id %}">
                 <div class="col-md-12">
                   <div class="col-md-4">
-                    <p class="box-title">{{ system.name }}</p>
+                    <p class="box-title">{{ app.name }}</p>
                   </div>
                   <div class="col-md-6">
-                    <p>{{system.serviceregistry_set.all|length}} services</p>
+                    <p>{{app.serviceregistry_set.all|length}} services</p>
                   </div>
                   <div class="col-md-2">
-                    {% include 'gateway/active_label.html' with status=system.is_active %}
+                    {% include 'gateway/active_label.html' with status=app.is_active %}
                   </div>
                 </div>
               </a>
             </div>
           {% endfor %}
         {% else %}
-          <p>No systems are configured.</p>
+          <p>No applications are configured.</p>
         {% endif %}
       </div>
     </div>

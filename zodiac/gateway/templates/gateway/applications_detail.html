@@ -8,29 +8,46 @@
 <div class="row">
   <div class="col-md-12">
     <div class="box box-primary">
+      <div class="box-header with-border">
+        <h2 class="box-title">Application Details</h2>
+      </div>
       <div class="box-body">
-        <label>App host</label>
-        <p>{{object.app_host}}</p>
+        <div class="row">
+          <div class="col-md-6">
+            <label>Host</label>
+            <p>http://{{object.app_host}}</p>
+          </div>
+          <div class="col-md-6">
+            {% if object.app_port %}
+            <label>Port</label>
+            <p>{{object.app_port}}</p>
+            {% endif %}
+          </div>
+        </div>
 
-        {% if object.app_port %}
-        <label>App port</label>
-        <p>{{object.app_port}}</p>
-        {% endif %}
-
-        {% if object.serviceregistry_set.all %}
-        <label>Services</label>
-        <ul class="list-unstyled">
-        {% for service in object.serviceregistry_set.all %}
-          <li><a href="{{service.get_absolute_url}}">{{service}}</a></li>
-        {% endfor %}
-        </ul>
-        {% endif %}
-
+        </div>
       </div>
-      <div class="box-footer">
-        <a href="{{ object.get_update_url }}" class="btn btn-primary">Edit Application</a>
-        <a href="{% url 'applications-delete' pk=object.pk %}" class="btn btn-danger">Delete Application</a>
+
+      {% if object.serviceregistry_set.all %}
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h2 class="box-title">Application Services</h2>
+        </div>
+        <div class="box-body">
+
+          <ul class="list-unstyled">
+          {% for service in object.serviceregistry_set.all %}
+            <li><a href="{{service.get_absolute_url}}">{{service}}</a></li>
+          {% endfor %}
+          </ul>
+
+        </div>
+        <div class="box-footer">
+          <a href="{{ object.get_update_url }}" class="btn btn-primary">Edit Application</a>
+          <a href="{% url 'applications-delete' pk=object.pk %}" class="btn btn-danger pull-right">Delete Application</a>
+        </div>
       </div>
+      {% endif %}
     </div>
   </div>
 {% endblock %}
