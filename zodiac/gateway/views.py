@@ -1,4 +1,6 @@
+import json
 from dateutil import tz
+
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import BaseDetailView, DetailView
@@ -6,11 +8,11 @@ from django.views.generic.list import ListView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 from django.urls import reverse_lazy
 from rest_framework import status
-from rest_framework.decorators import detail_route
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView
+
 from .service_library import send_service_request, check_service_plugin
 from .models import Application, ServiceRegistry, RequestLog
 from .mixins import JSONResponseMixin
@@ -186,11 +188,19 @@ class ResultsListView(TemplateView):
 
 class ResultsDatatableView(BaseDatatableView):
     model = RequestLog
-    columns = ['async_result_id', 'service__name', 'task_result__result', 'task_result__date_done']
-    order_columns = ['async_result_id', 'service__name', 'task_result__result', 'task_result__date_done']
+    columns = ['async_result_id', 'service__name', 'task_result_status', 'task_result__result', 'task_result__date_done']
+    order_columns = ['async_result_id', 'service__name', 'task_result_status', 'task_result__result', 'task_result__date_done']
     max_display_length = 500
 
     def get_filter_method(self): return self.FILTER_ICONTAINS
+
+    def get_task_result(self, result):
+        task_result = ''
+        if result.task_result:
+            task_result = result.task_result.result
+            if 'exc_message' in result.task_result.result:
+                task_result = str(json.loads(result.task_result.result).get('exc_message')[0])
+        return task_result
 
     def prepare_results(self, qs):
         json_data = []
@@ -199,7 +209,8 @@ class ResultsDatatableView(BaseDatatableView):
             json_data.append([
                 '<a href="'+str(reverse_lazy('results-detail', kwargs={"pk": result.id}))+'">'+result.async_result_id+'</a>',
                 '<a href="'+str(reverse_lazy('services-detail', kwargs={"pk": result.service.id}))+'">'+result.service.name+'</a>' if result.service else '',
-                '<pre>'+result.task_result.result+'</pre>' if result.task_result else '',
+                result.task_result_status,
+                '<pre>'+self.get_task_result(result)+'</pre>',
                 result.task_result.date_done.astimezone(tz.tzlocal()).strftime('%b %e, %Y %I:%M:%S %p') if result.task_result else '',
             ])
         return json_data
