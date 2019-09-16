@@ -106,7 +106,7 @@ class SplashView(TemplateView):
 
 
 class ServicesAddView(CreateView):
-    template_name = "gateway/services_add.html"
+    template_name = "gateway/add.html"
     model = ServiceRegistry
     fields = services_registry_fields
 
@@ -133,13 +133,13 @@ class ServicesJSONView(RetrieveAPIView):
 
 
 class ServicesUpdateView(UpdateView):
-    template_name = "gateway/services_update.html"
+    template_name = "gateway/update.html"
     model = ServiceRegistry
     fields = services_registry_fields + ['is_active']
 
 
 class ServicesDeleteView(DeleteView):
-    template_name = "gateway/services_delete.html"
+    template_name = "gateway/delete.html"
     model = ServiceRegistry
     success_url = reverse_lazy('services-list')
 
@@ -169,7 +169,7 @@ class ServicesClearErrorsView(JSONResponseMixin, BaseDetailView):
 
 
 class ApplicationsAddView(CreateView):
-    template_name = "gateway/applications_add.html"
+    template_name = "gateway/add.html"
     model = Application
     fields = applications_update_fields
 
@@ -185,13 +185,13 @@ class ApplicationsListView(ListView):
 
 
 class ApplicationsUpdateView(UpdateView):
-    template_name = "gateway/applications_update.html"
+    template_name = "gateway/update.html"
     model = Application
     fields = applications_update_fields + ['is_active']
 
 
 class ApplicationsDeleteView(DeleteView):
-    template_name = "gateway/applications_delete.html"
+    template_name = "gateway/delete.html"
     model = Application
     success_url = reverse_lazy('applications-list')
 
@@ -244,7 +244,7 @@ class ResultsDetailView(DetailView):
 
 
 class SourcesAddView(CreateView):
-    template_name = "gateway/sources_add.html"
+    template_name = "gateway/add.html"
     model = Source
     fields = ('user', 'apikey')
 
@@ -260,13 +260,13 @@ class SourcesListView(ListView):
 
 
 class SourcesUpdateView(UpdateView):
-    template_name = "gateway/sources_update.html"
+    template_name = "gateway/update.html"
     model = Source
     fields = ('user', 'apikey')
 
 
 class SourcesDeleteView(DeleteView):
-    template_name = "gateway/sources_delete.html"
+    template_name = "gateway/delete.html"
     model = Source
     success_url = reverse_lazy('sources-list')
 

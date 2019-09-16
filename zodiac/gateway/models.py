@@ -24,6 +24,10 @@ class Source(models.Model):
     def get_update_url(self):
         return reverse('sources-update', args=[self.pk])
 
+    @classmethod
+    def get_list_url(self):
+        return reverse('sources-list')
+
 
 class Application(models.Model):
     name = models.CharField(max_length=64, unique=True)
@@ -41,6 +45,10 @@ class Application(models.Model):
 
     def get_absolute_url(self):
         return reverse('applications-detail', args=[self.pk])
+
+    @classmethod
+    def get_list_url(self):
+        return reverse('applications-list')
 
 
 class ServiceRegistry(models.Model):
@@ -97,6 +105,10 @@ class ServiceRegistry(models.Model):
 
     def get_absolute_url(self):
         return reverse('services-detail', args=[self.pk])
+
+    @classmethod
+    def get_list_url(self):
+        return reverse('services-list')
 
     def get_clear_errors_url(self):
         return reverse('services-clear-errors', args=[self.pk])

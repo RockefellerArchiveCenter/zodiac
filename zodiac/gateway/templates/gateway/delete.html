@@ -1,7 +1,8 @@
 {% extends "gateway/base.html" %}
+{% load util %}
 
 {% block h1_title %}
-  Delete Application
+  Delete {{object | object_to_class_name }}
 {% endblock %}
 
 {% block content %}
