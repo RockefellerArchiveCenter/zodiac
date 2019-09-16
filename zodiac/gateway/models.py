@@ -18,6 +18,12 @@ class Source(models.Model):
     def __str__(self):
         return self.user.username
 
+    def get_absolute_url(self):
+        return reverse('sources-detail', args=[self.pk])
+
+    def get_update_url(self):
+        return reverse('sources-update', args=[self.pk])
+
 
 class Application(models.Model):
     name = models.CharField(max_length=64, unique=True)

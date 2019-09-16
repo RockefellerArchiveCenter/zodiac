@@ -2,6 +2,7 @@ import json
 from dateutil import tz
 
 from django_celery_results.models import TaskResult
+from django.contrib.auth.models import User
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import BaseDetailView, DetailView
@@ -14,8 +15,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView
 
+from zodiac import settings
 from .service_library import send_service_request, check_service_plugin
-from .models import Application, ServiceRegistry, RequestLog
+from .models import Application, ServiceRegistry, RequestLog, Source
 from .mixins import JSONResponseMixin
 from .serializers import ServiceRegistrySerializer
 
@@ -231,3 +233,60 @@ class ResultsDatatableView(BaseDatatableView):
 class ResultsDetailView(DetailView):
     template_name = "gateway/results_detail.html"
     model = RequestLog
+
+
+class SourcesAddView(CreateView):
+    template_name = "gateway/sources_add.html"
+    model = Source
+    fields = ('user', 'apikey')
+
+
+class SourcesDetailView(DetailView):
+    template_name = "gateway/sources_detail.html"
+    model = Source
+
+
+class SourcesListView(ListView):
+    template_name = "gateway/sources_list.html"
+    model = Source
+
+
+class SourcesUpdateView(UpdateView):
+    template_name = "gateway/sources_update.html"
+    model = Source
+    fields = ('user', 'apikey')
+
+
+class SourcesDeleteView(DeleteView):
+    template_name = "gateway/sources_delete.html"
+    model = Source
+    success_url = reverse_lazy('sources-list')
+
+
+class UsersAddView(CreateView):
+    template_name = "gateway/users_add.html"
+    model = User
+    fields = ('username',)
+
+
+class UsersDetailView(DetailView):
+    template_name = "gateway/users_detail.html"
+    model = User
+
+
+class UsersListView(ListView):
+    template_name = "gateway/users_list.html"
+    model = User
+
+
+class UsersUpdateView(UpdateView):
+    template_name = "gateway/users_update.html"
+    model = User
+    fields = ('username',)
+    success_url = reverse_lazy('users-list')
+
+
+class UsersDeleteView(DeleteView):
+    template_name = "gateway/users_delete.html"
+    model = User
+    success_url = reverse_lazy('users-list')

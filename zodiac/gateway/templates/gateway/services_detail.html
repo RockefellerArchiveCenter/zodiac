@@ -46,7 +46,11 @@
             <dd>{{object.get_plugin_display}}</dd>
             {% if object.sources %}
             <dt>Sources</dt>
-            {% for source in object.sources.all %}<dd>User <code>{{source.user.username}}</code> identified by API Key <code>{{source.apikey}}</code></dd>{% endfor %}
+            {% for source in object.sources.all %}
+                <dd>
+                  <a href="{{source.get_absolute_url}}">User <code>{{source.user.username}}</code> identified by API Key <code>{{source.apikey}}</code></a>
+                </dd>
+              {% endfor %}
             {% endif %}
           </dl>
         </div>

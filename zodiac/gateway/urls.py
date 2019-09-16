@@ -24,6 +24,20 @@ urlpatterns = [
     path('applications/add/', views.ApplicationsAddView.as_view(), name='applications-add'),
     path('applications/delete/<int:pk>/', views.ApplicationsDeleteView.as_view(), name='applications-delete'),
 
+    # SOURCES URLS
+    path('sources/', views.SourcesListView.as_view(), name='sources-list'),
+    path('sources/<int:pk>/', views.SourcesDetailView.as_view(), name='sources-detail'),
+    path('sources/edit/<int:pk>/', views.SourcesUpdateView.as_view(), name='sources-update'),
+    path('sources/add/', views.SourcesAddView.as_view(), name='sources-add'),
+    path('sources/delete/<int:pk>/', views.SourcesDeleteView.as_view(), name='sources-delete'),
+
+    # USERS URLS
+    path('users/', views.UsersListView.as_view(), name='users-list'),
+    path('users/<int:pk>/', views.UsersDetailView.as_view(), name='users-detail'),
+    path('users/edit/<int:pk>/', views.UsersUpdateView.as_view(), name='users-update'),
+    path('users/add/', views.UsersAddView.as_view(), name='users-add'),
+    path('users/delete/<int:pk>/', views.UsersDeleteView.as_view(), name='users-delete'),
+
     # RESULTS URLS
     path('results/', views.ResultsListView.as_view(), name='results-list'),
     path('results-data/', views.ResultsDatatableView.as_view(), name='results-data'),

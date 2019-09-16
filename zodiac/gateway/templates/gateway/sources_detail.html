@@ -1,0 +1,47 @@
+{% extends "gateway/base.html" %}
+
+{% block h1_title %}
+  {{object.name}}
+{% endblock %}
+
+{% block content %}
+<div id="service">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+      		<h2 class="box-title">Source Details</h2>
+        </div>
+        <div class="box-body">
+          <dl>
+            <dt>Username</dt>
+            <dd>{{object.user.username}}</dd>
+            <dt>API Key</dt>
+            <dd><code>{{object.apikey}}</code></dd>
+        </div>
+        <div class="box-footer">
+          <a href="{{ object.get_update_url }}" class="btn btn-primary">Edit Source</a>
+          <a href="{% url 'sources-delete' pk=object.pk %}" class="btn btn-danger">Delete Source</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+      		<h2 class="box-title">Associated Services</h2>
+        </div>
+        <div class="box-body">
+          <ul class="list-unstyled">
+          {% for service in object.serviceregistry_set.all %}
+            <li><a href="{{service.get_absolute_url}}">{{service}}</a></li>
+          {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
