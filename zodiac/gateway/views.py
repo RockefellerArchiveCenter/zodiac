@@ -216,6 +216,14 @@ class ResultsDatatableView(BaseDatatableView):
                 task_result = str(json.loads(result.task_result.result).get('exc_message')[0])
         return task_result
 
+    def get_status_display(self, status):
+        statuses = {
+            "Error": ['danger', 'times-circle'],
+            "Idle": ['default', 'circle'],
+            "Success": ['success', 'check-circle']
+        }
+        return '<span class="text-{}">{} <i class="fa fa-{}"></i></span>'.format(statuses[status][0], status, statuses[status][1])
+
     def prepare_results(self, qs):
         json_data = []
         for result in qs:
@@ -223,7 +231,7 @@ class ResultsDatatableView(BaseDatatableView):
             json_data.append([
                 '<a href="'+str(reverse_lazy('results-detail', kwargs={"pk": result.id}))+'">'+result.async_result_id+'</a>',
                 '<a href="'+str(reverse_lazy('services-detail', kwargs={"pk": result.service.id}))+'">'+result.service.name+'</a>' if result.service else '',
-                result.task_result_status,
+                self.get_status_display(result.task_result_status),
                 '<pre>'+self.get_task_result(result)+'</pre>',
                 result.task_result.date_done.astimezone(tz.tzlocal()).strftime('%b %e, %Y %I:%M:%S %p') if result.task_result else '',
             ])
