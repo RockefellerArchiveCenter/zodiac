@@ -6,24 +6,6 @@
 
 {% block content %}
 <div class="row">
-  <div class="col-md-12 type-filters">
-    <p>Show result types:</p>
-    <label>
-      <div aria-checked="true" aria-disabled="false">
-        <input id="success" type="checkbox" checked> Success
-      </div>
-    </label>
-    <label>
-      <div aria-checked="true" aria-disabled="false">
-        <input id="error" type="checkbox" checked> Error
-      </div>
-    </label>
-    <label>
-      <div aria-checked="true" aria-disabled="false">
-        <input id="idle" type="checkbox" checked> Idle
-      </div>
-    </label>
-  </div>
   <div class="col-md-12">
     <div class="box box-primary">
       <div class="box-body {% if object_list %}no-padding{% endif %}">
@@ -58,7 +40,11 @@
       "columnDefs": [
         {
           width: "50%",
-          targets: [3] }
+          targets: [3] },
+        {
+          targets: [2],
+          allow_regex: true
+        }
       ],
 			'stateSave'   : true,
       'paging'      : true,
@@ -76,17 +62,6 @@
     setInterval( function () {
       table.ajax.reload( null, false );
     }, 10000 );
-    $('.type-filters').on('click', function() {
-      filters = []
-      active_types = $(this).find('input[type=checkbox]').each(function(){
-        if ($(this).prop("checked")) {
-          filters.push($(this).attr('id'))
-        }
-      });
-      search = filters.join('|')
-      // need to do some business in Ajax to facilitate this
-      table.columns(2).search(search, true, false).draw()
-    })
   });
   </script>
 {% endblock %}
