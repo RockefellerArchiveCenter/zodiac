@@ -11,7 +11,7 @@ django-crispy-forms==1.7.2
 django-datatables-view==1.17.0
 django-timezone-field==3.0
 djangorestframework==3.9.1
-get==1.0.3
+get==2019.4.13
 idna==2.7
 kombu==4.2.1
 post==1.0.2
