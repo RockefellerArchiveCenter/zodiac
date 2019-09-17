@@ -19,7 +19,7 @@ psycopg2-binary==2.7.4
 public==1.0.3
 python-crontab==2.3.5
 python-dateutil==2.7.5
-pytz==2018.4
+pytz==2019.2
 query-string==1.0.2
 requests==2.20.0
 six==1.11.0
