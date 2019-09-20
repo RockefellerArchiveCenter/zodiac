@@ -1,3 +1,5 @@
+import json
+
 from celery.signals import task_prerun, task_postrun
 from django_celery_results.models import TaskResult
 from .models import ServiceRegistry, RequestLog
@@ -27,7 +29,7 @@ def on_task_postrun(task_id=None, task=None, retval=None, state=None, *args, **k
         task_result_status = 'Error'
         if task_result.status == 'SUCCESS':
             task_result_status = 'Idle'
-            if task_result.result.get('count', 0) > 0:
+            if json.dumps(task_result.result).get('count', 0) > 0:
                 task_result_status = 'Success'
         request_log = RequestLog.objects.create(
             service=update_service(kwargs),
