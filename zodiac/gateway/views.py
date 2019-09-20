@@ -220,7 +220,7 @@ class ResultsDatatableView(BaseDatatableView):
         status = status if status else "Idle"
         statuses = {
             "Error": ['danger', 'times-circle'],
-            "Idle": ['default', 'circle'],
+            "Idle": ['warning', 'circle'],
             "Success": ['success', 'check-circle'],
         }
         return '<span class="text-{}">{} <i class="fa fa-{}"></i></span>'.format(statuses[status][0], status, statuses[status][1])
