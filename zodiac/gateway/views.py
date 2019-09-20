@@ -217,10 +217,11 @@ class ResultsDatatableView(BaseDatatableView):
         return task_result
 
     def get_status_display(self, status):
+        status = status if status else "Idle"
         statuses = {
             "Error": ['danger', 'times-circle'],
             "Idle": ['default', 'circle'],
-            "Success": ['success', 'check-circle']
+            "Success": ['success', 'check-circle'],
         }
         return '<span class="text-{}">{} <i class="fa fa-{}"></i></span>'.format(statuses[status][0], status, statuses[status][1])
 
