@@ -44,19 +44,32 @@ class Gateway(APIView):
     renderer_classes = (JSONRenderer,)
     request = {}
 
-    def operation(self, request):
-        # Checks to ensure URL is correctly formatted. Expects path api/external uri/service_route
+    def bad_url(self, request):
+        """
+        Checks to ensure URL is correctly formatted.
+        Expects path_info variable to be `api/{external uri}/{service_route}`
+        """
         path = request.path_info.split('/')
         if len(path) < 2:
+            return True
+        return False
+
+    def operation(self, request):
+        # Check URL format
+        if self.bad_url(request):
             return self.bad_request(request=request, msg="No URL path.")
 
-        # Checks that application is in registry, service route is valid, and request method is registered for route
+        # Ensures that exactly one ServiceRegistry object matches the URI path and method.
         try:
             registry = ServiceRegistry.objects.get(external_uri=path[2], method=request.method)
         except ServiceRegistry.DoesNotExist:
-            return self.bad_request(request=request, msg="No service registry matching path {} and method {}.".format(path[2], request.method))
+            return self.bad_request(request=request,
+                                    msg="No service registry matching path {} and method {}."
+                                        .format(path[2], request.method))
         except ServiceRegistry.MultipleObjectsReturned:
-            return self.bad_request(request=request, msg="More than one service registry matching path {} and method {}.".format(path[2], request.method))
+            return self.bad_request(request=request,
+                                    msg="More than one service registry matching path {} and method {}."
+                                    .format(path[2], request.method))
 
         # Checks authentication
         valid, msg = check_service_plugin(registry, request)
