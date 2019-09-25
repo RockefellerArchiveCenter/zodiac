@@ -16,7 +16,7 @@ SERVICES = [
      'external_uri': 'api/transfers/', 'service_route': 'api/transfers/',
      'plugin': 0, 'method': 'POST', 'callback_service': None, 'post_service': None,
      'sources': None,},
-    {'name': 'Update Accesions', 'application': 'Aurora',
+    {'name': 'Update Accessions', 'application': 'Aurora',
      'description': 'Updates accession data.',
      'external_uri': 'api/accessions/', 'service_route': 'api/acccessions/',
      'plugin': 0, 'method': 'POST', 'callback_service': None, 'post_service': None,
