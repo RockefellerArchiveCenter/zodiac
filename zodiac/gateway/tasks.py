@@ -47,7 +47,7 @@ def queue_callbacks():
 @shared_task()
 def queue_request(method, url, headers, data, files, params, service_id):
     r = method_map[method](url, headers=headers, data=data, files=files, params=params)
-    if r.status_code == 200:
+    if r.status_code in [200, 201]:
         return r.json()
     else:
         try:
