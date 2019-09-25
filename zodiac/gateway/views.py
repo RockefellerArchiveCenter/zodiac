@@ -59,17 +59,19 @@ class Gateway(APIView):
         if self.bad_url(request):
             return self.bad_request(request=request, msg="No URL path.")
 
+        external_uri = request.path_info.split('/')[2]
+
         # Ensures that exactly one ServiceRegistry object matches the URI path and method.
         try:
-            registry = ServiceRegistry.objects.get(external_uri=path[2], method=request.method)
+            registry = ServiceRegistry.objects.get(external_uri=external_uri, method=request.method)
         except ServiceRegistry.DoesNotExist:
             return self.bad_request(request=request,
                                     msg="No service registry matching path {} and method {}."
-                                        .format(path[2], request.method))
+                                        .format(external_uri, request.method))
         except ServiceRegistry.MultipleObjectsReturned:
             return self.bad_request(request=request,
                                     msg="More than one service registry matching path {} and method {}."
-                                    .format(path[2], request.method))
+                                    .format(external_uri, request.method))
 
         # Checks authentication
         valid, msg = check_service_plugin(registry, request)
