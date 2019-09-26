@@ -90,7 +90,7 @@ class Gateway(APIView):
         return Response(data=data)
 
     def bad_request(self, service=None, request=request, msg="Bad Request."):
-        RequestLog.create(service, status.HTTP_400_BAD_REQUEST, request.META['REMOTE_ADDR'])
+        RequestLog.objects.create(service=service, status_code=status.HTTP_400_BAD_REQUEST, request_url=request.META['REMOTE_ADDR'])
         return Response({"detail": msg}, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request):
