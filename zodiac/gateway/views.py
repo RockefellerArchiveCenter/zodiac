@@ -20,9 +20,10 @@ from .service_library import send_service_request, check_service_plugin
 from .models import Application, ServiceRegistry, RequestLog, Source
 from .mixins import JSONResponseMixin
 from .serializers import ServiceRegistrySerializer
+from .views_library import get_health_check_status
 
 
-applications_update_fields = ['name', 'app_host', 'app_port']
+applications_update_fields = ['name', 'app_host', 'app_port', 'health_check_path']
 services_registry_fields = [
     'name',
     'application',
@@ -117,6 +118,8 @@ class SplashView(TemplateView):
         context['applications'] = Application.objects.all().order_by('name')
         context['services'] = ServiceRegistry.objects.exclude(application__name='Pisces')
         context['recent_errors'] = RequestLog.objects.exclude(task_result__status='SUCCESS').order_by('-task_result__date_done')[:5]
+        for app in context['applications']:
+            app.health_check_status = get_health_check_status(app)
         return context
 
 
@@ -193,10 +196,21 @@ class ApplicationsDetailView(DetailView):
     template_name = "gateway/applications_detail.html"
     model = Application
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(DetailView, self).get_context_data(*args, **kwargs)
+        context['health_check_status'] = get_health_check_status(self.object)
+        return context
+
 
 class ApplicationsListView(ListView):
     template_name = "gateway/applications_list.html"
     model = Application
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ListView, self).get_context_data(*args, **kwargs)
+        for obj in context['object_list']:
+            obj.health_check_status = get_health_check_status(obj)
+        return context
 
 
 class ApplicationsUpdateView(UpdateView):

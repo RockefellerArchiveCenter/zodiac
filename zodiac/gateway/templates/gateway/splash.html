@@ -20,10 +20,11 @@
                   <div class="col-md-4">
                     <p class="box-title">{{ app.name }}</p>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <p>{{app.serviceregistry_set.all|length}} services</p>
                   </div>
-                  <div class="col-md-2">
+                  <div class="col-md-4 text-right">
+                    {% include 'gateway/health_check_label.html' with status=app.health_check_status %}
                     {% include 'gateway/active_label.html' with status=app.is_active %}
                   </div>
                 </div>

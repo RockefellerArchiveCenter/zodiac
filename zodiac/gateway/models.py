@@ -34,6 +34,7 @@ class Application(models.Model):
     is_active = models.BooleanField(default=True)
     app_host = models.CharField(max_length=40)
     app_port = models.PositiveSmallIntegerField(null=True, blank=True)
+    health_check_path = models.CharField(max_length=255, null=True, blank=True)
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
 

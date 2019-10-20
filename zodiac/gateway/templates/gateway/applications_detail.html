@@ -1,7 +1,9 @@
 {% extends "gateway/base.html" %}
+{% load util %}
 
 {% block h1_title %}
   {{object.name}}
+  <small>{% include 'gateway/active_label.html' with status=object.is_active %}</small>
 {% endblock %}
 
 {% block content %}
@@ -13,14 +15,24 @@
       </div>
       <div class="box-body">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-4">
             <label>Host</label>
             <p>http://{{object.app_host}}</p>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-4">
             {% if object.app_port %}
             <label>Port</label>
             <p>{{object.app_port}}</p>
+            {% endif %}
+          </div>
+          <div class="col-md-4">
+            <label>Health Check</label>
+            {% if health_check_status %}
+              <p class="text-success"><i class="fa fa-check-circle"></i> Healthy</p>
+            {% elif health_check_status is False %}
+              <p class="text-success"><i class="fa fa-check-times"></i> Not healthy</p>
+            {% else %}
+              <p><i class="fa fa-circle"></i> No health check available</p>
             {% endif %}
           </div>
         </div>
