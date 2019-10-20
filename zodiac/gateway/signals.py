@@ -28,13 +28,13 @@ def get_task_result_status(task_result):
 @task_prerun.connect
 def on_task_prerun(task_id=None, task=None, *args, **kwargs):
     """Marks service as active"""
-    update_service(kwargs, True)
+    update_service_status(kwargs, True)
 
 
 @task_postrun.connect
 def on_task_postrun(task_id=None, task=None, retval=None, state=None, *args, **kwargs):
     """Marks service as inactive and saves TaskResult"""
-    service = update_service(kwargs, False)
+    service = update_service_status(kwargs, False)
     if len(kwargs['args']) > 1:
         task_result = TaskResult.objects.get(task_id=task_id)
         request_log = RequestLog.objects.create(
