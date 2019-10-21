@@ -3,11 +3,11 @@ from django_celery_beat.models import CrontabSchedule, PeriodicTask
 from gateway.models import Application, ServiceRegistry, Source
 
 APPLICATIONS = [
-    {'name': 'Ursa Major', 'host': 'ursa-major-web', 'port': 8005},
-    {'name': 'Fornax', 'host': 'fornax-web', 'port': 8003},
-    {'name': 'Gemini', 'host': 'gemini-web', 'port': 8006},
-    {'name': 'Aquarius', 'host': 'aquarius-web', 'port': 8002},
-    {'name': 'Aurora', 'host': 'localhost', 'port': 8000},
+    {'name': 'Ursa Major', 'host': 'ursa-major-web', 'port': 8005, 'health_check_path': '/status'},
+    {'name': 'Fornax', 'host': 'fornax-web', 'port': 8003, 'health_check_path': '/status'},
+    {'name': 'Gemini', 'host': 'gemini-web', 'port': 8006, 'health_check_path': '/status'},
+    {'name': 'Aquarius', 'host': 'aquarius-web', 'port': 8002, 'health_check_path': '/status'},
+    {'name': 'Aurora', 'host': 'localhost', 'port': 8000, 'health_check_path': None},
 ]
 
 SERVICES = [
@@ -150,6 +150,7 @@ if len(Application.objects.all()) == 0:
             is_active=True,
             app_host=application['host'],
             app_port=application['port'],
+            health_check_path=application['health_check_path'],
         )
         print("Created application: {}".format(application['name']))
 
