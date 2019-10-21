@@ -10,7 +10,7 @@ django-crispy-forms==1.7.2
 django-datatables-view==1.17.0
 django-timezone-field==3.0
 djangorestframework==3.10.3
-idna==2.7
+idna==2.8
 kombu==4.2.1
 psycopg2-binary==2.7.4
 python-crontab==2.3.8
