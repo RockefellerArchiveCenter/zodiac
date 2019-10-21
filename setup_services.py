@@ -3,17 +3,22 @@ from django_celery_beat.models import CrontabSchedule, PeriodicTask
 from gateway.models import Application, ServiceRegistry, Source
 
 APPLICATIONS = [
-    {'name': 'Ursa Major', 'host': 'ursa-major-web', 'port': 8005},
-    {'name': 'Fornax', 'host': 'fornax-web', 'port': 8003},
-    {'name': 'Gemini', 'host': 'gemini-web', 'port': 8006},
-    {'name': 'Aquarius', 'host': 'aquarius-web', 'port': 8002},
-    {'name': 'Aurora', 'host': 'localhost', 'port': 8000},
+    {'name': 'Ursa Major', 'host': 'ursa-major-web', 'port': 8005, 'health_check_path': '/status'},
+    {'name': 'Fornax', 'host': 'fornax-web', 'port': 8003, 'health_check_path': '/status'},
+    {'name': 'Gemini', 'host': 'gemini-web', 'port': 8006, 'health_check_path': '/status'},
+    {'name': 'Aquarius', 'host': 'aquarius-web', 'port': 8002, 'health_check_path': '/status'},
+    {'name': 'Aurora', 'host': 'localhost', 'port': 8000, 'health_check_path': None},
 ]
 
 SERVICES = [
     {'name': 'Update Transfers', 'application': 'Aurora',
      'description': 'Updates transfers and removes files from destination directory.',
      'external_uri': 'api/transfers/', 'service_route': 'api/transfers/',
+     'plugin': 0, 'method': 'POST', 'callback_service': None, 'post_service': None,
+     'sources': None,},
+    {'name': 'Update Accessions', 'application': 'Aurora',
+     'description': 'Updates accession data.',
+     'external_uri': 'api/accessions/', 'service_route': 'api/acccessions/',
      'plugin': 0, 'method': 'POST', 'callback_service': None, 'post_service': None,
      'sources': None,},
     {'name': 'Store Accessions', 'application': 'Ursa Major',
@@ -94,8 +99,13 @@ SERVICES = [
     {'name': 'Process Accessions', 'application': 'Aquarius',
      'description': 'Transforms and delivers accession data to ArchivesSpace',
      'external_uri': 'process-accessions/', 'service_route': 'accessions/',
-     'plugin': 0, 'method': 'POST', 'callback_service': 'Aquarius.Process Grouping Components',
+     'plugin': 0, 'method': 'POST', 'callback_service': 'Aquarius.Update Accession Status',
      'post_service': None, 'sources': None,},
+    {'name': 'Update Accession Status', 'application': 'Aquarius',
+     'description': 'Sends information about updated accessions',
+     'external_uri': 'update-accessions/', 'service_route': 'send-accession-update/',
+     'plugin': 0, 'method': 'POST', 'callback_service': 'Aquarius.Process Grouping Components',
+     'post_service': 'Aurora.Update Accessions', 'sources': None,},
     {'name': 'Process Grouping Components', 'application': 'Aquarius',
      'description': 'Transforms and delivers grouping component data to ArchivesSpace',
      'external_uri': 'process-grouping-components/', 'service_route': 'grouping-components/',
@@ -140,6 +150,7 @@ if len(Application.objects.all()) == 0:
             is_active=True,
             app_host=application['host'],
             app_port=application['port'],
+            health_check_path=application['health_check_path'],
         )
         print("Created application: {}".format(application['name']))
 

@@ -1,5 +1,4 @@
-# Create your tasks here
-from __future__ import absolute_import, unicode_literals
+import requests
 import urllib.parse as urlparse
 
 
@@ -13,7 +12,7 @@ def render_service_path(service, uri=''):
 
     # add slash to URL end
     if url[-1] != '/':
-        url = '{}/'.format(url) 
+        url = '{}/'.format(url)
 
     parsed_url = urlparse.urlparse(url)
     parsed_url_parts = list(parsed_url)
@@ -24,3 +23,14 @@ def render_service_path(service, uri=''):
     parsed_url_parts[4] = urlparse.urlencode(query)
 
     return urlparse.urlunparse(parsed_url_parts)
+
+
+def get_health_check_status(application):
+    status = None
+    if application.health_check_path:
+        try:
+            resp = requests.get("http://{}:{}/{}".format(application.app_host, application.app_port, application.health_check_path.lstrip('/'))).json()
+            status = True if resp['health']['ping']['pong'] else False
+        except Exception as e:
+            status = None
+    return status

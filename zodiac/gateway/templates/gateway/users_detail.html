@@ -1,0 +1,32 @@
+{% extends "gateway/base.html" %}
+
+{% block h1_title %}
+  {{object.username}}
+{% endblock %}
+
+{% block content %}
+<div id="user">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+      		<h2 class="box-title">Source Details</h2>
+        </div>
+        <div class="box-body">
+          <dl>
+            <dt>Associated Sources</dt>
+            {% for service in object.source_set.all %}
+            <dd>{{source.name}}</dd>
+            {% empty %}
+            <dd>No associated sources</dd>
+            {% endfor %}
+        </div>
+        <div class="box-footer">
+          <a href="{% url 'users-update' pk=object.pk %}" class="btn btn-primary">Edit User</a>
+          <a href="{% url 'users-delete' pk=object.pk %}" class="btn btn-danger">Delete User</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

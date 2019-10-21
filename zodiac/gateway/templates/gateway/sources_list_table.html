@@ -1,0 +1,14 @@
+<table class="table table-striped">
+  <thead>
+    <th>Username</th>
+    <th>API Key</th>
+  </thead>
+  <tbody>
+    {% for source in object_list %}
+      <tr>
+        <td><a href="{{ source.get_absolute_url }}">{{ source.user.username }}</a></td>
+        <td><code>{{source.apikey}}</code></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

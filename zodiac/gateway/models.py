@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import json
 
 from django.db import models
@@ -19,12 +18,23 @@ class Source(models.Model):
     def __str__(self):
         return self.user.username
 
+    def get_absolute_url(self):
+        return reverse('sources-detail', args=[self.pk])
+
+    def get_update_url(self):
+        return reverse('sources-update', args=[self.pk])
+
+    @classmethod
+    def get_list_url(self):
+        return reverse('sources-list')
+
 
 class Application(models.Model):
     name = models.CharField(max_length=64, unique=True)
     is_active = models.BooleanField(default=True)
     app_host = models.CharField(max_length=40)
     app_port = models.PositiveSmallIntegerField(null=True, blank=True)
+    health_check_path = models.CharField(max_length=255, null=True, blank=True)
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
 
@@ -36,6 +46,10 @@ class Application(models.Model):
 
     def get_absolute_url(self):
         return reverse('applications-detail', args=[self.pk])
+
+    @classmethod
+    def get_list_url(self):
+        return reverse('applications-list')
 
 
 class ServiceRegistry(models.Model):
@@ -93,6 +107,13 @@ class ServiceRegistry(models.Model):
     def get_absolute_url(self):
         return reverse('services-detail', args=[self.pk])
 
+    @classmethod
+    def get_list_url(self):
+        return reverse('services-list')
+
+    def get_clear_errors_url(self):
+        return reverse('services-clear-errors', args=[self.pk])
+
     def get_trigger_url(self):
         return reverse('services-trigger', args=[self.pk])
 
@@ -113,6 +134,7 @@ class RequestLog(models.Model):
     async_result_id = models.CharField(max_length=36, blank=True, null=True)
     created_time = models.DateTimeField(auto_now_add=True)
     task_result = models.ForeignKey(TaskResult, on_delete=models.CASCADE, blank=True, null=True, related_name='request_log')
+    task_result_status = models.CharField(max_length=100, choices=(('success', 'Success'), ('error', 'Error'), ('idle', 'Idle')), blank=True, null=True)
 
     def error_messages(self):
         errors = []
@@ -123,14 +145,3 @@ class RequestLog(models.Model):
                 emess = e
             errors.append(emess)
         return errors
-
-    @classmethod
-    def create(cls, service, status_code, request_url, async_result_id=None, task_result=None):
-        record = cls(
-            service=service,
-            status_code=status_code,
-            request_url=request_url,
-            async_result_id=async_result_id,
-            task_result=task_result
-        ).save()
-        return record

@@ -1,7 +1,9 @@
 {% extends "gateway/base.html" %}
+{% load crispy_forms_tags %}
+{% load util %}
 
 {% block h1_title %}
-  Delete Application
+  Add {{form | form_to_class_name }}
 {% endblock %}
 
 {% block content %}
@@ -11,12 +13,11 @@
       <div class="box box-primary">
         <div class="box-body">
           {% csrf_token %}
-          <p>Are you sure you want to delete <strong>{{ object }}</strong>?</p>
-          {{form.as_p}}
+          {{form|crispy}}
         </div>
         <div class="box-footer">
-          <input class="btn btn-primary" type="submit" value="Confirm" />
-          <a class="btn btn-danger" href="{{object.get_absolute_url}}">Cancel</a>
+          <input class="btn btn-primary" type="submit" value="Save" />
+          <a href="{{form | form_to_list_url }}" class="btn btn-danger">Cancel</a>
         </div>
       </div>
     </form>

@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'tvjqd*-^rr*dfjajo-e3y6uw!qij^@x0+i0hac2+58d2b7u^y6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = CF.DEBUG
 
 ALLOWED_HOSTS = CF.ALLOWED_HOSTS
 
@@ -133,6 +133,7 @@ REST_FRAMEWORK = {
 CELERY_BROKER_URL = CF.CELERY_BROKER_URL
 CELERY_RESULT_BACKEND = CF.CELERY_RESULT_BACKEND
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-MAX_SERVICES = 10
+MAX_SERVICES = CF.MAX_SERVICES
+DELETE_SUCCESSFUL_AFTER = CF.DELETE_SUCCESSFUL_AFTER
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'

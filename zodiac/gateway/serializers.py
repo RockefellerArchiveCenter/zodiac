@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from rest_framework import serializers
 from django_celery_results.models import TaskResult
 

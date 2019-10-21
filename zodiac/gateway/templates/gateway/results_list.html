@@ -13,11 +13,13 @@
           <thead>
             <th>Identifier</th>
             <th>Service</th>
+            <th>Category</th>
             <th>Result</th>
             <th>Date</th>
           </thead>
           <tbody>
             <tr>
+              <td></td>
               <td></td>
               <td></td>
               <td></td>
@@ -38,7 +40,8 @@
       "columnDefs": [
         {
           width: "50%",
-          targets: [2] }
+          targets: [3]
+        }
       ],
 			'stateSave'   : true,
       'paging'      : true,
@@ -55,7 +58,7 @@
     });
     setInterval( function () {
       table.ajax.reload( null, false );
-    }, 5000 );
+    }, 10000 );
   });
   </script>
 {% endblock %}

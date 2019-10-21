@@ -1,8 +1,9 @@
 {% extends "gateway/base.html" %}
 {% load crispy_forms_tags %}
+{% load util %}
 
 {% block h1_title %}
-  Add Application
+  Edit {{object.name}}
 {% endblock %}
 
 {% block content %}
@@ -15,8 +16,8 @@
           {{form|crispy}}
         </div>
         <div class="box-footer">
-          <input class="btn btn-primary" type="submit" value="Save" />
-          <a href="{% url 'applications-list' %}" class="btn btn-danger">Cancel</a>
+          <input class="btn btn-primary" type="submit" value="Update" />
+          <a href="{{object.get_absolute_url}}" class="btn btn-danger">Cancel</a>
         </div>
       </div>
     </form>

@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 
 {% block h1_title %}
-  Add Service
+  Edit User
 {% endblock %}
 
 {% block content %}
@@ -15,8 +15,8 @@
           {{form|crispy}}
         </div>
         <div class="box-footer">
-          <input class="btn btn-primary" type="submit" value="Save" />
-          <a href="{% url 'services-list' %}" class="btn btn-danger">Cancel</a>
+          <input class="btn btn-primary" type="submit" value="Update" />
+          <a href="{% url 'users-list' %}" class="btn btn-danger">Cancel</a>
         </div>
       </div>
     </form>
