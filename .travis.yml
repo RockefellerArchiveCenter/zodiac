@@ -23,4 +23,4 @@ script:
   - docker-compose exec zodiac-web coverage run manage.py test
 after_script:
   - docker-compose exec zodiac-web coverage xml
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - cd zodiac && ../cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
