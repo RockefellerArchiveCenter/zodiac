@@ -19,10 +19,9 @@
     </a>
 
     <!-- Navbar Right Menu -->
-    {% comment %}
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
-
+        {% if request.user.is_authenticated %}
         <li>
           <h5 id="welcomeli">{% if request.user.first_name %}{{request.user.first_name}}{% else %}{{request.user.username}}{% endif %}</h5>
         </li>
@@ -39,33 +38,20 @@
                 {{ request.user.username }}
               </p>
             </li>
-            <!-- Menu Footer-->
             <li class="user-footer">
               <div class="pull-left">
-                <a href="{% url 'users:detail' pk=request.user.id %}" class="btn btn-default btn-flat">Profile</a>
+                <a href="#" class="btn btn-default btn-flat">Change Password</a>
               </div>
               <div class="pull-left">
-                <a href="{% url 'users:password-change' %}" class="btn btn-default btn-flat">Change Password</a>
-              </div>
-              {% if request.user.is_staff %}
-                <br />
-              <div class="pull-left">
-                <a href="{% url 'orgs:list' %}" class="btn btn-default btn-flat">Admin</a>
-              </div>
-              {% endif %}
-               <!--  <br />
-              <div class="pull-left">
-                <a href="#" class="btn btn-default btn-flat">Help</a>
-              </div> -->
-                <br />
-              <div class="pull-left">
-                <a href="/logout" class="btn btn-default btn-flat" id="signout">Sign out</a>
+                <a href="{% url 'users-logout' %}" class="btn btn-default btn-flat" id="signout">Sign out</a>
               </div>
             </li>
           </ul>
         </li>
+        {% else %}
+        <a href="{% url 'users-login' %}"><h5 id="welcomeli">Login</h5></a>
+        {% endif %}
       </ul>
     </div>
-    {% endcomment %}
   </nav>
 </header>

@@ -36,10 +36,12 @@
             {% endif %}
           </div>
         </div>
+        {% if request.user.is_authenticated %}
         <div class="box-footer">
           <a href="{{ object.get_update_url }}" class="btn btn-primary">Edit Application</a>
           <a href="{% url 'applications-delete' pk=object.pk %}" class="btn btn-danger pull-right">Delete Application</a>
         </div>
+        {% endif %}
         </div>
       </div>
 

@@ -35,19 +35,3 @@
   </div>
 </div>
 {% endblock %}
-
-{% block extra_js %}
-<script type="text/javascript">
-  var trigger_url = '{{ object.get_trigger_url }}'
-  $(document).ready(function(){
-    $('#trigger-service-btn').click(function(){
-      $.get(trigger_url,{}, function(resp){
-        if(resp.SUCCESS == 1){
-          alert('it worked, request queued')
-        }
-      });
-    })
-  });
-
-</script>
-{% endblock %}
