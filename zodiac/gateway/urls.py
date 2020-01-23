@@ -37,6 +37,8 @@ urlpatterns = [
     path('users/edit/<int:pk>/', views.UsersUpdateView.as_view(), name='users-update'),
     path('users/add/', views.UsersAddView.as_view(), name='users-add'),
     path('users/delete/<int:pk>/', views.UsersDeleteView.as_view(), name='users-delete'),
+    path('users/login/', views.UsersLoginView.as_view(), name="users-login"),
+    path('users/logout/', views.UsersLogoutView.as_view(), name="users-logout"),
 
     # RESULTS URLS
     path('results/', views.ResultsListView.as_view(), name='results-list'),
