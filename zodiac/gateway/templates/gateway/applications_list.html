@@ -2,7 +2,9 @@
 
 {% block h1_title %}
   Applications
+  {% if request.user.is_authenticated %}
   <a class="btn btn-primary pull-right" href="{% url 'applications-add' %}">Add Application</a>
+  {% endif %}
 {% endblock %}
 
 {% block content %}

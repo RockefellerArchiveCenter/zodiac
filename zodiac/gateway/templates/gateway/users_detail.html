@@ -21,10 +21,12 @@
             <dd>No associated sources</dd>
             {% endfor %}
         </div>
+        {% if request.user.is_authenticated %}
         <div class="box-footer">
           <a href="{% url 'users-update' pk=object.pk %}" class="btn btn-primary">Edit User</a>
           <a href="{% url 'users-delete' pk=object.pk %}" class="btn btn-danger">Delete User</a>
         </div>
+        {% endif %}
       </div>
     </div>
   </div>
