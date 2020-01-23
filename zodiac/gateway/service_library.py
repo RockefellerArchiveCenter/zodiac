@@ -17,7 +17,7 @@ def send_service_request(service, request={}):
     if request:
         files = request.FILES
 
-        if service.plugin != 1 and request.META.get('HTTP_AUTHORIZATION'):
+        if service.plugin != ServiceRegistry.BASIC_AUTH and request.META.get('HTTP_AUTHORIZATION'):
             headers['authorization'] = request.META.get('HTTP_AUTHORIZATION')
         # headers['content-type'] = request.content_type
 
