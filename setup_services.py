@@ -1,6 +1,5 @@
-from django.contrib.auth.models import User
 from django_celery_beat.models import CrontabSchedule, PeriodicTask
-from gateway.models import Application, ServiceRegistry, Source
+from gateway.models import Application, ServiceRegistry, Source, User
 
 APPLICATIONS = [
     {'name': 'Ursa Major', 'host': 'ursa-major-web', 'port': 8005, 'health_check_path': '/status'},
