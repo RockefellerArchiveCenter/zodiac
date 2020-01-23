@@ -44,7 +44,7 @@ class Application(models.Model):
     modified_time = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.app_host
+        return "{} ({}:{})".format(self.name, self.app_host, self.app_port)
 
     def get_update_url(self):
         return reverse('applications-update', args=[self.pk])
