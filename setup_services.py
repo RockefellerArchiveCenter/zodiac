@@ -9,6 +9,10 @@ APPLICATIONS = [
     {'name': 'Aurora', 'host': 'localhost', 'port': 8000, 'health_check_path': None},
 ]
 
+SOURCES = [
+    {"username": "aurora", "apikey": "demo"},
+]
+
 SERVICES = [
     {'name': 'Update Transfers', 'application': 'Aurora',
      'description': 'Updates transfers and removes files from destination directory.',
@@ -23,6 +27,11 @@ SERVICES = [
     {'name': 'Store Accessions', 'application': 'Ursa Major',
      'description': 'Stores incoming accession data and creates associated transfer objects.',
      'external_uri': 'store-accessions', 'service_route': 'accessions',
+     'plugin': 2, 'method': 'POST', 'callback_service': 'Ursa Major.Discover Bags',
+     'post_service': None, 'sources': ['aurora'],},
+    {'name': 'Store Bags', 'application': 'Ursa Major',
+     'description': 'Stores incoming bag data.',
+     'external_uri': 'store-bags', 'service_route': 'bags',
      'plugin': 2, 'method': 'POST', 'callback_service': 'Ursa Major.Discover Bags',
      'post_service': None, 'sources': ['aurora'],},
     {'name': 'Discover Bags', 'application': 'Ursa Major',
