@@ -9,7 +9,7 @@ django-celery-results==1.1.2
 django-crispy-forms==1.8.0
 django-datatables-view==1.19.0
 django-timezone-field==3.1
-djangorestframework==3.10.3
+djangorestframework==3.11.0
 idna==2.8
 kombu==4.6.5
 psycopg2-binary==2.8.4
