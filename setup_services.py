@@ -1,16 +1,20 @@
 from django_celery_beat.models import CrontabSchedule, PeriodicTask
 from gateway.models import Application, ServiceRegistry, Source, User
 
+USERS = [
+    {}
+]
+
+SOURCES = [
+    {"username": "aurora", "apikey": "demo"},
+]
+
 APPLICATIONS = [
     {'name': 'Ursa Major', 'host': 'ursa-major-web', 'port': 8005, 'health_check_path': '/status'},
     {'name': 'Fornax', 'host': 'fornax-web', 'port': 8003, 'health_check_path': '/status'},
     {'name': 'Gemini', 'host': 'gemini-web', 'port': 8006, 'health_check_path': '/status'},
     {'name': 'Aquarius', 'host': 'aquarius-web', 'port': 8002, 'health_check_path': '/status'},
     {'name': 'Aurora', 'host': 'localhost', 'port': 8000, 'health_check_path': None},
-]
-
-SOURCES = [
-    {"username": "aurora", "apikey": "demo"},
 ]
 
 SERVICES = [
@@ -139,10 +143,11 @@ if len(User.objects.all()) == 0:
 
 # Create sources
 if len(Source.objects.all()) == 0:
-    Source.objects.create(
-        user=User.objects.get(username="aurora"),
-        apikey="demo"
-    )
+    for source in SOURCES:
+        Source.objects.create(
+            user=User.objects.get(username=source['username']),
+            apikey=source['apikey']
+        )
     print("Created sources")
 
 # Create applications
