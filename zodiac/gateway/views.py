@@ -18,7 +18,7 @@ from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView
 
 from zodiac import settings
-from .service_library import send_service_request, check_service_plugin
+from .service_library import send_service_request, check_service_auth
 from .models import Application, ServiceRegistry, RequestLog, Source, User
 from .mixins import JSONResponseMixin
 from .serializers import ServiceRegistrySerializer
@@ -77,7 +77,7 @@ class Gateway(APIView):
                                     .format(external_uri, request.method))
 
         # Checks authentication
-        valid, msg = check_service_plugin(registry, request)
+        valid, msg = check_service_auth(registry, request)
         if not valid:
             return self.bad_request(service=registry, request=request, msg=msg)
 
