@@ -65,7 +65,7 @@ SERVICES = [
     {'name': 'Assemble SIP', 'application': 'Fornax',
      'description': 'Creates Archivematica-compliant SIPs',
      'external_uri': 'assemble-sips', 'service_route': 'assemble/',
-     'plugin': 0, 'method': 'POST', 'callback_service': 'Fornax.Start Transfer',
+     'plugin': 0, 'method': 'POST', 'callback_service': 'Fornax.Create Transfer',
      'post_service': None, 'sources': None},
     {'name': 'Create Transfer', 'application': 'Fornax',
      'description': 'Starts and approves a transfer in Archivematica',
@@ -216,6 +216,7 @@ for service in SERVICES:
 
 # Add callbacks and post services
 for service in SERVICES:
+    print(service)
     object = ServiceRegistry.objects.get(name=service['name'])
     object.callback_service = ServiceRegistry.objects.get(
         application__name=service['callback_service'].split('.')[0],
