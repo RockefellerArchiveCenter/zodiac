@@ -216,7 +216,6 @@ for service in SERVICES:
 
 # Add callbacks and post services
 for service in SERVICES:
-    print(service)
     object = ServiceRegistry.objects.get(name=service['name'])
     object.callback_service = ServiceRegistry.objects.get(
         application__name=service['callback_service'].split('.')[0],
