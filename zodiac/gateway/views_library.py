@@ -26,10 +26,10 @@ def get_health_check_status(application):
     if application.health_check_path:
         try:
             resp = requests.get(
-                "http://{}:{}/{}".format(
+                "http://{}:{}/{}/".format(
                     application.app_host,
                     application.app_port,
-                    application.health_check_path.rstrip('/'))).json()
+                    application.health_check_path.lstrip("/").rstrip("/"))).json()
             status = True if resp['health']['ping']['pong'] else False
         except Exception:
             status = None
