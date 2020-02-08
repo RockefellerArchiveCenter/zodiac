@@ -50,9 +50,7 @@ def send_service_request(service, request={}):
         data=data,
         files=files,
         params={
-            "post_service_url": render_service_path(
-                service.post_service,
-                external=True)},
+            "post_service_url": render_service_path(service.post_service)},
         service_id=service.pk,
     )
 

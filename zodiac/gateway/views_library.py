@@ -2,15 +2,14 @@ import requests
 import urllib.parse as urlparse
 
 
-def render_service_path(service, uri='', external=False):
+def render_service_path(service, uri=''):
     if not service:
         return ''
 
     app_port = (':{}'.format(service.application.app_port)
                 if service.application.app_port > 0 else '')
-    service_uri = service.external_uri if external else service.service_route
     url = 'http://{}{}/{}{}'.format(service.application.app_host,
-                                    app_port, service_uri, uri)
+                                    app_port, service.service_route, uri)
 
     url = "{}/".format(url.rstrip("/"))
     parsed_url = list(urlparse.urlparse(url))
