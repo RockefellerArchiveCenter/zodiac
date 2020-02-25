@@ -88,7 +88,7 @@ services:
 volumes:
   zodiacdb:
   piscesdbvolume:
-  scorpiodb:
+  scorpiodbvolume:
   elasticsearch:
 
 networks:
