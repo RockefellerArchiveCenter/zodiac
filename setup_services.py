@@ -24,7 +24,7 @@ APPLICATIONS = [
     #     'port': 8002, 'health_check_path': '/status'},
     # {'name': 'Aurora', 'host': 'localhost',
     #     'port': 8000, 'health_check_path': None},
-    {'name': 'Pisces', 'host', 'localhost',
+    {'name': 'Pisces', 'host': 'localhost',
         'port': 8007, 'health_check_path': '/status'},
     {'name': 'Scorpio', 'host': 'localhost',
         'port': 8008, 'health_check_path': '/status'}
