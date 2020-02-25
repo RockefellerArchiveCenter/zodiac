@@ -13,9 +13,9 @@
 [submodule "gemini"]
 	path = gemini
 	url = https://github.com/RockefellerArchiveCenter/gemini.git
-[submodule "pisces"]
-	path = pisces
-	url = https://github.com/RockefellerArchiveCenter/pisces
 [submodule "scorpio"]
 	path = scorpio
 	url = https://github.com/RockefellerArchiveCenter/scorpio
+[submodule "pisces"]
+	path = pisces
+	url = https://github.com/RockefellerArchiveCenter/pisces
