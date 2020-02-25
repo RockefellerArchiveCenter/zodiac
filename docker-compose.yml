@@ -20,100 +20,65 @@ services:
     depends_on:
       - zodiac-db
 
-  aquarius-db:
+  pisces-db:
     image: postgres:10.4
     volumes:
-      - aquariusdb:/var/lib/postgresql/data/
+      - piscesdbvolume:/var/lib/postgresql/data/
     networks:
       - microservices
-  aquarius-web:
-    build: aquarius/
-    entrypoint: /code/aquarius/entrypoint.sh
+  pisces-web:
+    build: .
+    entrypoint: /code/entrypoint.sh
     volumes:
       - .:/code
     networks:
       - microservices
-      # - aurora_default
     ports:
-      - "8002:8002"
+      - "8007:8007"
     depends_on:
-      - aquarius-db
+      - pisces-db
 
-  fornax-db:
+  scorpio-db:
     image: postgres:10.4
     volumes:
-      - fornaxdb:/var/lib/postgresql/data/
+      - scorpiodbvolume:/var/lib/postgresql/data/
     networks:
       - microservices
-  fornax-web:
-    build: fornax/
-    entrypoint: /code/fornax/entrypoint.sh
+  scorpio-web:
+    build: .
+    entrypoint: /code/entrypoint.sh
     volumes:
       - .:/code
-      - ~/.pe-shared/ursamajor-fornax:/src/:ro
-      - ~/.am/ss-location-data:/dest/
     networks:
       - microservices
     ports:
-      - "8003:8003"
+      - "8008:8008"
     depends_on:
-      - fornax-db
+      - scorpio-db
 
-  libra-db:
-    image: postgres:10.4
+  elasticsearch:
+    image: elasticsearch:7.0.0
+    environment:
+      - node.name=elasticsearch
+      - discovery.seed_hosts=elasticsearch
+      - cluster.initial_master_nodes=elasticsearch
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - http.cors.enabled=true
+      - http.cors.allow-origin=http://localhost:8000
+      - http.cors.allow-headers=Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With
+      - http.cors.allow-credentials=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     volumes:
-      - libradb:/var/lib/postgresql/data/
-    networks:
-      - microservices
-  libra-web:
-    build: libra/
-    entrypoint: /code/libra/entrypoint.sh
-    volumes:
-      - .:/code
-    networks:
-      - microservices
-    ports:
-      - "8004:8004"
-    depends_on:
-      - libra-db
-
-  ursa-major-db:
-    image: postgres:10.4
-    volumes:
-      - ursamajordb:/var/lib/postgresql/data/
-    networks:
-      - microservices
-  ursa-major-web:
-    build: ursa_major/
-    entrypoint: /code/ursa_major/entrypoint.sh
-    volumes:
-      - .:/code
-      - ~/.pe-shared/aurora-ursamajor:/src/:ro
-      - ~/.pe-shared/ursamajor-fornax:/dest/
+      - elasticsearch:/usr/share/elasticsearch/data
     networks:
       - microservices
     ports:
-      - "8005:8005"
-    depends_on:
-      - ursa-major-db
-
-  gemini-db:
-    image: postgres:10.4
-    volumes:
-      - geminidb:/var/lib/postgresql/data/
-    networks:
-      - microservices
-  gemini-web:
-    build: gemini/
-    entrypoint: /code/gemini/entrypoint.sh
-    volumes:
-      - .:/code
-    networks:
-      - microservices
-    ports:
-      - "8006:8006"
-    depends_on:
-      - gemini-db
+      - 9200:9200
 
   my-rabbit:
     image: rabbitmq:3-management
@@ -122,11 +87,9 @@ services:
 
 volumes:
   zodiacdb:
-  aquariusdb:
-  fornaxdb:
-  libradb:
-  ursamajordb:
-  geminidb: 
+  piscesdb:
+  scorpiodb:
+  elasticsearch:
 
 networks:
   microservices:
