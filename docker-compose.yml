@@ -27,8 +27,8 @@ services:
     networks:
       - microservices
   pisces-web:
-    build: .
-    entrypoint: /code/entrypoint.sh
+    build: pisces/
+    entrypoint: /code/pisces/entrypoint.sh
     volumes:
       - .:/code
     networks:
@@ -45,8 +45,8 @@ services:
     networks:
       - microservices
   scorpio-web:
-    build: .
-    entrypoint: /code/entrypoint.sh
+    build: scorpio/
+    entrypoint: /code/scorpio/entrypoint.sh
     volumes:
       - .:/code
     networks:
