@@ -6,11 +6,13 @@ SUPERUSERS = [
 ]
 
 USERS = [
-    {"username": "aurora", "email": "aurora@example.com", "password": "aurorapass"}
+    {"username": "aurora", "email": "aurora@example.com", "password": "aurorapass"},
+    {"username": "zorya", "email": "zorya@example.com", "password": "zoryapass"}
 ]
 
 SOURCES = [
     {"username": "aurora", "apikey": "demo"},
+    {"username": "zorya", "apikey": "demo"},
 ]
 
 APPLICATIONS = [
@@ -46,12 +48,12 @@ SERVICES = [
      'description': 'Stores incoming bag data.',
      'external_uri': 'store-bags', 'service_route': 'bags',
      'plugin': 2, 'method': 'POST', 'callback_service': 'Ursa Major.Discover Bags',
-     'post_service': None, 'sources': ['aurora']},
+     'post_service': None, 'sources': ['zorya']},
     {'name': 'Discover Bags', 'application': 'Ursa Major',
      'description': 'Checks for transfer files and, if found, moves them to storage.',
      'external_uri': 'discover-bags/', 'service_route': 'bagdiscovery/',
-     'plugin': 0, 'method': 'POST', 'callback_service': None, 'post_service': 'Fornax.Store SIPs',
-     'sources': None},
+     'plugin': 0, 'method': 'POST', 'callback_service': 'Fornax.Store SIPs',
+     'post_service': None, 'sources': None},
     {'name': 'Cleanup Bags', 'application': 'Ursa Major',
      'description': 'Removes transfers from destination directory.',
      'external_uri': 'cleanup-bags/', 'service_route': 'cleanup/',
