@@ -218,6 +218,14 @@ SERVICES = [
      'service_route': 'fetch/archivesspace/deletes/?object_type=family', 'plugin': 0,
      'method': 'POST', 'callback_service': None, 'post_service': None,
      'sources': None},
+    {'name': 'Index Add', 'application': 'Scorpio',
+     'description': 'Adds new data to index', 'external_uri': 'index-add/',
+     'service_route': 'index/add/', 'plugin': 0, 'method': 'POST',
+     'callback_service': None, 'post_service': None, 'sources': None},
+    {'name': 'Index Delete', 'application': 'Scorpio',
+     'description': 'Removes deleted data from index', 'external_uri': 'index-delete/',
+     'service_route': 'index/delete/', 'plugin': 0, 'method': 'POST',
+     'callback_service': None, 'post_service': None, 'sources': None},
 ]
 
 # TASKS = [
