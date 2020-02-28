@@ -35,9 +35,9 @@ class Source(models.Model):
 
 
 class Application(models.Model):
-    name = models.CharField(max_length=64, unique=True)
+    name = models.CharField(max_length=255, unique=True)
     is_active = models.BooleanField(default=True)
-    app_host = models.CharField(max_length=40)
+    app_host = models.CharField(max_length=255)
     app_port = models.PositiveSmallIntegerField(null=True, blank=True)
     health_check_path = models.CharField(max_length=255, null=True, blank=True)
     created_time = models.DateTimeField(auto_now_add=True)
@@ -78,8 +78,8 @@ class ServiceRegistry(models.Model):
         on_delete=models.CASCADE,
     )
     description = models.TextField()
-    external_uri = models.CharField(max_length=40)
-    service_route = models.CharField(max_length=40)
+    external_uri = models.CharField(max_length=255)
+    service_route = models.CharField(max_length=255)
     plugin = models.IntegerField(choices=PLUGIN_CHOICE_LIST, default=0)
     sources = models.ManyToManyField(Source, blank=True)
     is_active = models.BooleanField(default=True)
