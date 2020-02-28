@@ -11,8 +11,8 @@ USERS = [
 ]
 
 SOURCES = [
-    {"username": "aurora", "apikey": "demo"},
-    {"username": "zorya", "apikey": "demo"},
+    {"username": "aurora", "apikey": "aurorakey"},
+    {"username": "zorya", "apikey": "zoryakey"},
 ]
 
 APPLICATIONS = [
