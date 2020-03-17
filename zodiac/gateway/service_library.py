@@ -63,27 +63,29 @@ def check_service_auth(service, request):
 
     elif service.plugin == ServiceRegistry.BASIC_AUTH:
         auth = BasicAuthentication()
+        msg = False, "Permission not allowed"
         try:
             user, password = auth.authenticate(request)
         except Exception:
             return False, "Authentication credentials were not provided."
         if service.source.filter(user=user):
-            return True, ""
-        else:
-            return False, "Permission not allowed"
+            msg = True, ""
+        return msg
     elif service.plugin == ServiceRegistry.KEY_AUTH:
         apikey = request.META.get("HTTP_APIKEY")
         sources = service.sources.all()
+        msg = False, "API Key needed."
         for source in sources:
             if apikey == source.apikey:
-                return True, ""
-        return False, "API Key needed."
+                msg = True, ""
+        return msg
     elif service.plugin == ServiceRegistry.SERVER_AUTH:
         source = service.sources.all()
+        msg = True, ""
         if not source:
-            return False, "Source needed."
+            msg = False, "Source needed."
         request.META["HTTP_AUTHORIZATION"] = requests.auth._basic_auth_str(
             source[0].user.username, source[0].apikey)
-        return True, ""
+        return msg
     else:
         raise NotImplementedError("Plugin %d not implemented" % service.plugin)
