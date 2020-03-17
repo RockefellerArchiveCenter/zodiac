@@ -54,6 +54,7 @@
             {% endif %}
           </dl>
         </div>
+        {% if request.user.is_authenticated %}
         <div class="box-footer">
           <a href="{{ object.get_update_url }}" class="btn btn-primary">Edit Service</a>
           <a href="{% url 'services-delete' pk=object.pk %}" class="btn btn-danger">Delete Service</a>
@@ -62,6 +63,7 @@
             <a href="#" id="clear-errors-btn" class="btn btn-warning" v-on:click.prevent="clearErrors">Clear Errors</a>
           </div>
         </div>
+        {% endif %}
       </div>
     </div>
   </div>

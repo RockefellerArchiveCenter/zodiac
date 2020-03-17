@@ -17,11 +17,11 @@ def send_service_request(service, request={}):
     if request:
         files = request.FILES
 
-        if service.plugin != 1 and request.META.get('HTTP_AUTHORIZATION'):
-            headers['authorization'] = request.META.get('HTTP_AUTHORIZATION')
-        # headers['content-type'] = request.content_type
+        if service.plugin != ServiceRegistry.BASIC_AUTH and request.META.get(
+                "HTTP_AUTHORIZATION"):
+            headers["authorization"] = request.META.get("HTTP_AUTHORIZATION")
 
-        strip = '/api/' + service.external_uri
+        strip = "/api/" + service.external_uri
         full_path = request.get_full_path()[len(strip):]
 
         url = render_service_path(service, full_path)
@@ -31,59 +31,61 @@ def send_service_request(service, request={}):
         for k, v in request.FILES.items():
             request.data.pop(k)
 
-        if request.content_type and request.content_type.lower() == 'application/json':
+        if request.content_type and request.content_type.lower() == "application/json":
             data = json.dumps(request.data)
-            headers['content-type'] = request.content_type
+            headers["content-type"] = request.content_type
         else:
             data = request.data
 
     else:
-        headers['content-type'] = 'application/json'
+        headers["content-type"] = "application/json"
         method = service.method.lower()
         data = {}
-        url = render_service_path(service, '')
+        url = render_service_path(service, "")
 
-    # chain exceptions
     async_result = queue_request.delay(
         method,
         url,
         headers=headers,
         data=data,
         files=files,
-        params={'post_service_url': render_service_path(service.post_service)},
+        params={
+            "post_service_url": render_service_path(service.post_service)},
         service_id=service.pk,
     )
 
     return async_result.id
 
 
-def check_service_plugin(service, request):
+def check_service_auth(service, request):
     if service.plugin == ServiceRegistry.REMOTE_AUTH:
-        return True, ''
+        return True, ""
 
     elif service.plugin == ServiceRegistry.BASIC_AUTH:
         auth = BasicAuthentication()
+        msg = False, "Permission not allowed"
         try:
             user, password = auth.authenticate(request)
-        except:
-            return False, 'Authentication credentials were not provided.'
-
+        except Exception:
+            return False, "Authentication credentials were not provided."
         if service.source.filter(user=user):
-            return True, ''
-        else:
-            return False, 'Permission not allowed'
+            msg = True, ""
+        return msg
     elif service.plugin == ServiceRegistry.KEY_AUTH:
-        apikey = request.META.get('HTTP_APIKEY')
+        apikey = request.META.get("HTTP_APIKEY")
         sources = service.sources.all()
+        msg = False, "API Key needed."
         for source in sources:
             if apikey == source.apikey:
-                return True, ''
-        return False, 'API Key needed.'
+                msg = True, ""
+        return msg
     elif service.plugin == ServiceRegistry.SERVER_AUTH:
         source = service.sources.all()
+        msg = True, ""
         if not source:
-            return False, 'Source needed.'
-        request.META['HTTP_AUTHORIZATION'] = requests.auth._basic_auth_str(source[0].user.username, source[0].apikey)
-        return True, ''
+            msg = False, "Source needed."
+        request.META["HTTP_AUTHORIZATION"] = requests.auth._basic_auth_str(
+            source[0].user.username, source[0].apikey)
+        return msg
     else:
         raise NotImplementedError("Plugin %d not implemented" % service.plugin)

@@ -19,10 +19,12 @@
             <dt>API Key</dt>
             <dd><code>{{object.apikey}}</code></dd>
         </div>
+        {% if request.user.is_authenticated %}
         <div class="box-footer">
           <a href="{{ object.get_update_url }}" class="btn btn-primary">Edit Source</a>
           <a href="{% url 'sources-delete' pk=object.pk %}" class="btn btn-danger">Delete Source</a>
         </div>
+        {% endif %}
       </div>
     </div>
   </div>

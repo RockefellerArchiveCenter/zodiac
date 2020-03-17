@@ -2,10 +2,15 @@ import json
 
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse
 
 from django_celery_results.models import TaskResult
+
+
+class User(AbstractUser):
+    pass
 
 
 class Source(models.Model):
@@ -39,7 +44,7 @@ class Application(models.Model):
     modified_time = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.app_host
+        return "{} ({}:{})".format(self.name, self.app_host, self.app_port)
 
     def get_update_url(self):
         return reverse('applications-update', args=[self.pk])

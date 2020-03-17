@@ -1,10 +1,7 @@
-# Create your tasks here
-from __future__ import absolute_import, unicode_literals
-import json
 import requests
 from django.utils import timezone
 
-from celery import shared_task, current_task, group, chain
+from celery import shared_task
 from django_celery_results.models import TaskResult
 
 from zodiac import settings
@@ -52,7 +49,7 @@ def queue_request(method, url, headers, data, files, params, service_id):
     else:
         try:
             message = r.json()
-        except:
+        except Exception:
             message = str(r)
         raise Exception(message)
 

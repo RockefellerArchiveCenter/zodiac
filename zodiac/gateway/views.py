@@ -2,13 +2,15 @@ import json
 from dateutil import tz
 
 from django_celery_results.models import TaskResult
-from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import BaseDetailView, DetailView
 from django.views.generic.list import ListView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from rest_framework import status
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
@@ -16,8 +18,8 @@ from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView
 
 from zodiac import settings
-from .service_library import send_service_request, check_service_plugin
-from .models import Application, ServiceRegistry, RequestLog, Source
+from .service_library import send_service_request, check_service_auth
+from .models import Application, ServiceRegistry, RequestLog, Source, User
 from .mixins import JSONResponseMixin
 from .serializers import ServiceRegistrySerializer
 from .views_library import get_health_check_status
@@ -75,7 +77,7 @@ class Gateway(APIView):
                                     .format(external_uri, request.method))
 
         # Checks authentication
-        valid, msg = check_service_plugin(registry, request)
+        valid, msg = check_service_auth(registry, request)
         if not valid:
             return self.bad_request(service=registry, request=request, msg=msg)
 
@@ -123,6 +125,7 @@ class SplashView(TemplateView):
         return context
 
 
+@method_decorator(login_required, name='dispatch')
 class ServicesAddView(CreateView):
     template_name = "gateway/add.html"
     model = ServiceRegistry
@@ -150,12 +153,14 @@ class ServicesJSONView(RetrieveAPIView):
     serializer_class = ServiceRegistrySerializer
 
 
+@method_decorator(login_required, name='dispatch')
 class ServicesUpdateView(UpdateView):
     template_name = "gateway/update.html"
     model = ServiceRegistry
     fields = services_registry_fields + ['is_active']
 
 
+@method_decorator(login_required, name='dispatch')
 class ServicesDeleteView(DeleteView):
     template_name = "gateway/delete.html"
     model = ServiceRegistry
@@ -186,6 +191,7 @@ class ServicesClearErrorsView(JSONResponseMixin, BaseDetailView):
         return self.render_to_json_response(context=data, **kwargs)
 
 
+@method_decorator(login_required, name='dispatch')
 class ApplicationsAddView(CreateView):
     template_name = "gateway/add.html"
     model = Application
@@ -213,12 +219,14 @@ class ApplicationsListView(ListView):
         return context
 
 
+@method_decorator(login_required, name='dispatch')
 class ApplicationsUpdateView(UpdateView):
     template_name = "gateway/update.html"
     model = Application
     fields = applications_update_fields + ['is_active']
 
 
+@method_decorator(login_required, name='dispatch')
 class ApplicationsDeleteView(DeleteView):
     template_name = "gateway/delete.html"
     model = Application
@@ -273,6 +281,7 @@ class ResultsDetailView(DetailView):
     model = RequestLog
 
 
+@method_decorator(login_required, name='dispatch')
 class SourcesAddView(CreateView):
     template_name = "gateway/add.html"
     model = Source
@@ -289,18 +298,21 @@ class SourcesListView(ListView):
     model = Source
 
 
+@method_decorator(login_required, name='dispatch')
 class SourcesUpdateView(UpdateView):
     template_name = "gateway/update.html"
     model = Source
     fields = ('user', 'apikey')
 
 
+@method_decorator(login_required, name='dispatch')
 class SourcesDeleteView(DeleteView):
     template_name = "gateway/delete.html"
     model = Source
     success_url = reverse_lazy('sources-list')
 
 
+@method_decorator(login_required, name='dispatch')
 class UsersAddView(CreateView):
     template_name = "gateway/users_add.html"
     model = User
@@ -317,6 +329,7 @@ class UsersListView(ListView):
     model = User
 
 
+@method_decorator(login_required, name='dispatch')
 class UsersUpdateView(UpdateView):
     template_name = "gateway/users_update.html"
     model = User
@@ -324,7 +337,16 @@ class UsersUpdateView(UpdateView):
     success_url = reverse_lazy('users-list')
 
 
+@method_decorator(login_required, name='dispatch')
 class UsersDeleteView(DeleteView):
     template_name = "gateway/users_delete.html"
     model = User
     success_url = reverse_lazy('users-list')
+
+
+class UsersLoginView(LoginView):
+    template_name = "gateway/users_login.html"
+
+
+class UsersLogoutView(LogoutView):
+    next_page = reverse_lazy("dashboard")
