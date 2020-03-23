@@ -1,6 +1,5 @@
-import json
-
 import requests
+import json
 from rest_framework.authentication import BasicAuthentication
 
 from .models import ServiceRegistry

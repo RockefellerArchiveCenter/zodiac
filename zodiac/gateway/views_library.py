@@ -1,6 +1,5 @@
-import urllib.parse as urlparse
-
 import requests
+import urllib.parse as urlparse
 
 
 def render_service_path(service, uri=''):
