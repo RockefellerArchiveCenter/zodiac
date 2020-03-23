@@ -34,7 +34,6 @@ services_registry_fields = [
     'sources',
     'is_private',
     'method',
-    'post_service',
     'callback_service',
 ]
 

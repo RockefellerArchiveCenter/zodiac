@@ -91,19 +91,15 @@ class ServiceRegistry(models.Model):
         null=True,
         blank=True
     )
-    post_service = models.ForeignKey(
-        'self',
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name="poster",
-        related_query_name="poster",
-    )
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
+
+    @property
+    def called_by(self):
+        return ServiceRegistry.objects.filter(callback_service=self.id)
 
     def get_update_url(self):
         return reverse('services-update', args=[self.pk])

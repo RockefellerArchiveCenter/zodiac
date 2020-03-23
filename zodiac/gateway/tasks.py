@@ -32,7 +32,7 @@ def queue_callbacks():
             headers={'Content-Type': 'application/json'},
             data=None,
             files=None,
-            params={'post_service_url': render_service_path(callback.post_service)},
+            params={},
             service_id=callback.id
         )
         if r:

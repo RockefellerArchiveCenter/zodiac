@@ -31,15 +31,11 @@
             <dd>{{object.description}}</dd>
             <dt>Routes</dt>
             <dd><code>{{object.method}}</code> requests for <code>api/{{object.external_uri}}</code> will be sent to <code>{{object.service_route}}</code></dd>
-            {% if object.post_service or object.callback_service %}<dt>Callbacks</dt>{% endif %}
+            {% if object.callback_service %}<dt>Callbacks</dt>
             <dd>
-              {% if object.post_service %}
-              <p>Delivers <code>{{object.post_service.method}}</code> request to <a href="{{object.post_service.get_absolute_url}}">{{object.post_service}}</a></p>
-              {% endif %}
-              {% if object.callback_service %}
               <p>Queues <code>{{object.callback_service.method}}</code> request for <a href="{{object.callback_service.get_absolute_url}}">{{object.callback_service}}</a></p>
-              {% endif %}
             </dd>
+            {% endif %}
             <dt>Application</dt>
             <dd><a href="{{object.application.get_absolute_url}}">{{object.application.name}}</a></dd>
             <dt>Authentication</dt>
