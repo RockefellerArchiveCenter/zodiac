@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import ServiceRegistry, Source, Application, RequestLog
+
+from .models import Application, RequestLog, ServiceRegistry, Source
 
 admin.site.register(Application)
 admin.site.register(ServiceRegistry)

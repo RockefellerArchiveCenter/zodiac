@@ -1,11 +1,10 @@
 import json
 
-from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
-from django.utils.translation import ugettext_lazy as _
+from django.db import models
 from django.urls import reverse
-
+from django.utils.translation import ugettext_lazy as _
 from django_celery_results.models import TaskResult
 
 
@@ -146,7 +145,7 @@ class RequestLog(models.Model):
         for e in json.loads(self.task_result.result).get('exc_message'):
             try:
                 emess = e.get('detail')
-            except:
+            except BaseException:
                 emess = e
             errors.append(emess)
         return errors
