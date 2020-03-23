@@ -31,18 +31,6 @@
             <dd>{{object.description}}</dd>
             <dt>Routes</dt>
             <dd><code>{{object.method}}</code> requests for <code>api/{{object.external_uri}}</code> will be sent to <code>{{object.service_route}}</code></dd>
-            {% if object.callback_service %}<dt>Callback</dt>
-            <dd>
-              <a href="{{object.callback_service.get_absolute_url}}">{{object.callback_service}}</a>
-            </dd>
-            {% endif %}
-            {% if object.called_by %}<dt>Called by</dt>
-            <dd>
-              {% for called_by in object.called_by %}
-              <a href="{{called_by.get_absolute_url}}">{{called_by}}</a><br/>
-              {% endfor %}
-            </dd>
-            {% endif %}
             <dt>Application</dt>
             <dd><a href="{{object.application.get_absolute_url}}">{{object.application.name}}</a></dd>
             <dt>Authentication</dt>
@@ -54,6 +42,20 @@
                   <a href="{{source.get_absolute_url}}">User <code>{{source.user.username}}</code> identified by API Key <code>{{source.apikey}}</code></a>
                 </dd>
               {% endfor %}
+            {% endif %}
+            {% if object.callback_service %}
+            <hr/>
+            <dt>Triggers</dt>
+            <dd>
+              <a href="{{object.callback_service.get_absolute_url}}">{{object.callback_service}}</a>
+            </dd>
+            {% endif %}
+            {% if object.called_by %}<dt>Called by</dt>
+            <dd>
+              {% for called_by in object.called_by %}
+              <a href="{{called_by.get_absolute_url}}">{{called_by}}</a><br/>
+              {% endfor %}
+            </dd>
             {% endif %}
           </dl>
         </div>

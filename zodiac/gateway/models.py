@@ -94,8 +94,11 @@ class ServiceRegistry(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ["application__name", "name"]
+
     def __str__(self):
-        return self.name
+        return "{}: {}".format(self.application.name, self.name)
 
     @property
     def called_by(self):
