@@ -1,11 +1,9 @@
 from django.http import JsonResponse
 
-
 class JSONResponseMixin:
     """
     A mixin that can be used to render a JSON response.
     """
-
     def render_to_json_response(self, context, **response_kwargs):
         """
         Returns a JSON response, transforming 'context' to make the payload.

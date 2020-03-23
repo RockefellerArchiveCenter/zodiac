@@ -1,7 +1,9 @@
-from django.test import Client, TestCase
+from django.test import TestCase, Client
 from django.urls import reverse
 
 from .models import Application, ServiceRegistry
+from .tasks import queue_callbacks
+from .views import ServicesTriggerView
 
 APPLICATIONS = [
     {'name': 'Ursa Major', 'host': 'ursa-major-web', 'port': 8005},
@@ -12,19 +14,19 @@ SERVICES = [
     {'name': 'Store Accessions', 'application': 'Ursa Major',
      'description': 'Stores incoming accession data and creates associated transfer objects.',
      'external_uri': 'store-accessions', 'service_route': 'accessions',
-     'plugin': 0, 'method': 'POST', 'callback_service': 'Ursa Major.Discover Bags', 'post_service': None, },
+     'plugin': 0, 'method': 'POST', 'callback_service': 'Ursa Major.Discover Bags', 'post_service': None,},
     {'name': 'Discover Bags', 'application': 'Ursa Major',
      'description': 'Checks for transfer files and, if found, moves them to storage.',
      'external_uri': 'discover-bags/', 'service_route': 'bagdiscovery/',
-     'plugin': 0, 'method': 'POST', 'callback_service': None, 'post_service': 'Fornax.Approve Transfer', },
+     'plugin': 0, 'method': 'POST', 'callback_service': None, 'post_service': 'Fornax.Approve Transfer',},
     {'name': 'Approve Transfer', 'application': 'Fornax',
      'description': 'Approves transfer in Archivematica',
      'external_uri': 'approve-transfer/', 'service_route': 'approve/',
-     'plugin': 0, 'method': 'POST', 'callback_service': 'Fornax.Request Bag Cleanup', 'post_service': 'Ursa Major.Discover Bags', },
+     'plugin': 0, 'method': 'POST', 'callback_service': 'Fornax.Request Bag Cleanup', 'post_service': 'Ursa Major.Discover Bags',},
     {'name': 'Request Bag Cleanup', 'application': 'Fornax',
      'description': 'Requests deletion of processed bags from source directory.',
      'external_uri': 'request-bag-cleanup/', 'service_route': 'request-cleanup/',
-     'plugin': 0, 'method': 'POST', 'callback_service': None, 'post_service': None, },
+     'plugin': 0, 'method': 'POST', 'callback_service': None, 'post_service': None,},
 ]
 
 

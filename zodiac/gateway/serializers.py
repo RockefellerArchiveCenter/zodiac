@@ -1,7 +1,7 @@
-from django_celery_results.models import TaskResult
 from rest_framework import serializers
+from django_celery_results.models import TaskResult
 
-from .models import RequestLog, ServiceRegistry
+from .models import *
 
 
 class TaskResultSerializer(serializers.ModelSerializer):
