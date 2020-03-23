@@ -31,9 +31,16 @@
             <dd>{{object.description}}</dd>
             <dt>Routes</dt>
             <dd><code>{{object.method}}</code> requests for <code>api/{{object.external_uri}}</code> will be sent to <code>{{object.service_route}}</code></dd>
-            {% if object.callback_service %}<dt>Callbacks</dt>
+            {% if object.callback_service %}<dt>Callback</dt>
             <dd>
-              <p>Queues <code>{{object.callback_service.method}}</code> request for <a href="{{object.callback_service.get_absolute_url}}">{{object.callback_service}}</a></p>
+              <a href="{{object.callback_service.get_absolute_url}}">{{object.callback_service}}</a>
+            </dd>
+            {% endif %}
+            {% if object.called_by %}<dt>Called by</dt>
+            <dd>
+              {% for called_by in object.called_by %}
+              <a href="{{called_by.get_absolute_url}}">{{called_by}}</a><br/>
+              {% endfor %}
             </dd>
             {% endif %}
             <dt>Application</dt>
