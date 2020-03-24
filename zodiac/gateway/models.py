@@ -142,10 +142,11 @@ class RequestLog(models.Model):
 
     def error_messages(self):
         errors = []
-        for e in json.loads(self.task_result.result).get('exc_message'):
-            try:
-                emess = e.get('detail')
-            except BaseException:
-                emess = e
-            errors.append(emess)
+        if self.task_result:
+            for e in json.loads(self.task_result.result).get('exc_message'):
+                try:
+                    emess = e.get('detail')
+                except BaseException:
+                    emess = e
+                errors.append(emess)
         return errors
