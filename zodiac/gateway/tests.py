@@ -12,19 +12,19 @@ SERVICES = [
     {'name': 'Store Accessions', 'application': 'Ursa Major',
      'description': 'Stores incoming accession data and creates associated transfer objects.',
      'external_uri': 'store-accessions', 'service_route': 'accessions',
-     'plugin': 0, 'method': 'POST', 'callback_service': 'Ursa Major.Discover Bags', 'post_service': None, },
+     'plugin': 0, 'method': 'POST', 'callback_service': 'Ursa Major.Discover Bags', },
     {'name': 'Discover Bags', 'application': 'Ursa Major',
      'description': 'Checks for transfer files and, if found, moves them to storage.',
      'external_uri': 'discover-bags/', 'service_route': 'bagdiscovery/',
-     'plugin': 0, 'method': 'POST', 'callback_service': None, 'post_service': 'Fornax.Approve Transfer', },
+     'plugin': 0, 'method': 'POST', 'callback_service': None, },
     {'name': 'Approve Transfer', 'application': 'Fornax',
      'description': 'Approves transfer in Archivematica',
      'external_uri': 'approve-transfer/', 'service_route': 'approve/',
-     'plugin': 0, 'method': 'POST', 'callback_service': 'Fornax.Request Bag Cleanup', 'post_service': 'Ursa Major.Discover Bags', },
+     'plugin': 0, 'method': 'POST', 'callback_service': 'Fornax.Request Bag Cleanup', },
     {'name': 'Request Bag Cleanup', 'application': 'Fornax',
      'description': 'Requests deletion of processed bags from source directory.',
      'external_uri': 'request-bag-cleanup/', 'service_route': 'request-cleanup/',
-     'plugin': 0, 'method': 'POST', 'callback_service': None, 'post_service': None, },
+     'plugin': 0, 'method': 'POST', 'callback_service': None, },
 ]
 
 
@@ -61,7 +61,6 @@ class GatewayTestCase(TestCase):
         for service in SERVICES:
             object = ServiceRegistry.objects.get(name=service['name'])
             object.callback_service = ServiceRegistry.objects.get(application__name=service['callback_service'].split('.')[0], name=service['callback_service'].split('.')[1]) if service['callback_service'] else None
-            object.post_service = ServiceRegistry.objects.get(application__name=service['post_service'].split('.')[0], name=service['post_service'].split('.')[1]) if service['post_service'] else None
             object.save()
         self.assertEqual(len(ServiceRegistry.objects.all()), len(SERVICES))
 

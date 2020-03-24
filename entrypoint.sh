@@ -2,7 +2,7 @@
 
 # Apply database migrations
 ../wait-for-it.sh db:5432 -- echo "Apply database migrations"
-python manage.py makemigrations && python manage.py migrate
+python manage.py migrate
 
   if [ ! -f zodiac/config.py ]; then
       echo "Creating config file"
