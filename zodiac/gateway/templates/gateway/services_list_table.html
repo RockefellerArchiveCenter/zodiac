@@ -14,8 +14,7 @@
         <td><a href="{{service.application.get_absolute_url}}">{{service.application.name}}</a></td>
         <td>{{service.description}}</td>
         <td>
-          {% if service.post_service %}<a href="{{service.post_service.get_absolute_url}}">{{service.post_service}} <span class="label label-default">POST</span><br />{% endif %}
-          {% if service.callback_service %}<a href="{{service.callback_service.get_absolute_url}}">{{service.callback_service}}</a> <span class="label label-default">Queue</span>{% endif %}
+          {% if service.callback_service %}<a href="{{service.callback_service.get_absolute_url}}">{{service.callback_service.name}}</a>{% endif %}
         </td>
       </tr>
     {% endfor %}

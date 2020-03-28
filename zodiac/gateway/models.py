@@ -91,19 +91,18 @@ class ServiceRegistry(models.Model):
         null=True,
         blank=True
     )
-    post_service = models.ForeignKey(
-        'self',
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name="poster",
-        related_query_name="poster",
-    )
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ["application__name", "name"]
+
     def __str__(self):
-        return self.name
+        return "{}: {}".format(self.application.name, self.name)
+
+    @property
+    def called_by(self):
+        return ServiceRegistry.objects.filter(callback_service=self.id)
 
     def get_update_url(self):
         return reverse('services-update', args=[self.pk])
@@ -142,10 +141,11 @@ class RequestLog(models.Model):
 
     def error_messages(self):
         errors = []
-        for e in json.loads(self.task_result.result).get('exc_message'):
-            try:
-                emess = e.get('detail')
-            except BaseException:
-                emess = e
-            errors.append(emess)
+        if self.task_result:
+            for e in json.loads(self.task_result.result).get('exc_message'):
+                try:
+                    emess = e.get('detail')
+                except BaseException:
+                    emess = e
+                errors.append(emess)
         return errors
