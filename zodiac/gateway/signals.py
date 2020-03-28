@@ -34,7 +34,7 @@ def on_task_prerun(task_id=None, task=None, *args, **kwargs):
 
 @task_postrun.connect
 def on_task_postrun(task_id=None, task=None, retval=None, state=None, *args, **kwargs):
-    """Marks service as inactive and saves TaskResult"""
+    """Marks service as inactive and creates RequestLog."""
     service = update_service_status(kwargs, False)
     if len(kwargs['args']) > 1:
         task_result = TaskResult.objects.get(task_id=task_id)
