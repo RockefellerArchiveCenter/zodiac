@@ -11,7 +11,7 @@ python manage.py migrate
 
 # Create initial organizations and users
 echo "Setting up applications and services"
-python manage.py shell < ../setup_services.py
+python manage.py setup_services
 
 echo "Starting celery using supervisor"
 supervisord -c /etc/supervisord.conf

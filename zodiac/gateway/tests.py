@@ -1,7 +1,10 @@
+from django.core.management import call_command
 from django.test import Client, TestCase
 from django.urls import reverse
+from django_celery_beat.models import PeriodicTask
 
-from .models import Application, ServiceRegistry
+from .management.commands import setup_services as service_configs
+from .models import Application, ServiceRegistry, Source, User
 
 APPLICATIONS = [
     {'name': 'Ursa Major', 'host': 'ursa-major-web', 'port': 8005},
@@ -74,3 +77,12 @@ class GatewayTestCase(TestCase):
         self.create_applications()
         self.create_services()
         self.queue_tasks()
+
+    def test_setup_services(self):
+        call_command("setup_services", "--reset")
+        self.assertEqual(len(service_configs.SUPERUSERS), len(User.objects.filter(is_superuser=True)))
+        self.assertEqual(len(service_configs.USERS), len(User.objects.filter(is_superuser=False)))
+        self.assertEqual(len(service_configs.SOURCES), len(Source.objects.all()))
+        self.assertEqual(len(service_configs.APPLICATIONS), len(Application.objects.all()))
+        self.assertEqual(len(service_configs.SERVICES), len(ServiceRegistry.objects.all()))
+        self.assertEqual(len(service_configs.TASKS), len(PeriodicTask.objects.all()))
