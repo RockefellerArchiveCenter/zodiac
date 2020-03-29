@@ -17,16 +17,26 @@ SOURCES = [
 ]
 
 APPLICATIONS = [
-    {"name": "Ursa Major", "host": "ursa-major-web",
-        "port": 8005, "health_check_path": "/status"},
-    {"name": "Fornax", "host": "fornax-web",
-        "port": 8003, "health_check_path": "/status"},
-    {"name": "Gemini", "host": "gemini-web",
-        "port": 8006, "health_check_path": "/status"},
-    {"name": "Aquarius", "host": "aquarius-web",
-        "port": 8002, "health_check_path": "/status"},
-    {"name": "Aurora", "host": "localhost",
-        "port": 8000, "health_check_path": "/status"},
+    {
+        "name": "Ursa Major", "host": "ursa-major-web",
+        "port": 8005, "health_check_path": "/status"
+    },
+    {
+        "name": "Fornax", "host": "fornax-web",
+        "port": 8003, "health_check_path": "/status"
+    },
+    {
+        "name": "Gemini", "host": "gemini-web",
+        "port": 8006, "health_check_path": "/status"
+    },
+    {
+        "name": "Aquarius", "host": "aquarius-web",
+        "port": 8002, "health_check_path": "/status"
+    },
+    {
+        "name": "Aurora", "host": "localhost",
+        "port": 8000, "health_check_path": "/status"
+    },
 ]
 
 SERVICES = [
@@ -70,19 +80,28 @@ SERVICES = [
         "description": "Checks for transfer files and, if found, moves them to storage.",
         "external_uri": "discover-bags",
         "service_route": "bagdiscovery",
+        "callback_service": "Ursa Major.Deliver Bags"
+    },
+    {
+        "name": "Deliver Bags",
+        "application": "Ursa Major",
+        "description": "Delivers discovered transfers to configured service.",
+        "external_uri": "discover-bags",
+        "service_route": "bagdiscovery",
     },
     {
         "name": "Cleanup Bags",
         "application": "Ursa Major",
         "description": "Removes transfers from destination directory.",
-        "external_uri": "cleanup-bags/", "service_route": "cleanup/",
+        "external_uri": "cleanup-bags",
+        "service_route": "cleanup",
     },
     {
         "name": "Store SIPs",
         "application": "Fornax",
         "description": "Stores incoming SIP objects.",
-        "external_uri": "store-sips/",
-        "service_route": "sips/",
+        "external_uri": "store-sips",
+        "service_route": "sips",
         "callback_service": "Fornax.Assemble SIP",
     },
     {
@@ -90,7 +109,7 @@ SERVICES = [
         "application": "Fornax",
         "description": "Creates Archivematica-compliant SIPs",
         "external_uri": "assemble-sips",
-        "service_route": "assemble/",
+        "service_route": "assemble",
         "callback_service": "Fornax.Create Transfer",
     },
     {
@@ -98,46 +117,46 @@ SERVICES = [
         "application": "Fornax",
         "description": "Starts and approves a transfer in Archivematica",
         "external_uri": "create-transfer",
-        "service_route": "start/",
+        "service_route": "start",
         "callback_service": "Fornax.Request Bag Cleanup",
     },
     {
         "name": "Request Bag Cleanup",
         "application": "Fornax",
         "description": "Requests deletion of processed bags from source directory.",
-        "external_uri": "request-bag-cleanup/",
-        "service_route": "request-cleanup/",
+        "external_uri": "request-bag-cleanup",
+        "service_route": "request-cleanup",
         "callback_service": "Fornax.Remove Completed Ingests",
     },
     {
         "name": "Remove Completed Ingests",
         "application": "Fornax",
         "description": "Removes completed ingests from Archivematica dashboard.",
-        "external_uri": "remove-completed-ingests/",
-        "service_route": "remove-ingests/",
+        "external_uri": "remove-completed-ingests",
+        "service_route": "remove-ingests",
         "callback_service": "Fornax.Remove Completed Transfers",
     },
     {
         "name": "Remove Completed Transfers",
         "application": "Fornax",
         "description": "Removes completed transfers from Archivematica dashboard.",
-        "external_uri": "remove-completed-transfers/",
-        "service_route": "remove-transfers/",
+        "external_uri": "remove-completed-transfers",
+        "service_route": "remove-transfers",
         "callback_service": "Gemini.Download Packages",
     },
     {
         "name": "Cleanup SIPs",
         "application": "Fornax",
         "description": "Removes SIPs from destination directory.",
-        "external_uri": "cleanup-sips/",
-        "service_route": "cleanup/",
+        "external_uri": "cleanup-sips",
+        "service_route": "cleanup",
     },
     {
         "name": "Download Packages",
         "application": "Gemini",
         "description": "Downloads packages from Archivematica",
-        "external_uri": "download-packages/",
-        "service_route": "download/",
+        "external_uri": "download-packages",
+        "service_route": "download",
         "callback_service": "Gemini.Store Package",
     },
     {
@@ -145,30 +164,38 @@ SERVICES = [
         "application": "Gemini",
         "description": "Stores packages in Fedora",
         "external_uri": "store-packages",
-        "service_route": "store/",
+        "service_route": "store",
+        "callback_service": "Gemini.Deliver Package",
+    },
+    {
+        "name": "Deliver Package",
+        "application": "Gemini",
+        "description": "Delivers data about stored packages to configured service",
+        "external_uri": "deliver-packages",
+        "service_route": "deliver",
         "callback_service": "Gemini.Request SIP Cleanup",
     },
     {
         "name": "Request SIP Cleanup",
         "application": "Gemini",
         "description": "Requests deletion of processed SIPs from source directory.",
-        "external_uri": "request-sip-cleanup/",
-        "service_route": "request-cleanup/",
+        "external_uri": "request-sip-cleanup",
+        "service_route": "request-cleanup",
     },
     {
         "name": "Store Package Data",
         "application": "Aquarius",
         "description": "Stores incoming transfer objects",
-        "external_uri": "store-data/",
-        "service_route": "packages/",
+        "external_uri": "store-data",
+        "service_route": "packages",
         "callback_service": "Aquarius.Process Accessions",
     },
     {
         "name": "Process Accessions",
         "application": "Aquarius",
         "description": "Transforms and delivers accession data to ArchivesSpace",
-        "external_uri": "process-accessions/",
-        "service_route": "accessions/",
+        "external_uri": "process-accessions",
+        "service_route": "accessions",
         "callback_service": "Aquarius.Update Accession Status",
     },
     {

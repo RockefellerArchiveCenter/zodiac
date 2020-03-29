@@ -35,6 +35,7 @@ class GatewayTestCase(TestCase):
 
     def setUp(self):
         self.client = Client()
+        call_command("setup_services", "--reset")
 
     def create_applications(self):
         print("Creating applications")
