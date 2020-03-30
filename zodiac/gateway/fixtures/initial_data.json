@@ -1,0 +1,2078 @@
+[
+{
+    "model": "contenttypes.contenttype",
+    "pk": 1,
+    "fields": {
+        "app_label": "admin",
+        "model": "logentry"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 2,
+    "fields": {
+        "app_label": "auth",
+        "model": "permission"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 3,
+    "fields": {
+        "app_label": "auth",
+        "model": "group"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 4,
+    "fields": {
+        "app_label": "contenttypes",
+        "model": "contenttype"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 5,
+    "fields": {
+        "app_label": "sessions",
+        "model": "session"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 6,
+    "fields": {
+        "app_label": "gateway",
+        "model": "user"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 7,
+    "fields": {
+        "app_label": "gateway",
+        "model": "application"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 8,
+    "fields": {
+        "app_label": "gateway",
+        "model": "source"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 9,
+    "fields": {
+        "app_label": "gateway",
+        "model": "serviceregistry"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 10,
+    "fields": {
+        "app_label": "gateway",
+        "model": "requestlog"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 11,
+    "fields": {
+        "app_label": "django_celery_results",
+        "model": "taskresult"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 12,
+    "fields": {
+        "app_label": "django_celery_beat",
+        "model": "crontabschedule"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 13,
+    "fields": {
+        "app_label": "django_celery_beat",
+        "model": "intervalschedule"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 14,
+    "fields": {
+        "app_label": "django_celery_beat",
+        "model": "periodictask"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 15,
+    "fields": {
+        "app_label": "django_celery_beat",
+        "model": "periodictasks"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 16,
+    "fields": {
+        "app_label": "django_celery_beat",
+        "model": "solarschedule"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 17,
+    "fields": {
+        "app_label": "django_celery_beat",
+        "model": "clockedschedule"
+    }
+},
+{
+    "model": "gateway.application",
+    "pk": 1,
+    "fields": {
+        "name": "Ursa Major",
+        "is_active": true,
+        "app_host": "ursa-major-web",
+        "app_port": 8005,
+        "health_check_path": "/status",
+        "created_time": "2020-03-24T02:26:36.821Z",
+        "modified_time": "2020-03-24T02:26:36.821Z"
+    }
+},
+{
+    "model": "gateway.application",
+    "pk": 2,
+    "fields": {
+        "name": "Fornax",
+        "is_active": true,
+        "app_host": "fornax-web",
+        "app_port": 8003,
+        "health_check_path": "/status",
+        "created_time": "2020-03-24T02:26:36.825Z",
+        "modified_time": "2020-03-24T02:26:36.825Z"
+    }
+},
+{
+    "model": "gateway.application",
+    "pk": 3,
+    "fields": {
+        "name": "Gemini",
+        "is_active": true,
+        "app_host": "gemini-web",
+        "app_port": 8006,
+        "health_check_path": "/status",
+        "created_time": "2020-03-24T02:26:36.829Z",
+        "modified_time": "2020-03-24T02:26:36.829Z"
+    }
+},
+{
+    "model": "gateway.application",
+    "pk": 4,
+    "fields": {
+        "name": "Aquarius",
+        "is_active": true,
+        "app_host": "aquarius-web",
+        "app_port": 8002,
+        "health_check_path": "/status",
+        "created_time": "2020-03-24T02:26:36.839Z",
+        "modified_time": "2020-03-24T02:26:36.839Z"
+    }
+},
+{
+    "model": "gateway.application",
+    "pk": 5,
+    "fields": {
+        "name": "Aurora",
+        "is_active": true,
+        "app_host": "localhost",
+        "app_port": 8000,
+        "health_check_path": null,
+        "created_time": "2020-03-24T02:26:36.843Z",
+        "modified_time": "2020-03-24T02:26:36.843Z"
+    }
+},
+{
+    "model": "gateway.serviceregistry",
+    "pk": 1,
+    "fields": {
+        "name": "Update Transfers",
+        "application": 5,
+        "description": "Updates transfers and removes files from destination directory.",
+        "external_uri": "api/transfers/",
+        "service_route": "api/transfers/",
+        "plugin": 0,
+        "is_active": true,
+        "is_private": false,
+        "has_active_task": false,
+        "method": "POST",
+        "callback_service": null,
+        "created_time": "2020-03-24T02:26:36.852Z",
+        "modified_time": "2020-03-24T14:40:58.775Z",
+        "sources": []
+    }
+},
+{
+    "model": "gateway.serviceregistry",
+    "pk": 2,
+    "fields": {
+        "name": "Update Accessions",
+        "application": 5,
+        "description": "Updates accession data.",
+        "external_uri": "api/accessions/",
+        "service_route": "api/acccessions/",
+        "plugin": 0,
+        "is_active": true,
+        "is_private": false,
+        "has_active_task": false,
+        "method": "POST",
+        "callback_service": null,
+        "created_time": "2020-03-24T02:26:36.857Z",
+        "modified_time": "2020-03-24T14:40:58.779Z",
+        "sources": []
+    }
+},
+{
+    "model": "gateway.serviceregistry",
+    "pk": 3,
+    "fields": {
+        "name": "Store Accessions",
+        "application": 1,
+        "description": "Stores incoming accession data and creates associated transfer objects.",
+        "external_uri": "store-accessions",
+        "service_route": "accessions",
+        "plugin": 2,
+        "is_active": true,
+        "is_private": false,
+        "has_active_task": false,
+        "method": "POST",
+        "callback_service": 5,
+        "created_time": "2020-03-24T02:26:36.863Z",
+        "modified_time": "2020-03-24T14:40:58.842Z",
+        "sources": [
+            1
+        ]
+    }
+},
+{
+    "model": "gateway.serviceregistry",
+    "pk": 4,
+    "fields": {
+        "name": "Store Bags",
+        "application": 1,
+        "description": "Stores incoming bag data.",
+        "external_uri": "store-bags",
+        "service_route": "bags",
+        "plugin": 2,
+        "is_active": true,
+        "is_private": false,
+        "has_active_task": false,
+        "method": "POST",
+        "callback_service": 5,
+        "created_time": "2020-03-24T02:26:36.876Z",
+        "modified_time": "2020-03-24T14:40:58.838Z",
+        "sources": [
+            2
+        ]
+    }
+},
+{
+    "model": "gateway.serviceregistry",
+    "pk": 5,
+    "fields": {
+        "name": "Discover Bags",
+        "application": 1,
+        "description": "Checks for transfer files and, if found, moves them to storage.",
+        "external_uri": "discover-bags",
+        "service_route": "bagdiscovery",
+        "plugin": 0,
+        "is_active": true,
+        "is_private": false,
+        "has_active_task": false,
+        "method": "POST",
+        "callback_service": null,
+        "created_time": "2020-03-24T02:26:36.887Z",
+        "modified_time": "2020-03-24T02:45:00.353Z",
+        "sources": []
+    }
+},
+{
+    "model": "gateway.serviceregistry",
+    "pk": 6,
+    "fields": {
+        "name": "Cleanup Bags",
+        "application": 1,
+        "description": "Removes transfers from destination directory.",
+        "external_uri": "cleanup-bags",
+        "service_route": "cleanup",
+        "plugin": 0,
+        "is_active": true,
+        "is_private": false,
+        "has_active_task": false,
+        "method": "POST",
+        "callback_service": null,
+        "created_time": "2020-03-24T02:26:36.892Z",
+        "modified_time": "2020-03-24T02:40:33.422Z",
+        "sources": []
+    }
+},
+{
+    "model": "gateway.serviceregistry",
+    "pk": 7,
+    "fields": {
+        "name": "Store SIPs",
+        "application": 2,
+        "description": "Stores incoming SIP objects.",
+        "external_uri": "store-sips",
+        "service_route": "sips",
+        "plugin": 0,
+        "is_active": true,
+        "is_private": false,
+        "has_active_task": false,
+        "method": "POST",
+        "callback_service": 8,
+        "created_time": "2020-03-24T02:26:36.899Z",
+        "modified_time": "2020-03-24T02:40:33.428Z",
+        "sources": []
+    }
+},
+{
+    "model": "gateway.serviceregistry",
+    "pk": 8,
+    "fields": {
+        "name": "Assemble SIP",
+        "application": 2,
+        "description": "Creates Archivematica-compliant SIPs",
+        "external_uri": "assemble-sips",
+        "service_route": "assemble",
+        "plugin": 0,
+        "is_active": true,
+        "is_private": false,
+        "has_active_task": false,
+        "method": "POST",
+        "callback_service": 9,
+        "created_time": "2020-03-24T02:26:36.905Z",
+        "modified_time": "2020-03-24T02:45:00.295Z",
+        "sources": []
+    }
+},
+{
+    "model": "gateway.serviceregistry",
+    "pk": 9,
+    "fields": {
+        "name": "Create Transfer",
+        "application": 2,
+        "description": "Starts and approves a transfer in Archivematica",
+        "external_uri": "create-transfer",
+        "service_route": "start",
+        "plugin": 0,
+        "is_active": true,
+        "is_private": false,
+        "has_active_task": false,
+        "method": "POST",
+        "callback_service": 10,
+        "created_time": "2020-03-24T02:26:36.910Z",
+        "modified_time": "2020-03-24T02:45:00.397Z",
+        "sources": []
+    }
+},
+{
+    "model": "gateway.serviceregistry",
+    "pk": 10,
+    "fields": {
+        "name": "Request Bag Cleanup",
+        "application": 2,
+        "description": "Requests deletion of processed bags from source directory.",
+        "external_uri": "request-bag-cleanup",
+        "service_route": "request-cleanup",
+        "plugin": 0,
+        "is_active": true,
+        "is_private": false,
+        "has_active_task": false,
+        "method": "POST",
+        "callback_service": 11,
+        "created_time": "2020-03-24T02:26:36.915Z",
+        "modified_time": "2020-03-24T02:45:00.507Z",
+        "sources": []
+    }
+},
+{
+    "model": "gateway.serviceregistry",
+    "pk": 11,
+    "fields": {
+        "name": "Remove Completed Ingests",
+        "application": 2,
+        "description": "Removes completed ingests from Archivematica dashboard.",
+        "external_uri": "remove-completed-ingests",
+        "service_route": "remove-ingests",
+        "plugin": 0,
+        "is_active": true,
+        "is_private": false,
+        "has_active_task": false,
+        "method": "POST",
+        "callback_service": 12,
+        "created_time": "2020-03-24T02:26:36.921Z",
+        "modified_time": "2020-03-24T02:45:00.457Z",
+        "sources": []
+    }
+},
+{
+    "model": "gateway.serviceregistry",
+    "pk": 12,
+    "fields": {
+        "name": "Remove Completed Transfers",
+        "application": 2,
+        "description": "Removes completed transfers from Archivematica dashboard.",
+        "external_uri": "remove-completed-transfers",
+        "service_route": "remove-transfers",
+        "plugin": 0,
+        "is_active": true,
+        "is_private": false,
+        "has_active_task": false,
+        "method": "POST",
+        "callback_service": 14,
+        "created_time": "2020-03-24T02:26:36.929Z",
+        "modified_time": "2020-03-24T02:44:09.665Z",
+        "sources": []
+    }
+},
+{
+    "model": "gateway.serviceregistry",
+    "pk": 13,
+    "fields": {
+        "name": "Cleanup SIPs",
+        "application": 2,
+        "description": "Removes SIPs from destination directory.",
+        "external_uri": "cleanup-sips",
+        "service_route": "cleanup",
+        "plugin": 0,
+        "is_active": true,
+        "is_private": false,
+        "has_active_task": false,
+        "method": "POST",
+        "callback_service": null,
+        "created_time": "2020-03-24T02:26:36.938Z",
+        "modified_time": "2020-03-24T02:40:33.478Z",
+        "sources": []
+    }
+},
+{
+    "model": "gateway.serviceregistry",
+    "pk": 14,
+    "fields": {
+        "name": "Download Packages",
+        "application": 3,
+        "description": "Downloads packages from Archivematica",
+        "external_uri": "download-packages",
+        "service_route": "download",
+        "plugin": 0,
+        "is_active": true,
+        "is_private": false,
+        "has_active_task": false,
+        "method": "POST",
+        "callback_service": 15,
+        "created_time": "2020-03-24T02:26:36.947Z",
+        "modified_time": "2020-03-24T02:44:09.732Z",
+        "sources": []
+    }
+},
+{
+    "model": "gateway.serviceregistry",
+    "pk": 15,
+    "fields": {
+        "name": "Store Package",
+        "application": 3,
+        "description": "Stores packages in Fedora",
+        "external_uri": "store-packages",
+        "service_route": "store",
+        "plugin": 0,
+        "is_active": true,
+        "is_private": false,
+        "has_active_task": false,
+        "method": "POST",
+        "callback_service": 16,
+        "created_time": "2020-03-24T02:26:36.957Z",
+        "modified_time": "2020-03-24T02:45:00.149Z",
+        "sources": []
+    }
+},
+{
+    "model": "gateway.serviceregistry",
+    "pk": 16,
+    "fields": {
+        "name": "Request SIP Cleanup",
+        "application": 3,
+        "description": "Requests deletion of processed SIPs from source directory.",
+        "external_uri": "request-sip-cleanup",
+        "service_route": "request-cleanup",
+        "plugin": 0,
+        "is_active": true,
+        "is_private": false,
+        "has_active_task": false,
+        "method": "POST",
+        "callback_service": null,
+        "created_time": "2020-03-24T02:26:36.963Z",
+        "modified_time": "2020-03-24T02:45:00.216Z",
+        "sources": []
+    }
+},
+{
+    "model": "gateway.serviceregistry",
+    "pk": 17,
+    "fields": {
+        "name": "Store Package Data",
+        "application": 4,
+        "description": "Stores incoming transfer objects",
+        "external_uri": "store-data",
+        "service_route": "packages",
+        "plugin": 0,
+        "is_active": true,
+        "is_private": false,
+        "has_active_task": false,
+        "method": "POST",
+        "callback_service": 18,
+        "created_time": "2020-03-24T02:26:36.969Z",
+        "modified_time": "2020-03-24T02:40:33.505Z",
+        "sources": []
+    }
+},
+{
+    "model": "gateway.serviceregistry",
+    "pk": 18,
+    "fields": {
+        "name": "Process Accessions",
+        "application": 4,
+        "description": "Transforms and delivers accession data to ArchivesSpace",
+        "external_uri": "process-accessions",
+        "service_route": "accessions",
+        "plugin": 0,
+        "is_active": true,
+        "is_private": false,
+        "has_active_task": false,
+        "method": "POST",
+        "callback_service": 19,
+        "created_time": "2020-03-24T02:26:36.974Z",
+        "modified_time": "2020-03-24T02:44:15.806Z",
+        "sources": []
+    }
+},
+{
+    "model": "gateway.serviceregistry",
+    "pk": 19,
+    "fields": {
+        "name": "Update Accession Status",
+        "application": 4,
+        "description": "Sends information about updated accessions",
+        "external_uri": "update-accessions",
+        "service_route": "send-accession-update",
+        "plugin": 0,
+        "is_active": true,
+        "is_private": false,
+        "has_active_task": false,
+        "method": "POST",
+        "callback_service": 20,
+        "created_time": "2020-03-24T02:26:36.982Z",
+        "modified_time": "2020-03-24T02:45:09.254Z",
+        "sources": []
+    }
+},
+{
+    "model": "gateway.serviceregistry",
+    "pk": 20,
+    "fields": {
+        "name": "Process Grouping Components",
+        "application": 4,
+        "description": "Transforms and delivers grouping component data to ArchivesSpace",
+        "external_uri": "process-grouping-components",
+        "service_route": "grouping-components",
+        "plugin": 0,
+        "is_active": true,
+        "is_private": false,
+        "has_active_task": false,
+        "method": "POST",
+        "callback_service": 21,
+        "created_time": "2020-03-24T02:26:36.988Z",
+        "modified_time": "2020-03-24T02:44:15.806Z",
+        "sources": []
+    }
+},
+{
+    "model": "gateway.serviceregistry",
+    "pk": 21,
+    "fields": {
+        "name": "Process Transfer Components",
+        "application": 4,
+        "description": "Transforms and delivers transfer data to ArchivesSpace",
+        "external_uri": "process-transfer-components",
+        "service_route": "transfer-components",
+        "plugin": 0,
+        "is_active": true,
+        "is_private": false,
+        "has_active_task": false,
+        "method": "POST",
+        "callback_service": 22,
+        "created_time": "2020-03-24T02:26:36.994Z",
+        "modified_time": "2020-03-24T02:45:15.322Z",
+        "sources": []
+    }
+},
+{
+    "model": "gateway.serviceregistry",
+    "pk": 22,
+    "fields": {
+        "name": "Process Digital Objects",
+        "application": 4,
+        "description": "Transforms and delivers digital object data to ArchivesSpace",
+        "external_uri": "process-digital-objects",
+        "service_route": "digital-objects",
+        "plugin": 0,
+        "is_active": true,
+        "is_private": false,
+        "has_active_task": true,
+        "method": "POST",
+        "callback_service": 23,
+        "created_time": "2020-03-24T02:26:37.000Z",
+        "modified_time": "2020-03-24T02:40:33.548Z",
+        "sources": []
+    }
+},
+{
+    "model": "gateway.serviceregistry",
+    "pk": 23,
+    "fields": {
+        "name": "Update Transfer Status",
+        "application": 4,
+        "description": "Sends information about updated transfers.",
+        "external_uri": "update-transfers",
+        "service_route": "send-update",
+        "plugin": 0,
+        "is_active": true,
+        "is_private": false,
+        "has_active_task": false,
+        "method": "POST",
+        "callback_service": null,
+        "created_time": "2020-03-24T02:26:37.006Z",
+        "modified_time": "2020-03-24T02:45:09.468Z",
+        "sources": []
+    }
+},
+{
+    "model": "gateway.requestlog",
+    "pk": 1,
+    "fields": {
+        "service": 5,
+        "status_code": null,
+        "request_url": "http://ursa-major-web:8005/bagdiscovery/?format=json",
+        "async_result_id": "e9512446-6354-4769-99c5-3ed40123c2ab",
+        "created_time": "2020-03-28T18:22:00.441Z",
+        "task_result": 2,
+        "task_result_status": "Idle"
+    }
+},
+{
+    "model": "gateway.requestlog",
+    "pk": 2,
+    "fields": {
+        "service": 5,
+        "status_code": null,
+        "request_url": "http://ursa-major-web:8005/bagdiscovery/?format=json",
+        "async_result_id": "9bd75d12-2a4d-46a2-8344-87ccd712896d",
+        "created_time": "2020-03-28T18:22:00.463Z",
+        "task_result": 3,
+        "task_result_status": "Idle"
+    }
+},
+{
+    "model": "gateway.requestlog",
+    "pk": 3,
+    "fields": {
+        "service": 8,
+        "status_code": null,
+        "request_url": "http://fornax-web:8003/assemble/?format=json",
+        "async_result_id": "99dd3b21-204b-4c41-8ae6-459d10788cc5",
+        "created_time": "2020-03-28T18:22:00.538Z",
+        "task_result": 5,
+        "task_result_status": "Idle"
+    }
+},
+{
+    "model": "gateway.requestlog",
+    "pk": 4,
+    "fields": {
+        "service": 10,
+        "status_code": null,
+        "request_url": "http://fornax-web:8003/request-cleanup/?format=json",
+        "async_result_id": "282823e3-34e0-4180-afc4-189f1f376278",
+        "created_time": "2020-03-28T18:22:00.584Z",
+        "task_result": 6,
+        "task_result_status": "Idle"
+    }
+},
+{
+    "model": "gateway.requestlog",
+    "pk": 5,
+    "fields": {
+        "service": 9,
+        "status_code": null,
+        "request_url": "http://fornax-web:8003/start/?format=json",
+        "async_result_id": "4a448f74-4066-47eb-bbd2-de986620d779",
+        "created_time": "2020-03-28T18:22:00.592Z",
+        "task_result": 7,
+        "task_result_status": "Idle"
+    }
+},
+{
+    "model": "gateway.requestlog",
+    "pk": 6,
+    "fields": {
+        "service": 12,
+        "status_code": null,
+        "request_url": "http://fornax-web:8003/remove-transfers/?format=json",
+        "async_result_id": "d30535b1-c8c7-4f01-95bf-4519b7bd35fc",
+        "created_time": "2020-03-28T18:22:00.633Z",
+        "task_result": 8,
+        "task_result_status": "Idle"
+    }
+},
+{
+    "model": "gateway.requestlog",
+    "pk": 7,
+    "fields": {
+        "service": 11,
+        "status_code": null,
+        "request_url": "http://fornax-web:8003/remove-ingests/?format=json",
+        "async_result_id": "490ba54d-1b3f-4c6e-a392-5b24c7985ec5",
+        "created_time": "2020-03-28T18:22:00.644Z",
+        "task_result": 9,
+        "task_result_status": "Idle"
+    }
+},
+{
+    "model": "gateway.requestlog",
+    "pk": 8,
+    "fields": {
+        "service": 16,
+        "status_code": null,
+        "request_url": "http://gemini-web:8006/request-cleanup/?format=json",
+        "async_result_id": "a8510a17-fda8-460e-9cca-08b0de410951",
+        "created_time": "2020-03-28T18:22:00.725Z",
+        "task_result": 10,
+        "task_result_status": "Idle"
+    }
+},
+{
+    "model": "gateway.requestlog",
+    "pk": 9,
+    "fields": {
+        "service": 15,
+        "status_code": null,
+        "request_url": "http://gemini-web:8006/store/?format=json",
+        "async_result_id": "68f4b469-5300-47cc-9756-ac9345cc47e1",
+        "created_time": "2020-03-28T18:22:00.736Z",
+        "task_result": 11,
+        "task_result_status": "Idle"
+    }
+},
+{
+    "model": "gateway.requestlog",
+    "pk": 10,
+    "fields": {
+        "service": 14,
+        "status_code": null,
+        "request_url": "http://gemini-web:8006/download/?format=json",
+        "async_result_id": "719fe37f-f238-43f5-974f-39f87079e523",
+        "created_time": "2020-03-28T18:22:00.743Z",
+        "task_result": 12,
+        "task_result_status": "Error"
+    }
+},
+{
+    "model": "gateway.requestlog",
+    "pk": 11,
+    "fields": {
+        "service": 12,
+        "status_code": null,
+        "request_url": "http://fornax-web:8003/remove-transfers/?format=json",
+        "async_result_id": "caf09abb-8dcc-41b6-b681-064e25684bb1",
+        "created_time": "2020-03-28T18:22:43.162Z",
+        "task_result": 13,
+        "task_result_status": "Idle"
+    }
+},
+{
+    "model": "gateway.requestlog",
+    "pk": 12,
+    "fields": {
+        "service": 14,
+        "status_code": null,
+        "request_url": "http://gemini-web:8006/download/?format=json",
+        "async_result_id": "45e6382b-d6c6-42f7-b781-0a9c2257de57",
+        "created_time": "2020-03-28T18:22:43.211Z",
+        "task_result": 14,
+        "task_result_status": "Error"
+    }
+},
+{
+    "model": "gateway.requestlog",
+    "pk": 13,
+    "fields": {
+        "service": 15,
+        "status_code": null,
+        "request_url": "http://gemini-web:8006/store/?format=json",
+        "async_result_id": "70dee022-3500-4743-9d5c-35cf676e906d",
+        "created_time": "2020-03-28T18:22:43.233Z",
+        "task_result": 15,
+        "task_result_status": "Idle"
+    }
+},
+{
+    "model": "gateway.requestlog",
+    "pk": 14,
+    "fields": {
+        "service": 16,
+        "status_code": null,
+        "request_url": "http://gemini-web:8006/request-cleanup/?format=json",
+        "async_result_id": "a9aba40c-6794-40ab-8b80-6ea16836be09",
+        "created_time": "2020-03-28T18:22:43.299Z",
+        "task_result": 16,
+        "task_result_status": "Idle"
+    }
+},
+{
+    "model": "gateway.requestlog",
+    "pk": 15,
+    "fields": {
+        "service": 8,
+        "status_code": null,
+        "request_url": "http://fornax-web:8003/assemble/?format=json",
+        "async_result_id": "6e5e34a2-423f-4a99-aabb-cb929333c0f0",
+        "created_time": "2020-03-28T18:22:43.301Z",
+        "task_result": 17,
+        "task_result_status": "Idle"
+    }
+},
+{
+    "model": "gateway.requestlog",
+    "pk": 16,
+    "fields": {
+        "service": 5,
+        "status_code": null,
+        "request_url": "http://ursa-major-web:8005/bagdiscovery/?format=json",
+        "async_result_id": "9a925e45-3dc4-42ea-a234-4a3875b2cbe5",
+        "created_time": "2020-03-28T18:22:43.366Z",
+        "task_result": 18,
+        "task_result_status": "Idle"
+    }
+},
+{
+    "model": "gateway.requestlog",
+    "pk": 17,
+    "fields": {
+        "service": 5,
+        "status_code": null,
+        "request_url": "http://ursa-major-web:8005/bagdiscovery/?format=json",
+        "async_result_id": "5d73f177-a64f-471c-9e4c-39bbaccd7a70",
+        "created_time": "2020-03-28T18:22:43.386Z",
+        "task_result": 19,
+        "task_result_status": "Idle"
+    }
+},
+{
+    "model": "gateway.requestlog",
+    "pk": 18,
+    "fields": {
+        "service": 9,
+        "status_code": null,
+        "request_url": "http://fornax-web:8003/start/?format=json",
+        "async_result_id": "f8df73c9-8d4a-4520-b1b3-7c69a35097ca",
+        "created_time": "2020-03-28T18:22:43.437Z",
+        "task_result": 20,
+        "task_result_status": "Idle"
+    }
+},
+{
+    "model": "django_celery_results.taskresult",
+    "pk": 1,
+    "fields": {
+        "task_id": "217e009d-4964-4435-80c5-63bf9d8bec52",
+        "task_name": "gateway.tasks.delete_successful",
+        "task_args": "()",
+        "task_kwargs": "{}",
+        "status": "SUCCESS",
+        "worker": "celery@96c966ba43ae",
+        "content_type": "application/json",
+        "content_encoding": "utf-8",
+        "result": "null",
+        "date_created": "2020-03-28T18:22:00.150Z",
+        "date_done": "2020-03-28T18:22:00.150Z",
+        "traceback": null,
+        "meta": "{\"children\": []}"
+    }
+},
+{
+    "model": "django_celery_results.taskresult",
+    "pk": 2,
+    "fields": {
+        "task_id": "e9512446-6354-4769-99c5-3ed40123c2ab",
+        "task_name": "gateway.tasks.queue_request",
+        "task_args": "('post', 'http://ursa-major-web:8005/bagdiscovery/?format=json')",
+        "task_kwargs": "{'headers': {'Content-Type': 'application/json'}, 'data': None, 'files': None, 'params': {}, 'service_id': 5}",
+        "status": "SUCCESS",
+        "worker": "celery@96c966ba43ae",
+        "content_type": "application/json",
+        "content_encoding": "utf-8",
+        "result": "{\"detail\": \"All bags discovered.\", \"objects\": [], \"count\": 0}",
+        "date_created": "2020-03-28T18:22:00.415Z",
+        "date_done": "2020-03-28T18:22:00.415Z",
+        "traceback": null,
+        "meta": "{\"children\": []}"
+    }
+},
+{
+    "model": "django_celery_results.taskresult",
+    "pk": 3,
+    "fields": {
+        "task_id": "9bd75d12-2a4d-46a2-8344-87ccd712896d",
+        "task_name": "gateway.tasks.queue_request",
+        "task_args": "('post', 'http://ursa-major-web:8005/bagdiscovery/?format=json')",
+        "task_kwargs": "{'headers': {'Content-Type': 'application/json'}, 'data': None, 'files': None, 'params': {}, 'service_id': 5}",
+        "status": "SUCCESS",
+        "worker": "celery@96c966ba43ae",
+        "content_type": "application/json",
+        "content_encoding": "utf-8",
+        "result": "{\"detail\": \"All bags discovered.\", \"objects\": [], \"count\": 0}",
+        "date_created": "2020-03-28T18:22:00.434Z",
+        "date_done": "2020-03-28T18:22:00.435Z",
+        "traceback": null,
+        "meta": "{\"children\": []}"
+    }
+},
+{
+    "model": "django_celery_results.taskresult",
+    "pk": 4,
+    "fields": {
+        "task_id": "7628bbf8-4ac7-4b0b-b38e-fcdb222e21b6",
+        "task_name": "gateway.tasks.queue_callbacks",
+        "task_args": "()",
+        "task_kwargs": "{}",
+        "status": "SUCCESS",
+        "worker": "celery@96c966ba43ae",
+        "content_type": "application/json",
+        "content_encoding": "utf-8",
+        "result": "{\"detail\": {\"callbacks\": [{\"Discover Bags\": \"9bd75d12-2a4d-46a2-8344-87ccd712896d\"}, {\"Discover Bags\": \"e9512446-6354-4769-99c5-3ed40123c2ab\"}, {\"Assemble SIP\": \"99dd3b21-204b-4c41-8ae6-459d10788cc5\"}, {\"Create Transfer\": \"4a448f74-4066-47eb-bbd2-de986620d779\"}, {\"Request Bag Cleanup\": \"282823e3-34e0-4180-afc4-189f1f376278\"}, {\"Remove Completed Ingests\": \"490ba54d-1b3f-4c6e-a392-5b24c7985ec5\"}, {\"Remove Completed Transfers\": \"d30535b1-c8c7-4f01-95bf-4519b7bd35fc\"}, {\"Download Packages\": \"719fe37f-f238-43f5-974f-39f87079e523\"}, {\"Store Package\": \"68f4b469-5300-47cc-9756-ac9345cc47e1\"}, {\"Request SIP Cleanup\": \"a8510a17-fda8-460e-9cca-08b0de410951\"}]}}",
+        "date_created": "2020-03-28T18:22:00.456Z",
+        "date_done": "2020-03-28T18:22:00.456Z",
+        "traceback": null,
+        "meta": "{\"children\": [[[\"9bd75d12-2a4d-46a2-8344-87ccd712896d\", null], null], [[\"e9512446-6354-4769-99c5-3ed40123c2ab\", null], null], [[\"99dd3b21-204b-4c41-8ae6-459d10788cc5\", null], null], [[\"4a448f74-4066-47eb-bbd2-de986620d779\", null], null], [[\"282823e3-34e0-4180-afc4-189f1f376278\", null], null], [[\"490ba54d-1b3f-4c6e-a392-5b24c7985ec5\", null], null], [[\"d30535b1-c8c7-4f01-95bf-4519b7bd35fc\", null], null], [[\"719fe37f-f238-43f5-974f-39f87079e523\", null], null], [[\"68f4b469-5300-47cc-9756-ac9345cc47e1\", null], null], [[\"a8510a17-fda8-460e-9cca-08b0de410951\", null], null]]}"
+    }
+},
+{
+    "model": "django_celery_results.taskresult",
+    "pk": 5,
+    "fields": {
+        "task_id": "99dd3b21-204b-4c41-8ae6-459d10788cc5",
+        "task_name": "gateway.tasks.queue_request",
+        "task_args": "('post', 'http://fornax-web:8003/assemble/?format=json')",
+        "task_kwargs": "{'headers': {'Content-Type': 'application/json'}, 'data': None, 'files': None, 'params': {}, 'service_id': 8}",
+        "status": "SUCCESS",
+        "worker": "celery@96c966ba43ae",
+        "content_type": "application/json",
+        "content_encoding": "utf-8",
+        "result": "{\"detail\": \"All SIPs assembled.\", \"objects\": [], \"count\": 0}",
+        "date_created": "2020-03-28T18:22:00.498Z",
+        "date_done": "2020-03-28T18:22:00.498Z",
+        "traceback": null,
+        "meta": "{\"children\": []}"
+    }
+},
+{
+    "model": "django_celery_results.taskresult",
+    "pk": 6,
+    "fields": {
+        "task_id": "282823e3-34e0-4180-afc4-189f1f376278",
+        "task_name": "gateway.tasks.queue_request",
+        "task_args": "('post', 'http://fornax-web:8003/request-cleanup/?format=json')",
+        "task_kwargs": "{'headers': {'Content-Type': 'application/json'}, 'data': None, 'files': None, 'params': {}, 'service_id': 10}",
+        "status": "SUCCESS",
+        "worker": "celery@96c966ba43ae",
+        "content_type": "application/json",
+        "content_encoding": "utf-8",
+        "result": "{\"detail\": \"No SIPS to clean up.\", \"objects\": [], \"count\": 0}",
+        "date_created": "2020-03-28T18:22:00.564Z",
+        "date_done": "2020-03-28T18:22:00.564Z",
+        "traceback": null,
+        "meta": "{\"children\": []}"
+    }
+},
+{
+    "model": "django_celery_results.taskresult",
+    "pk": 7,
+    "fields": {
+        "task_id": "4a448f74-4066-47eb-bbd2-de986620d779",
+        "task_name": "gateway.tasks.queue_request",
+        "task_args": "('post', 'http://fornax-web:8003/start/?format=json')",
+        "task_kwargs": "{'headers': {'Content-Type': 'application/json'}, 'data': None, 'files': None, 'params': {}, 'service_id': 9}",
+        "status": "SUCCESS",
+        "worker": "celery@96c966ba43ae",
+        "content_type": "application/json",
+        "content_encoding": "utf-8",
+        "result": "{\"detail\": \"No transfers to start.\", \"objects\": [], \"count\": 0}",
+        "date_created": "2020-03-28T18:22:00.562Z",
+        "date_done": "2020-03-28T18:22:00.562Z",
+        "traceback": null,
+        "meta": "{\"children\": []}"
+    }
+},
+{
+    "model": "django_celery_results.taskresult",
+    "pk": 8,
+    "fields": {
+        "task_id": "d30535b1-c8c7-4f01-95bf-4519b7bd35fc",
+        "task_name": "gateway.tasks.queue_request",
+        "task_args": "('post', 'http://fornax-web:8003/remove-transfers/?format=json')",
+        "task_kwargs": "{'headers': {'Content-Type': 'application/json'}, 'data': None, 'files': None, 'params': {}, 'service_id': 12}",
+        "status": "SUCCESS",
+        "worker": "celery@96c966ba43ae",
+        "content_type": "application/json",
+        "content_encoding": "utf-8",
+        "result": "{\"detail\": \"All completed transfers removed from dashboards aurora\", \"objects\": [], \"count\": 0}",
+        "date_created": "2020-03-28T18:22:00.617Z",
+        "date_done": "2020-03-28T18:22:00.617Z",
+        "traceback": null,
+        "meta": "{\"children\": []}"
+    }
+},
+{
+    "model": "django_celery_results.taskresult",
+    "pk": 9,
+    "fields": {
+        "task_id": "490ba54d-1b3f-4c6e-a392-5b24c7985ec5",
+        "task_name": "gateway.tasks.queue_request",
+        "task_args": "('post', 'http://fornax-web:8003/remove-ingests/?format=json')",
+        "task_kwargs": "{'headers': {'Content-Type': 'application/json'}, 'data': None, 'files': None, 'params': {}, 'service_id': 11}",
+        "status": "SUCCESS",
+        "worker": "celery@96c966ba43ae",
+        "content_type": "application/json",
+        "content_encoding": "utf-8",
+        "result": "{\"detail\": \"All completed ingests removed from dashboards aurora\", \"objects\": [], \"count\": 0}",
+        "date_created": "2020-03-28T18:22:00.624Z",
+        "date_done": "2020-03-28T18:22:00.624Z",
+        "traceback": null,
+        "meta": "{\"children\": []}"
+    }
+},
+{
+    "model": "django_celery_results.taskresult",
+    "pk": 10,
+    "fields": {
+        "task_id": "a8510a17-fda8-460e-9cca-08b0de410951",
+        "task_name": "gateway.tasks.queue_request",
+        "task_args": "('post', 'http://gemini-web:8006/request-cleanup/?format=json')",
+        "task_kwargs": "{'headers': {'Content-Type': 'application/json'}, 'data': None, 'files': None, 'params': {}, 'service_id': 16}",
+        "status": "SUCCESS",
+        "worker": "celery@96c966ba43ae",
+        "content_type": "application/json",
+        "content_encoding": "utf-8",
+        "result": "{\"detail\": \"Requests sent to clean up Packages.\", \"objects\": [], \"count\": 0}",
+        "date_created": "2020-03-28T18:22:00.709Z",
+        "date_done": "2020-03-28T18:22:00.709Z",
+        "traceback": null,
+        "meta": "{\"children\": []}"
+    }
+},
+{
+    "model": "django_celery_results.taskresult",
+    "pk": 11,
+    "fields": {
+        "task_id": "68f4b469-5300-47cc-9756-ac9345cc47e1",
+        "task_name": "gateway.tasks.queue_request",
+        "task_args": "('post', 'http://gemini-web:8006/store/?format=json')",
+        "task_kwargs": "{'headers': {'Content-Type': 'application/json'}, 'data': None, 'files': None, 'params': {}, 'service_id': 15}",
+        "status": "SUCCESS",
+        "worker": "celery@96c966ba43ae",
+        "content_type": "application/json",
+        "content_encoding": "utf-8",
+        "result": "{\"detail\": \"Packages stored.\", \"objects\": [], \"count\": 0}",
+        "date_created": "2020-03-28T18:22:00.709Z",
+        "date_done": "2020-03-28T18:22:00.709Z",
+        "traceback": null,
+        "meta": "{\"children\": []}"
+    }
+},
+{
+    "model": "django_celery_results.taskresult",
+    "pk": 12,
+    "fields": {
+        "task_id": "719fe37f-f238-43f5-974f-39f87079e523",
+        "task_name": "gateway.tasks.queue_request",
+        "task_args": "('post', 'http://gemini-web:8006/download/?format=json')",
+        "task_kwargs": "{'headers': {'Content-Type': 'application/json'}, 'data': None, 'files': None, 'params': {}, 'service_id': 14}",
+        "status": "FAILURE",
+        "worker": "celery@96c966ba43ae",
+        "content_type": "application/json",
+        "content_encoding": "utf-8",
+        "result": "{\"exc_type\": \"Exception\", \"exc_message\": [{\"detail\": \"'int' object is not subscriptable\", \"objects\": [], \"count\": 0}], \"exc_module\": \"builtins\"}",
+        "date_created": "2020-03-28T18:22:00.733Z",
+        "date_done": "2020-03-28T18:22:00.733Z",
+        "traceback": "Traceback (most recent call last):\n  File \"/usr/local/lib/python3.6/site-packages/celery/app/trace.py\", line 385, in trace_task\n    R = retval = fun(*args, **kwargs)\n  File \"/usr/local/lib/python3.6/site-packages/celery/app/trace.py\", line 650, in __protected_call__\n    return self.run(*args, **kwargs)\n  File \"/code/zodiac/gateway/tasks.py\", line 53, in queue_request\n    raise Exception(message)\nException: {'detail': \"'int' object is not subscriptable\", 'objects': [], 'count': 0}\n",
+        "meta": "{\"children\": []}"
+    }
+},
+{
+    "model": "django_celery_results.taskresult",
+    "pk": 13,
+    "fields": {
+        "task_id": "caf09abb-8dcc-41b6-b681-064e25684bb1",
+        "task_name": "gateway.tasks.queue_request",
+        "task_args": "('post', 'http://fornax-web:8003/remove-transfers/?format=json')",
+        "task_kwargs": "{'headers': {'Content-Type': 'application/json'}, 'data': None, 'files': None, 'params': {}, 'service_id': 12}",
+        "status": "SUCCESS",
+        "worker": "celery@96c966ba43ae",
+        "content_type": "application/json",
+        "content_encoding": "utf-8",
+        "result": "{\"detail\": \"All completed transfers removed from dashboards aurora\", \"objects\": [], \"count\": 0}",
+        "date_created": "2020-03-28T18:22:43.148Z",
+        "date_done": "2020-03-28T18:22:43.148Z",
+        "traceback": null,
+        "meta": "{\"children\": []}"
+    }
+},
+{
+    "model": "django_celery_results.taskresult",
+    "pk": 14,
+    "fields": {
+        "task_id": "45e6382b-d6c6-42f7-b781-0a9c2257de57",
+        "task_name": "gateway.tasks.queue_request",
+        "task_args": "('post', 'http://gemini-web:8006/download/?format=json')",
+        "task_kwargs": "{'headers': {'Content-Type': 'application/json'}, 'data': None, 'files': None, 'params': {}, 'service_id': 14}",
+        "status": "FAILURE",
+        "worker": "celery@96c966ba43ae",
+        "content_type": "application/json",
+        "content_encoding": "utf-8",
+        "result": "{\"exc_type\": \"Exception\", \"exc_message\": [{\"detail\": \"'int' object is not subscriptable\", \"objects\": [], \"count\": 0}], \"exc_module\": \"builtins\"}",
+        "date_created": "2020-03-28T18:22:43.182Z",
+        "date_done": "2020-03-28T18:22:43.182Z",
+        "traceback": "Traceback (most recent call last):\n  File \"/usr/local/lib/python3.6/site-packages/celery/app/trace.py\", line 385, in trace_task\n    R = retval = fun(*args, **kwargs)\n  File \"/usr/local/lib/python3.6/site-packages/celery/app/trace.py\", line 650, in __protected_call__\n    return self.run(*args, **kwargs)\n  File \"/code/zodiac/gateway/tasks.py\", line 53, in queue_request\n    raise Exception(message)\nException: {'detail': \"'int' object is not subscriptable\", 'objects': [], 'count': 0}\n",
+        "meta": "{\"children\": []}"
+    }
+},
+{
+    "model": "django_celery_results.taskresult",
+    "pk": 15,
+    "fields": {
+        "task_id": "70dee022-3500-4743-9d5c-35cf676e906d",
+        "task_name": "gateway.tasks.queue_request",
+        "task_args": "('post', 'http://gemini-web:8006/store/?format=json')",
+        "task_kwargs": "{'headers': {'Content-Type': 'application/json'}, 'data': None, 'files': None, 'params': {}, 'service_id': 15}",
+        "status": "SUCCESS",
+        "worker": "celery@96c966ba43ae",
+        "content_type": "application/json",
+        "content_encoding": "utf-8",
+        "result": "{\"detail\": \"Packages stored.\", \"objects\": [], \"count\": 0}",
+        "date_created": "2020-03-28T18:22:43.224Z",
+        "date_done": "2020-03-28T18:22:43.224Z",
+        "traceback": null,
+        "meta": "{\"children\": []}"
+    }
+},
+{
+    "model": "django_celery_results.taskresult",
+    "pk": 16,
+    "fields": {
+        "task_id": "a9aba40c-6794-40ab-8b80-6ea16836be09",
+        "task_name": "gateway.tasks.queue_request",
+        "task_args": "('post', 'http://gemini-web:8006/request-cleanup/?format=json')",
+        "task_kwargs": "{'headers': {'Content-Type': 'application/json'}, 'data': None, 'files': None, 'params': {}, 'service_id': 16}",
+        "status": "SUCCESS",
+        "worker": "celery@96c966ba43ae",
+        "content_type": "application/json",
+        "content_encoding": "utf-8",
+        "result": "{\"detail\": \"Requests sent to clean up Packages.\", \"objects\": [], \"count\": 0}",
+        "date_created": "2020-03-28T18:22:43.289Z",
+        "date_done": "2020-03-28T18:22:43.289Z",
+        "traceback": null,
+        "meta": "{\"children\": []}"
+    }
+},
+{
+    "model": "django_celery_results.taskresult",
+    "pk": 17,
+    "fields": {
+        "task_id": "6e5e34a2-423f-4a99-aabb-cb929333c0f0",
+        "task_name": "gateway.tasks.queue_request",
+        "task_args": "('post', 'http://fornax-web:8003/assemble/?format=json')",
+        "task_kwargs": "{'headers': {'Content-Type': 'application/json'}, 'data': None, 'files': None, 'params': {}, 'service_id': 8}",
+        "status": "SUCCESS",
+        "worker": "celery@96c966ba43ae",
+        "content_type": "application/json",
+        "content_encoding": "utf-8",
+        "result": "{\"detail\": \"All SIPs assembled.\", \"objects\": [], \"count\": 0}",
+        "date_created": "2020-03-28T18:22:43.291Z",
+        "date_done": "2020-03-28T18:22:43.291Z",
+        "traceback": null,
+        "meta": "{\"children\": []}"
+    }
+},
+{
+    "model": "django_celery_results.taskresult",
+    "pk": 18,
+    "fields": {
+        "task_id": "9a925e45-3dc4-42ea-a234-4a3875b2cbe5",
+        "task_name": "gateway.tasks.queue_request",
+        "task_args": "('post', 'http://ursa-major-web:8005/bagdiscovery/?format=json')",
+        "task_kwargs": "{'headers': {'Content-Type': 'application/json'}, 'data': None, 'files': None, 'params': {}, 'service_id': 5}",
+        "status": "SUCCESS",
+        "worker": "celery@96c966ba43ae",
+        "content_type": "application/json",
+        "content_encoding": "utf-8",
+        "result": "{\"detail\": \"All bags discovered.\", \"objects\": [], \"count\": 0}",
+        "date_created": "2020-03-28T18:22:43.355Z",
+        "date_done": "2020-03-28T18:22:43.355Z",
+        "traceback": null,
+        "meta": "{\"children\": []}"
+    }
+},
+{
+    "model": "django_celery_results.taskresult",
+    "pk": 19,
+    "fields": {
+        "task_id": "5d73f177-a64f-471c-9e4c-39bbaccd7a70",
+        "task_name": "gateway.tasks.queue_request",
+        "task_args": "('post', 'http://ursa-major-web:8005/bagdiscovery/?format=json')",
+        "task_kwargs": "{'headers': {'Content-Type': 'application/json'}, 'data': None, 'files': None, 'params': {}, 'service_id': 5}",
+        "status": "SUCCESS",
+        "worker": "celery@96c966ba43ae",
+        "content_type": "application/json",
+        "content_encoding": "utf-8",
+        "result": "{\"detail\": \"All bags discovered.\", \"objects\": [], \"count\": 0}",
+        "date_created": "2020-03-28T18:22:43.368Z",
+        "date_done": "2020-03-28T18:22:43.368Z",
+        "traceback": null,
+        "meta": "{\"children\": []}"
+    }
+},
+{
+    "model": "django_celery_results.taskresult",
+    "pk": 20,
+    "fields": {
+        "task_id": "f8df73c9-8d4a-4520-b1b3-7c69a35097ca",
+        "task_name": "gateway.tasks.queue_request",
+        "task_args": "('post', 'http://fornax-web:8003/start/?format=json')",
+        "task_kwargs": "{'headers': {'Content-Type': 'application/json'}, 'data': None, 'files': None, 'params': {}, 'service_id': 9}",
+        "status": "SUCCESS",
+        "worker": "celery@96c966ba43ae",
+        "content_type": "application/json",
+        "content_encoding": "utf-8",
+        "result": "{\"detail\": \"No transfers to start.\", \"objects\": [], \"count\": 0}",
+        "date_created": "2020-03-28T18:22:43.428Z",
+        "date_done": "2020-03-28T18:22:43.428Z",
+        "traceback": null,
+        "meta": "{\"children\": []}"
+    }
+},
+{
+    "model": "django_celery_beat.crontabschedule",
+    "pk": 1,
+    "fields": {
+        "minute": "*",
+        "hour": "*",
+        "day_of_week": "*",
+        "day_of_month": "*",
+        "month_of_year": "*",
+        "timezone": "UTC"
+    }
+},
+{
+    "model": "django_celery_beat.crontabschedule",
+    "pk": 2,
+    "fields": {
+        "minute": "0",
+        "hour": "4",
+        "day_of_week": "*",
+        "day_of_month": "*",
+        "month_of_year": "*",
+        "timezone": "UTC"
+    }
+},
+{
+    "model": "django_celery_beat.periodictasks",
+    "pk": 1,
+    "fields": {
+        "last_update": "2020-03-24T02:45:52.133Z"
+    }
+},
+{
+    "model": "django_celery_beat.periodictask",
+    "pk": 1,
+    "fields": {
+        "name": "Process queued callbacks",
+        "task": "gateway.tasks.queue_callbacks",
+        "interval": null,
+        "crontab": 1,
+        "solar": null,
+        "clocked": null,
+        "args": "[]",
+        "kwargs": "{}",
+        "queue": null,
+        "exchange": null,
+        "routing_key": null,
+        "headers": "{}",
+        "priority": null,
+        "expires": null,
+        "expire_seconds": null,
+        "one_off": false,
+        "start_time": null,
+        "enabled": false,
+        "last_run_at": null,
+        "total_run_count": 9,
+        "date_changed": "2020-03-24T02:45:55.180Z",
+        "description": ""
+    }
+},
+{
+    "model": "django_celery_beat.periodictask",
+    "pk": 2,
+    "fields": {
+        "name": "Delete successful results",
+        "task": "gateway.tasks.delete_successful",
+        "interval": null,
+        "crontab": 1,
+        "solar": null,
+        "clocked": null,
+        "args": "[]",
+        "kwargs": "{}",
+        "queue": null,
+        "exchange": null,
+        "routing_key": null,
+        "headers": "{}",
+        "priority": null,
+        "expires": null,
+        "expire_seconds": null,
+        "one_off": false,
+        "start_time": null,
+        "enabled": false,
+        "last_run_at": null,
+        "total_run_count": 9,
+        "date_changed": "2020-03-24T02:45:55.206Z",
+        "description": ""
+    }
+},
+{
+    "model": "django_celery_beat.periodictask",
+    "pk": 3,
+    "fields": {
+        "name": "celery.backend_cleanup",
+        "task": "celery.backend_cleanup",
+        "interval": null,
+        "crontab": 2,
+        "solar": null,
+        "clocked": null,
+        "args": "[]",
+        "kwargs": "{}",
+        "queue": null,
+        "exchange": null,
+        "routing_key": null,
+        "headers": "{}",
+        "priority": null,
+        "expires": null,
+        "expire_seconds": 43200,
+        "one_off": false,
+        "start_time": null,
+        "enabled": false,
+        "last_run_at": null,
+        "total_run_count": 0,
+        "date_changed": "2020-03-24T02:40:40.074Z",
+        "description": ""
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 1,
+    "fields": {
+        "name": "Can add log entry",
+        "content_type": 1,
+        "codename": "add_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 2,
+    "fields": {
+        "name": "Can change log entry",
+        "content_type": 1,
+        "codename": "change_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 3,
+    "fields": {
+        "name": "Can delete log entry",
+        "content_type": 1,
+        "codename": "delete_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 4,
+    "fields": {
+        "name": "Can view log entry",
+        "content_type": 1,
+        "codename": "view_logentry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 5,
+    "fields": {
+        "name": "Can add permission",
+        "content_type": 2,
+        "codename": "add_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 6,
+    "fields": {
+        "name": "Can change permission",
+        "content_type": 2,
+        "codename": "change_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 7,
+    "fields": {
+        "name": "Can delete permission",
+        "content_type": 2,
+        "codename": "delete_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 8,
+    "fields": {
+        "name": "Can view permission",
+        "content_type": 2,
+        "codename": "view_permission"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 9,
+    "fields": {
+        "name": "Can add group",
+        "content_type": 3,
+        "codename": "add_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 10,
+    "fields": {
+        "name": "Can change group",
+        "content_type": 3,
+        "codename": "change_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 11,
+    "fields": {
+        "name": "Can delete group",
+        "content_type": 3,
+        "codename": "delete_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 12,
+    "fields": {
+        "name": "Can view group",
+        "content_type": 3,
+        "codename": "view_group"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 13,
+    "fields": {
+        "name": "Can add content type",
+        "content_type": 4,
+        "codename": "add_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 14,
+    "fields": {
+        "name": "Can change content type",
+        "content_type": 4,
+        "codename": "change_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 15,
+    "fields": {
+        "name": "Can delete content type",
+        "content_type": 4,
+        "codename": "delete_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 16,
+    "fields": {
+        "name": "Can view content type",
+        "content_type": 4,
+        "codename": "view_contenttype"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 17,
+    "fields": {
+        "name": "Can add session",
+        "content_type": 5,
+        "codename": "add_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 18,
+    "fields": {
+        "name": "Can change session",
+        "content_type": 5,
+        "codename": "change_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 19,
+    "fields": {
+        "name": "Can delete session",
+        "content_type": 5,
+        "codename": "delete_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 20,
+    "fields": {
+        "name": "Can view session",
+        "content_type": 5,
+        "codename": "view_session"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 21,
+    "fields": {
+        "name": "Can add user",
+        "content_type": 6,
+        "codename": "add_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 22,
+    "fields": {
+        "name": "Can change user",
+        "content_type": 6,
+        "codename": "change_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 23,
+    "fields": {
+        "name": "Can delete user",
+        "content_type": 6,
+        "codename": "delete_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 24,
+    "fields": {
+        "name": "Can view user",
+        "content_type": 6,
+        "codename": "view_user"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 25,
+    "fields": {
+        "name": "Can add application",
+        "content_type": 7,
+        "codename": "add_application"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 26,
+    "fields": {
+        "name": "Can change application",
+        "content_type": 7,
+        "codename": "change_application"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 27,
+    "fields": {
+        "name": "Can delete application",
+        "content_type": 7,
+        "codename": "delete_application"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 28,
+    "fields": {
+        "name": "Can view application",
+        "content_type": 7,
+        "codename": "view_application"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 29,
+    "fields": {
+        "name": "Can add source",
+        "content_type": 8,
+        "codename": "add_source"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 30,
+    "fields": {
+        "name": "Can change source",
+        "content_type": 8,
+        "codename": "change_source"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 31,
+    "fields": {
+        "name": "Can delete source",
+        "content_type": 8,
+        "codename": "delete_source"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 32,
+    "fields": {
+        "name": "Can view source",
+        "content_type": 8,
+        "codename": "view_source"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 33,
+    "fields": {
+        "name": "Can add service registry",
+        "content_type": 9,
+        "codename": "add_serviceregistry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 34,
+    "fields": {
+        "name": "Can change service registry",
+        "content_type": 9,
+        "codename": "change_serviceregistry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 35,
+    "fields": {
+        "name": "Can delete service registry",
+        "content_type": 9,
+        "codename": "delete_serviceregistry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 36,
+    "fields": {
+        "name": "Can view service registry",
+        "content_type": 9,
+        "codename": "view_serviceregistry"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 37,
+    "fields": {
+        "name": "Can add request log",
+        "content_type": 10,
+        "codename": "add_requestlog"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 38,
+    "fields": {
+        "name": "Can change request log",
+        "content_type": 10,
+        "codename": "change_requestlog"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 39,
+    "fields": {
+        "name": "Can delete request log",
+        "content_type": 10,
+        "codename": "delete_requestlog"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 40,
+    "fields": {
+        "name": "Can view request log",
+        "content_type": 10,
+        "codename": "view_requestlog"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 41,
+    "fields": {
+        "name": "Can add task result",
+        "content_type": 11,
+        "codename": "add_taskresult"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 42,
+    "fields": {
+        "name": "Can change task result",
+        "content_type": 11,
+        "codename": "change_taskresult"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 43,
+    "fields": {
+        "name": "Can delete task result",
+        "content_type": 11,
+        "codename": "delete_taskresult"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 44,
+    "fields": {
+        "name": "Can view task result",
+        "content_type": 11,
+        "codename": "view_taskresult"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 45,
+    "fields": {
+        "name": "Can add crontab",
+        "content_type": 12,
+        "codename": "add_crontabschedule"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 46,
+    "fields": {
+        "name": "Can change crontab",
+        "content_type": 12,
+        "codename": "change_crontabschedule"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 47,
+    "fields": {
+        "name": "Can delete crontab",
+        "content_type": 12,
+        "codename": "delete_crontabschedule"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 48,
+    "fields": {
+        "name": "Can view crontab",
+        "content_type": 12,
+        "codename": "view_crontabschedule"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 49,
+    "fields": {
+        "name": "Can add interval",
+        "content_type": 13,
+        "codename": "add_intervalschedule"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 50,
+    "fields": {
+        "name": "Can change interval",
+        "content_type": 13,
+        "codename": "change_intervalschedule"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 51,
+    "fields": {
+        "name": "Can delete interval",
+        "content_type": 13,
+        "codename": "delete_intervalschedule"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 52,
+    "fields": {
+        "name": "Can view interval",
+        "content_type": 13,
+        "codename": "view_intervalschedule"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 53,
+    "fields": {
+        "name": "Can add periodic task",
+        "content_type": 14,
+        "codename": "add_periodictask"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 54,
+    "fields": {
+        "name": "Can change periodic task",
+        "content_type": 14,
+        "codename": "change_periodictask"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 55,
+    "fields": {
+        "name": "Can delete periodic task",
+        "content_type": 14,
+        "codename": "delete_periodictask"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 56,
+    "fields": {
+        "name": "Can view periodic task",
+        "content_type": 14,
+        "codename": "view_periodictask"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 57,
+    "fields": {
+        "name": "Can add periodic tasks",
+        "content_type": 15,
+        "codename": "add_periodictasks"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 58,
+    "fields": {
+        "name": "Can change periodic tasks",
+        "content_type": 15,
+        "codename": "change_periodictasks"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 59,
+    "fields": {
+        "name": "Can delete periodic tasks",
+        "content_type": 15,
+        "codename": "delete_periodictasks"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 60,
+    "fields": {
+        "name": "Can view periodic tasks",
+        "content_type": 15,
+        "codename": "view_periodictasks"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 61,
+    "fields": {
+        "name": "Can add solar event",
+        "content_type": 16,
+        "codename": "add_solarschedule"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 62,
+    "fields": {
+        "name": "Can change solar event",
+        "content_type": 16,
+        "codename": "change_solarschedule"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 63,
+    "fields": {
+        "name": "Can delete solar event",
+        "content_type": 16,
+        "codename": "delete_solarschedule"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 64,
+    "fields": {
+        "name": "Can view solar event",
+        "content_type": 16,
+        "codename": "view_solarschedule"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 65,
+    "fields": {
+        "name": "Can add clocked",
+        "content_type": 17,
+        "codename": "add_clockedschedule"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 66,
+    "fields": {
+        "name": "Can change clocked",
+        "content_type": 17,
+        "codename": "change_clockedschedule"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 67,
+    "fields": {
+        "name": "Can delete clocked",
+        "content_type": 17,
+        "codename": "delete_clockedschedule"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 68,
+    "fields": {
+        "name": "Can view clocked",
+        "content_type": 17,
+        "codename": "view_clockedschedule"
+    }
+},
+{
+    "model": "gateway.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$150000$5Ha6MuSEt1p1$6nI2msFUqWljFwoEHalx9ntzcCPvaK3lC8L5kxOJNRQ=",
+        "last_login": "2020-03-24T02:26:47.404Z",
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "email": "admin@example.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2020-03-24T02:26:36.167Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "gateway.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$150000$Sbf9hPdOx3D6$g9tQMYTJtKxqi0/PTFz7Lx3gOw3UA+K07D5px9yo30Y=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "aurora",
+        "first_name": "",
+        "last_name": "",
+        "email": "aurora@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2020-03-24T02:26:36.358Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "gateway.user",
+    "pk": 3,
+    "fields": {
+        "password": "pbkdf2_sha256$150000$gN7LhOezMb4j$IuWpsMy+yBwes7Y+jOMXYqKfJRxqLVzw4pxL8ZpmW+E=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "zorya",
+        "first_name": "",
+        "last_name": "",
+        "email": "zorya@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2020-03-24T02:26:36.628Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "gateway.source",
+    "pk": 1,
+    "fields": {
+        "user": 2,
+        "apikey": "aurorakey"
+    }
+},
+{
+    "model": "gateway.source",
+    "pk": 2,
+    "fields": {
+        "user": 3,
+        "apikey": "zoryakey"
+    }
+}
+]
