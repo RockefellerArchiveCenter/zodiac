@@ -1,6 +1,7 @@
 import random
 from unittest.mock import patch
 
+from django.core.management import call_command
 from django.test import Client, TestCase
 from django.urls import reverse
 from zodiac import settings
@@ -16,6 +17,7 @@ class GatewayTestCase(TestCase):
 
     def setUp(self):
         self.client = Client()
+        call_command("setup_services", "--reset")
 
     def test_queue_tasks(self):
         queued = queue_callbacks()
@@ -83,6 +85,10 @@ class GatewayTestCase(TestCase):
             self.assertEqual(response.status_code, 200, "{} returned error: {}".format(list_view, response))
 
     def test_detail_views(self):
+        if not len(RequestLog.objects.all()):
+            RequestLog.objects.create(
+                service=random.choice(ServiceRegistry.objects.all())
+            )
         for detail_view, cls in [
                 ("services-detail", ServiceRegistry), ("applications-detail", Application),
                 ("results-detail", RequestLog), ("sources-detail", Source),
