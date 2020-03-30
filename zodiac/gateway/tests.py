@@ -85,6 +85,10 @@ class GatewayTestCase(TestCase):
             self.assertEqual(response.status_code, 200, "{} returned error: {}".format(list_view, response))
 
     def test_detail_views(self):
+        if not len(RequestLog.objects.all()):
+            RequestLog.objects.create(
+                service=random.choice(ServiceRegistry.objects.all())
+            )
         for detail_view, cls in [
                 ("services-detail", ServiceRegistry), ("applications-detail", Application),
                 ("results-detail", RequestLog), ("sources-detail", Source),
