@@ -86,8 +86,8 @@ SERVICES = [
         "name": "Deliver Bags",
         "application": "Ursa Major",
         "description": "Delivers discovered transfers to configured service.",
-        "external_uri": "discover-bags",
-        "service_route": "bagdiscovery",
+        "external_uri": "deliver-bags",
+        "service_route": "bagdelivery",
     },
     {
         "name": "Cleanup Bags",
