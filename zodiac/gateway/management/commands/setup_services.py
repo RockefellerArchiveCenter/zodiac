@@ -32,28 +32,10 @@ APPLICATIONS = [
     {
         "name": "Aquarius", "host": "aquarius-web",
         "port": 8002, "health_check_path": "/status"
-    },
-    {
-        "name": "Aurora", "host": "localhost",
-        "port": 8000, "health_check_path": "/status"
-    },
+    }
 ]
 
 SERVICES = [
-    {
-        "name": "Update Transfers",
-        "application": "Aurora",
-        "description": "Updates transfers and removes files from destination directory.",
-        "external_uri": "api/transfers",
-        "service_route": "api/transfers",
-    },
-    {
-        "name": "Update Accessions",
-        "application": "Aurora",
-        "description": "Updates accession data.",
-        "external_uri": "api/accessions",
-        "service_route": "api/acccessions",
-    },
     {
         "name": "Store Accessions",
         "application": "Ursa Major",
@@ -88,6 +70,7 @@ SERVICES = [
         "description": "Delivers discovered transfers to configured service.",
         "external_uri": "deliver-bags",
         "service_route": "bagdelivery",
+        "callback_service": "Ursa Major.Cleanup Bags"
     },
     {
         "name": "Cleanup Bags",
@@ -95,6 +78,7 @@ SERVICES = [
         "description": "Removes transfers from destination directory.",
         "external_uri": "cleanup-bags",
         "service_route": "cleanup",
+        "callback_service": "Fornax.Assemble SIP"
     },
     {
         "name": "Store SIPs",
@@ -142,7 +126,7 @@ SERVICES = [
         "description": "Removes completed transfers from Archivematica dashboard.",
         "external_uri": "remove-completed-transfers",
         "service_route": "remove-transfers",
-        "callback_service": "Gemini.Download Packages",
+        "callback_service": "Fornax.Cleanup SIPs",
     },
     {
         "name": "Cleanup SIPs",
@@ -150,6 +134,7 @@ SERVICES = [
         "description": "Removes SIPs from destination directory.",
         "external_uri": "cleanup-sips",
         "service_route": "cleanup",
+        "callback_service": "Gemini.Download Packages"
     },
     {
         "name": "Download Packages",
@@ -181,6 +166,7 @@ SERVICES = [
         "description": "Requests deletion of processed SIPs from source directory.",
         "external_uri": "request-sip-cleanup",
         "service_route": "request-cleanup",
+        "callback_service": "Aquarius.Process Accessions"
     },
     {
         "name": "Store Package Data",

@@ -27,11 +27,9 @@ Or, if you want to remove all data
 
     $ docker-compose down -v
 
-The first time you start zodiac, a set of Applications and Services will be created. You can recreate this default set of services and applications by removing all data as described above, and then running `docker-compose up`.
+The first time you start zodiac, a set of Applications and Services will be created. You can recreate this default set of services and applications at any time by running the `setup_services` Django management command, passing the `--reset` flag.
 
-These Applications and Services will be sequenced in the order illustrated in this diagram:
-
-![Application and service sequence diagram](service_sequence.png)
+    $ python manage.py setup_services --reset
 
 
 ## Usage
