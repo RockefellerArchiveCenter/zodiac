@@ -126,7 +126,7 @@ SERVICES = [
         "description": "Removes SIPs from destination directory.",
         "external_uri": "cleanup-sips",
         "service_route": "cleanup",
-        "callback_service": "Gemini.Download Packages"
+        "callback_service": "Gemini.Download Package"
     },
     {
         "name": "Download Package",
