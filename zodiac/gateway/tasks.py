@@ -1,9 +1,10 @@
 import requests
-from celery import shared_task
 from django.utils import timezone
-from django_celery_results.models import TaskResult
-from zodiac import settings
 
+from celery import shared_task
+from django_celery_results.models import TaskResult
+
+from zodiac import settings
 from .models import ServiceRegistry
 from .views_library import render_service_path
 
@@ -56,4 +57,4 @@ def queue_request(method, url, headers, data, files, params, service_id):
 @shared_task()
 def delete_successful():
     TaskResult.objects.filter(status="SUCCESS",
-                              date_done__lte=timezone.now() - timezone.timedelta(hours=settings.DELETE_SUCCESSFUL_AFTER)).delete()
+                              date_done__lte=timezone.now()-timezone.timedelta(hours=settings.DELETE_SUCCESSFUL_AFTER)).delete()
