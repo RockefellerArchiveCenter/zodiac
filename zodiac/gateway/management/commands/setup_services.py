@@ -70,14 +70,6 @@ SERVICES = [
         "description": "Delivers discovered transfers to configured service.",
         "external_uri": "deliver-bags",
         "service_route": "bagdelivery",
-        "callback_service": "Ursa Major.Cleanup Bags"
-    },
-    {
-        "name": "Cleanup Bags",
-        "application": "Ursa Major",
-        "description": "Removes transfers from destination directory.",
-        "external_uri": "cleanup-bags",
-        "service_route": "cleanup",
         "callback_service": "Fornax.Assemble SIP"
     },
     {
@@ -91,7 +83,7 @@ SERVICES = [
     {
         "name": "Assemble SIP",
         "application": "Fornax",
-        "description": "Creates Archivematica-compliant SIPs",
+        "description": "Creates Archivematica-compliant SIPs.",
         "external_uri": "assemble-sips",
         "service_route": "assemble",
         "callback_service": "Fornax.Create Transfer",
@@ -99,7 +91,7 @@ SERVICES = [
     {
         "name": "Create Transfer",
         "application": "Fornax",
-        "description": "Starts and approves a transfer in Archivematica",
+        "description": "Starts and approves a transfer in Archivematica.",
         "external_uri": "create-transfer",
         "service_route": "start",
         "callback_service": "Fornax.Request Bag Cleanup",
@@ -137,9 +129,9 @@ SERVICES = [
         "callback_service": "Gemini.Download Packages"
     },
     {
-        "name": "Download Packages",
+        "name": "Download Package",
         "application": "Gemini",
-        "description": "Downloads packages from Archivematica",
+        "description": "Downloads packages from Archivematica.",
         "external_uri": "download-packages",
         "service_route": "download",
         "callback_service": "Gemini.Store Package",
@@ -155,7 +147,7 @@ SERVICES = [
     {
         "name": "Deliver Package",
         "application": "Gemini",
-        "description": "Delivers data about stored packages to configured service",
+        "description": "Delivers data about stored packages to configured service.",
         "external_uri": "deliver-packages",
         "service_route": "deliver",
         "callback_service": "Gemini.Request SIP Cleanup",
@@ -171,7 +163,7 @@ SERVICES = [
     {
         "name": "Store Package Data",
         "application": "Aquarius",
-        "description": "Stores incoming transfer objects",
+        "description": "Stores incoming transfer objects.",
         "external_uri": "store-data",
         "service_route": "packages",
         "callback_service": "Aquarius.Process Accessions",
@@ -179,7 +171,7 @@ SERVICES = [
     {
         "name": "Process Accessions",
         "application": "Aquarius",
-        "description": "Transforms and delivers accession data to ArchivesSpace",
+        "description": "Transforms and delivers accession data to ArchivesSpace.",
         "external_uri": "process-accessions",
         "service_route": "accessions",
         "callback_service": "Aquarius.Update Accession Status",
@@ -187,7 +179,7 @@ SERVICES = [
     {
         "name": "Update Accession Status",
         "application": "Aquarius",
-        "description": "Sends information about updated accessions",
+        "description": "Sends information about updated accessions in Aurora.",
         "external_uri": "update-accessions",
         "service_route": "send-accession-update",
         "callback_service": "Aquarius.Process Grouping Components",
@@ -195,7 +187,7 @@ SERVICES = [
     {
         "name": "Process Grouping Components",
         "application": "Aquarius",
-        "description": "Transforms and delivers grouping component data to ArchivesSpace",
+        "description": "Transforms and delivers grouping component data to ArchivesSpace.",
         "external_uri": "process-grouping-components",
         "service_route": "grouping-components",
         "callback_service": "Aquarius.Process Transfer Components",
@@ -203,7 +195,7 @@ SERVICES = [
     {
         "name": "Process Transfer Components",
         "application": "Aquarius",
-        "description": "Transforms and delivers transfer data to ArchivesSpace",
+        "description": "Transforms and delivers transfer data to ArchivesSpace.",
         "external_uri": "process-transfer-components",
         "service_route": "transfer-components",
         "callback_service": "Aquarius.Process Digital Objects",
@@ -211,7 +203,7 @@ SERVICES = [
     {
         "name": "Process Digital Objects",
         "application": "Aquarius",
-        "description": "Transforms and delivers digital object data to ArchivesSpace",
+        "description": "Transforms and delivers digital object data to ArchivesSpace.",
         "external_uri": "process-digital-objects",
         "service_route": "digital-objects",
         "callback_service": "Aquarius.Update Transfer Status",
