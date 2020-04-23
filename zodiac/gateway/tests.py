@@ -115,3 +115,11 @@ class GatewayTestCase(TestCase):
         self.assertEqual(
             clear_resp.json()["SUCCESS"], 1,
             "services-clear-errors did not return a successful response")
+
+    def test_delete_service(self):
+        service = random.choice(ServiceRegistry.objects.all())
+        initial_len = len(ServiceRegistry.objects.all())
+        service.delete()
+        self.assertEqual(
+            len(ServiceRegistry.objects.all()), initial_len - 1,
+            "More than one service was deleted.")
