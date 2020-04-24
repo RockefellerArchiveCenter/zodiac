@@ -27,10 +27,9 @@ Or, if you want to remove all data
 
     $ docker-compose down -v
 
-The first time you start zodiac, a set of Applications and Services will be created. You can recreate this default set of services and applications at any time by running the `setup_services` Django management command, passing the `--reset` flag.
+The first time you start zodiac, a set of Applications, Services, Users and Tasks will be created. You can recreate this default application state at any time by running a custom Django management command and passing the `--reset` flag:
 
     $ python manage.py setup_services --reset
-
 
 ## Usage
 
@@ -40,10 +39,17 @@ zodiac provides a unified interface for microservices, allowing users to both ad
 Applications are clusters of services which share some common code. In the context of Project Electron, these are a series of Django projects. However, zodiac doesn't care how these applications are implemented as long as the services they provide are available via REST endpoints.
 
 ### Services
-Services provide small and clearly-defined functionality, which are called via REST endpoints.
+Services provide small and clearly-defined functionality, which are called via REST endpoints. If the service requires it, zodiac can pass an additional URL to a service (via a `post_service_url` parameter) so it can trigger another service via a POST request. This is especially useful if a service needs to deliver a payload to another service.
 
 ### Message Queue
 zodiac includes a messaging layer to queue and process tasks. It does this via [Celery](https://github.com/celery/celery/) and [Celery Beat](https://github.com/celery/django-celery-beat), which are installed as daemons in the Docker container and run on startup. To process queued callbacks, you will need to add a periodic task using the Django Admin interface. Task results are available in the user interface.
+
+### Default Users
+When you first spin Zodiac up, a number of users will be created as follows:
+- A system administrator (in Django terms, a superuser), identified by the username `admin` and password `adminpass`
+- Two system users, for applications which authorized to deliver data to specific services. These are:
+  - Zorya, a system which creates packages from digitized and legacy born-digital content, identified by the username `zorya` and API key `zoryakey`.
+  - Aurora, a system which creates packages from born-digital content, identified by the username `aurora` and the API key `aurorakey`.
 
 
 ## License
