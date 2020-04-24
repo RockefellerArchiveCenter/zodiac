@@ -118,21 +118,12 @@ SERVICES = [
         "description": "Removes completed transfers from Archivematica dashboard.",
         "external_uri": "remove-completed-transfers",
         "service_route": "remove-transfers",
-        "callback_service": "Fornax.Cleanup SIPs",
-    },
-    {
-        "name": "Cleanup SIPs",
-        "application": "Fornax",
-        "description": "Removes SIPs from destination directory.",
-        "external_uri": "cleanup-sips",
-        "service_route": "cleanup",
-        "callback_service": "Gemini.Download Package"
     },
     {
         "name": "Download Package",
         "application": "Gemini",
         "description": "Downloads packages from Archivematica.",
-        "external_uri": "download-packages",
+        "external_uri": "download-package",
         "service_route": "download",
         "callback_service": "Gemini.Store Package",
     },
