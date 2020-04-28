@@ -1,29 +1,27 @@
 import json
-from dateutil import tz
 
-from django_celery_results.models import TaskResult
+from dateutil import tz
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
-from django.views.generic import TemplateView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic.detail import BaseDetailView, DetailView
-from django.views.generic.list import ListView
-from django_datatables_view.base_datatable_view import BaseDatatableView
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
+from django.views.generic import TemplateView
+from django.views.generic.detail import BaseDetailView, DetailView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views.generic.list import ListView
+from django_celery_results.models import TaskResult
+from django_datatables_view.base_datatable_view import BaseDatatableView
 from rest_framework import status
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import RetrieveAPIView
 
-from zodiac import settings
-from .service_library import send_service_request, check_service_auth
-from .models import Application, ServiceRegistry, RequestLog, Source, User
 from .mixins import JSONResponseMixin
+from .models import Application, RequestLog, ServiceRegistry, Source, User
 from .serializers import ServiceRegistrySerializer
+from .service_library import check_service_auth, send_service_request
 from .views_library import get_health_check_status
-
 
 applications_update_fields = ['name', 'app_host', 'app_port', 'health_check_path']
 services_registry_fields = [
@@ -185,7 +183,7 @@ class ServicesClearErrorsView(JSONResponseMixin, BaseDetailView):
         try:
             TaskResult.objects.filter(status='FAILURE', request_log__service=self.object).delete()
             data = {'SUCCESS': 1}
-        except Exception as e:
+        except Exception:
             data = {'SUCCESS': 0}
         return self.render_to_json_response(context=data, **kwargs)
 
@@ -242,7 +240,8 @@ class ResultsDatatableView(BaseDatatableView):
     order_columns = ['async_result_id', 'service__name', 'task_result_status', 'task_result__result', 'task_result__date_done']
     max_display_length = 500
 
-    def get_filter_method(self): return self.FILTER_ICONTAINS
+    def get_filter_method(self):
+        return self.FILTER_ICONTAINS
 
     def get_task_result(self, result):
         task_result = ''
@@ -265,11 +264,12 @@ class ResultsDatatableView(BaseDatatableView):
         json_data = []
         for result in qs:
             result.refresh_from_db()
+            async_result_id = result.async_result_id if result.async_result_id else ""
             json_data.append([
-                '<a href="'+str(reverse_lazy('results-detail', kwargs={"pk": result.id}))+'">'+result.async_result_id+'</a>',
-                '<a href="'+str(reverse_lazy('services-detail', kwargs={"pk": result.service.id}))+'">'+result.service.name+'</a>' if result.service else '',
+                '<a href="' + str(reverse_lazy('results-detail', kwargs={"pk": result.id})) + '">' + async_result_id + '</a>',
+                '<a href="' + str(reverse_lazy('services-detail', kwargs={"pk": result.service.id})) + '">' + result.service.name + '</a>' if result.service else '',
                 self.get_status_display(result.task_result_status),
-                '<pre>'+self.get_task_result(result)+'</pre>',
+                '<pre>' + self.get_task_result(result) + '</pre>',
                 result.task_result.date_done.astimezone(tz.tzlocal()).strftime('%b %e, %Y %I:%M:%S %p') if result.task_result else '',
             ])
         return json_data
