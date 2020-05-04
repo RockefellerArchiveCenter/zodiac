@@ -21,10 +21,9 @@ def queue_callbacks():
     completed = {'detail': {'callbacks': []}}
     count = 0
 
-    while count < settings.MAX_SERVICES:
-        registry = ServiceRegistry.objects.filter(
+    for registry in ServiceRegistry.objects.filter(
             is_active=True, has_active_task=False,
-            application__is_active=True).order_by('modified_time')[0]
+            application__is_active=True).order_by('modified_time'):
         if registry.is_callback:
             url = render_service_path(registry, '')
             r = queue_request.delay(
@@ -39,6 +38,8 @@ def queue_callbacks():
             if r:
                 completed['detail']['callbacks'].append({registry.name: r.id})
             count += 1
+            if count >= settings.MAX_SERVICES:
+                break
         else:
             registry.save()
     return completed
