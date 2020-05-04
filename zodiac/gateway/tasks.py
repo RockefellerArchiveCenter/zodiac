@@ -21,7 +21,7 @@ def queue_callbacks():
     completed = {'detail': {'callbacks': []}}
 
     for registry in ServiceRegistry.objects.filter(
-            is_callback=True, is_active=True, has_active_task=False,
+            is_active=True, has_active_task=False,
             application__is_active=True).order_by('modified_time')[:settings.MAX_SERVICES]:
         if registry.is_callback:
             url = render_service_path(registry, '')
