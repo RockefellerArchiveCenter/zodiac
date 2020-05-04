@@ -1,10 +1,9 @@
 import requests
-from django.utils import timezone
-
 from celery import shared_task
+from django.utils import timezone
 from django_celery_results.models import TaskResult
-
 from zodiac import settings
+
 from .models import ServiceRegistry
 from .views_library import render_service_path
 
@@ -21,12 +20,10 @@ method_map = {
 def queue_callbacks():
     completed = {'detail': {'callbacks': []}}
 
-    for registry in ServiceRegistry.objects.filter(callback_service__isnull=False,
-                                                   callback_service__is_active=True,
-                                                   callback_service__has_active_task=False,
-                                                   callback_service__application__is_active=True).order_by('callback_service__modified_time')[:settings.MAX_SERVICES]:
-        callback = ServiceRegistry.objects.get(pk=registry.callback_service.pk)
-        url = render_service_path(callback, '')
+    for registry in ServiceRegistry.objects.filter(
+            is_callback=True, is_active=True, has_active_task=False,
+            application__is_active=True).order_by('modified_time')[:settings.MAX_SERVICES]:
+        url = render_service_path(registry, '')
         r = queue_request.delay(
             'post',
             url,
@@ -34,10 +31,10 @@ def queue_callbacks():
             data=None,
             files=None,
             params={},
-            service_id=callback.id
+            service_id=registry.id
         )
         if r:
-            completed['detail']['callbacks'].append({callback.name: r.id})
+            completed['detail']['callbacks'].append({registry.name: r.id})
     return completed
 
 
@@ -57,4 +54,4 @@ def queue_request(method, url, headers, data, files, params, service_id):
 @shared_task()
 def delete_successful():
     TaskResult.objects.filter(status="SUCCESS",
-                              date_done__lte=timezone.now()-timezone.timedelta(hours=settings.DELETE_SUCCESSFUL_AFTER)).delete()
+                              date_done__lte=timezone.now() - timezone.timedelta(hours=settings.DELETE_SUCCESSFUL_AFTER)).delete()

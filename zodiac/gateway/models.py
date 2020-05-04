@@ -104,6 +104,10 @@ class ServiceRegistry(models.Model):
     def called_by(self):
         return ServiceRegistry.objects.filter(callback_service=self.id)
 
+    @property
+    def is_callback(self):
+        return True if len(ServiceRegistry.objects.filter(callback_service=self.id)) else False
+
     def get_update_url(self):
         return reverse('services-update', args=[self.pk])
 
