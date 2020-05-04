@@ -21,7 +21,7 @@ def queue_callbacks():
     completed = {'detail': {'callbacks': []}}
     count = 0
 
-    while count <= settings.MAX_SERVICES:
+    while count < settings.MAX_SERVICES:
         registry = ServiceRegistry.objects.filter(
             is_active=True, has_active_task=False,
             application__is_active=True).order_by('modified_time')[0]
