@@ -37,7 +37,7 @@ def queue_callbacks():
             if r:
                 completed['detail']['callbacks'].append({registry.name: r.id})
         else:
-            r.save()
+            registry.save()
     return completed
 
 
