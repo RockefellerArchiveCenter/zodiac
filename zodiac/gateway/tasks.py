@@ -23,19 +23,18 @@ def queue_callbacks():
     for registry in ServiceRegistry.objects.filter(
             is_active=True, has_active_task=False,
             application__is_active=True).order_by('modified_time')[:settings.MAX_SERVICES]:
-        if registry.is_callback:
-            url = render_service_path(registry, '')
-            r = queue_request.delay(
-                'post',
-                url,
-                headers={'Content-Type': 'application/json'},
-                data=None,
-                files=None,
-                params={},
-                service_id=registry.id
-            )
-            if r:
-                completed['detail']['callbacks'].append({registry.name: r.id})
+        url = render_service_path(registry, '')
+        r = queue_request.delay(
+            'post',
+            url,
+            headers={'Content-Type': 'application/json'},
+            data=None,
+            files=None,
+            params={},
+            service_id=registry.id
+        )
+        if r:
+            completed['detail']['callbacks'].append({registry.name: r.id})
     return completed
 
 
