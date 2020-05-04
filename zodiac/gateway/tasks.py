@@ -19,10 +19,12 @@ method_map = {
 @shared_task()
 def queue_callbacks():
     completed = {'detail': {'callbacks': []}}
+    count = 0
 
-    for registry in ServiceRegistry.objects.filter(
+    while count <= settings.MAX_SERVICES:
+        registry = ServiceRegistry.objects.filter(
             is_active=True, has_active_task=False,
-            application__is_active=True).order_by('modified_time')[:settings.MAX_SERVICES]:
+            application__is_active=True).order_by('modified_time')[0]
         if registry.is_callback:
             url = render_service_path(registry, '')
             r = queue_request.delay(
@@ -36,6 +38,7 @@ def queue_callbacks():
             )
             if r:
                 completed['detail']['callbacks'].append({registry.name: r.id})
+            count += 1
         else:
             registry.save()
     return completed
