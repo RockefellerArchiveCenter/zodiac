@@ -26,7 +26,7 @@ class ServiceRegistrySerializer(serializers.ModelSerializer):
         model = ServiceRegistry
         fields = ('id', 'name', 'description', 'external_uri', 'service_route',
                   'plugin', 'is_active', 'is_private', 'has_active_task', 'method',
-                  'application', 'callback_service', 'post_service', 'sources',
+                  'application', 'callback_service', 'sources',
                   'created_time', 'modified_time', 'results')
 
     def get_results(self, obj):

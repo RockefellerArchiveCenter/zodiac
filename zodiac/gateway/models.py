@@ -1,11 +1,10 @@
 import json
 
-from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
-from django.utils.translation import ugettext_lazy as _
+from django.db import models
 from django.urls import reverse
-
+from django.utils.translation import ugettext_lazy as _
 from django_celery_results.models import TaskResult
 
 
@@ -88,23 +87,26 @@ class ServiceRegistry(models.Model):
     method = models.CharField(max_length=10, choices=HTTP_REQUESTS_METHODS)
     callback_service = models.ForeignKey(
         'self',
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         null=True,
         blank=True
-    )
-    post_service = models.ForeignKey(
-        'self',
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name="poster",
-        related_query_name="poster",
     )
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ["application__name", "name"]
+
     def __str__(self):
-        return self.name
+        return "{}: {}".format(self.application.name, self.name)
+
+    @property
+    def called_by(self):
+        return ServiceRegistry.objects.filter(callback_service=self.id)
+
+    @property
+    def is_callback(self):
+        return True if len(ServiceRegistry.objects.filter(callback_service=self.id)) else False
 
     def get_update_url(self):
         return reverse('services-update', args=[self.pk])
@@ -143,10 +145,11 @@ class RequestLog(models.Model):
 
     def error_messages(self):
         errors = []
-        for e in json.loads(self.task_result.result).get('exc_message'):
-            try:
-                emess = e.get('detail')
-            except:
-                emess = e
-            errors.append(emess)
+        if self.task_result:
+            for e in json.loads(self.task_result.result).get('exc_message'):
+                try:
+                    emess = e.get('detail')
+                except BaseException:
+                    emess = e
+                errors.append(emess)
         return errors

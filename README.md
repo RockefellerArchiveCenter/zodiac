@@ -27,12 +27,9 @@ Or, if you want to remove all data
 
     $ docker-compose down -v
 
-The first time you start zodiac, a set of Applications and Services will be created. You can recreate this default set of services and applications by removing all data as described above, and then running `docker-compose up`.
+The first time you start zodiac, a set of Applications, Services, Users and Tasks will be created. You can recreate this default application state at any time by running a custom Django management command and passing the `--reset` flag:
 
-These Applications and Services will be sequenced in the order illustrated in this diagram:
-
-![Application and service sequence diagram](service_sequence.png)
-
+    $ python manage.py setup_services --reset
 
 ## Usage
 
@@ -46,6 +43,13 @@ Services provide small and clearly-defined functionality, which are called via R
 
 ### Message Queue
 zodiac includes a messaging layer to queue and process tasks. It does this via [Celery](https://github.com/celery/celery/) and [Celery Beat](https://github.com/celery/django-celery-beat), which are installed as daemons in the Docker container and run on startup. To process queued callbacks, you will need to add a periodic task using the Django Admin interface. Task results are available in the user interface.
+
+### Default Users
+When you first spin Zodiac up, a number of users will be created as follows:
+- A system administrator (in Django terms, a superuser), identified by the username `admin` and password `adminpass`
+- Two system users, for applications which authorized to deliver data to specific services. These are:
+  - Zorya, a system which creates packages from digitized and legacy born-digital content, identified by the username `zorya` and API key `zoryakey`.
+  - Aurora, a system which creates packages from born-digital content, identified by the username `aurora` and the API key `aurorakey`.
 
 
 ## License

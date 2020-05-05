@@ -110,7 +110,6 @@
     // Set up the edges
     {% for s in services %}
       {% if s.callback_service %}g.setEdge("{{s.name}}", "{{s.callback_service.name}}", { label: "" });{% endif %}
-      {% if s.post_service %}g.setEdge("{{s.name}}", "{{s.post_service.name}}", { label: "" }){% endif %}
     {% endfor %}
 
     // Set some general styles
