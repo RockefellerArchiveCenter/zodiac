@@ -24,7 +24,7 @@ class GatewayTestCase(TestCase):
         self.assertTrue(
             isinstance(queued, dict), "queue_callbacks() did not return JSON.")
         self.assertTrue(
-            len(queued["detail"]["callbacks"]) <= settings.MAX_SERVICES, "Too many services were called.")
+            len(queued["detail"]["callbacks"]) == settings.MAX_SERVICES, "Incorrect number of services called.")
 
         for service in ServiceRegistry.objects.all():
             trigger = self.client.get(reverse('services-trigger', kwargs={'pk': service.id}))
