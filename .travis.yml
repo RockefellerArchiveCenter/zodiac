@@ -24,3 +24,5 @@ script:
 after_script:
   - docker-compose exec zodiac-web coverage xml
   - cd zodiac && ../cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+notifications:
+  email: false
