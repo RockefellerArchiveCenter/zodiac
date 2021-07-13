@@ -2,7 +2,7 @@ import random
 from unittest.mock import patch
 
 from django.core.management import call_command
-from django.test import Client, TestCase
+from django.test import TestCase
 from django.urls import reverse
 from zodiac import settings
 
@@ -13,10 +13,8 @@ from .tasks import delete_successful, queue_callbacks
 
 
 class GatewayTestCase(TestCase):
-    fixtures = ['initial_data.json']
 
     def setUp(self):
-        self.client = Client()
         call_command("setup_services", "--reset")
 
     def test_queue_tasks(self):
