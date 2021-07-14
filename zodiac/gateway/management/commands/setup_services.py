@@ -251,7 +251,7 @@ class Command(BaseCommand):
         print("Created users")
 
         for source in SOURCES:
-            if not Source.objects.filter(apikey=source['apikey']).exists():
+            if not Source.objects.filter(apikey=source['apikey'], username=source['username']).exists():
                 Source.objects.create(
                     user=User.objects.get(username=source['username']),
                     apikey=source['apikey']
