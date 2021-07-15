@@ -1,13 +1,15 @@
 #!/bin/bash
 
 # Apply database migrations
-../wait-for-it.sh db:5432 -- echo "Apply database migrations"
-python manage.py migrate
+../wait-for-it.sh db:5432 --
 
-  if [ ! -f zodiac/config.py ]; then
-      echo "Creating config file"
-      cp zodiac/config.py.example zodiac/config.py
-  fi
+if [ ! -f zodiac/config.py ]; then
+    echo "Creating config file"
+    cp zodiac/config.py.example zodiac/config.py
+fi
+
+echo "Apply database migrations"
+python manage.py migrate
 
 # Create initial organizations and users
 echo "Setting up applications and services"

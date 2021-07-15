@@ -4,9 +4,6 @@
 [submodule "fornax"]
 	path = fornax
 	url = https://github.com/RockefellerArchiveCenter/fornax.git
-[submodule "libra"]
-	path = libra
-	url = https://github.com/RockefellerArchiveCenter/libra.git
 [submodule "ursa_major"]
 	path = ursa_major
 	url = https://github.com/RockefellerArchiveCenter/ursa_major.git
