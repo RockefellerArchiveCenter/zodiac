@@ -10,8 +10,6 @@ asgiref==3.4.1
     # via django
 billiard==3.6.4.0
     # via celery
-cached-property==1.5.2
-    # via kombu
 celery==5.1.2
     # via
     #   -r requirements.in
@@ -53,8 +51,6 @@ djangorestframework==3.12.4
     # via -r requirements.in
 idna==3.2
     # via requests
-importlib-metadata==4.6.1
-    # via kombu
 kombu==5.1.0
     # via celery
 prompt-toolkit==3.0.19
@@ -78,12 +74,8 @@ six==1.16.0
     # via
     #   click-repl
     #   python-dateutil
-sqlparse==0.4.1
+sqlparse==0.4.2
     # via django
-typing-extensions==3.10.0.0
-    # via
-    #   asgiref
-    #   importlib-metadata
 urllib3==1.26.6
     # via requests
 vine==5.0.0
@@ -93,8 +85,6 @@ vine==5.0.0
     #   kombu
 wcwidth==0.2.5
     # via prompt-toolkit
-zipp==3.5.0
-    # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
