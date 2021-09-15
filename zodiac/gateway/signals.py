@@ -1,8 +1,9 @@
 import json
 
-from celery.signals import task_prerun, task_postrun
+from celery.signals import task_postrun, task_prerun
 from django_celery_results.models import TaskResult
-from .models import ServiceRegistry, RequestLog
+
+from .models import RequestLog, ServiceRegistry
 
 
 def update_service_status(kwargs, status):
@@ -37,7 +38,7 @@ def on_task_postrun(task_id=None, task=None, retval=None, state=None, *args, **k
     service = update_service_status(kwargs, False)
     if len(kwargs['args']) > 1:
         task_result = TaskResult.objects.get(task_id=task_id)
-        request_log = RequestLog.objects.create(
+        RequestLog.objects.create(
             service=service,
             status_code=None,
             request_url=kwargs['args'][1],
