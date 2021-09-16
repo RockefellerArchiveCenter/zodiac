@@ -4,13 +4,13 @@ services:
   - docker
 env:
   CONTAINER: zodiac-web
-  PORT: 8001
+  APPLICATION_NAME: zodiac
 before_install:
-  - cp zodiac/zodiac/config.py.example zodiac/zodiac/config.py
+  - cp $APPLICATION_NAME/$APPLICATION_NAME/config.py.example $APPLICATION_NAME/$APPLICATION_NAME/config.py
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker-compose up -d
 install:
-  - ./wait-for-it.sh $CONTAINER:$PORT -- docker-compose exec $CONTAINER pip install coverage pre-commit
+  - ./wait-for-it.sh $CONTAINER:$DJANGO_PORT -- docker-compose exec $CONTAINER pip install coverage pre-commit
   - docker-compose exec $CONTAINER pre-commit install
 script:
   - docker-compose exec $CONTAINER pre-commit run --all-files --show-diff-on-failure
