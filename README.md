@@ -2,7 +2,7 @@
 
 API gateway and administration interface for [Project Electron](https://github.com/RockefellerArchiveCenter/project_electron) microservices, managed via a message queue.
 
-[![Build Status](https://travis-ci.org/RockefellerArchiveCenter/zodiac.svg?branch=master)](https://travis-ci.org/RockefellerArchiveCenter/zodiac)
+[![Build Status](https://travis-ci.org/RockefellerArchiveCenter/zodiac.svg?branch=base)](https://travis-ci.org/RockefellerArchiveCenter/zodiac)
 
 ## Setup
 
@@ -51,7 +51,8 @@ When you first spin Zodiac up, a number of users will be created as follows:
   - Zorya, a system which creates packages from digitized and legacy born-digital content, identified by the username `zorya` and API key `zoryakey`.
   - Aurora, a system which creates packages from born-digital content, identified by the username `aurora` and the API key `aurorakey`.
 
+## Development
+This repository contains a configuration file for git [pre-commit](https://pre-commit.com/) hooks which help ensure that code is linted before it is checked into version control. It is strongly recommended that you install these hooks locally by installing pre-commit and running `pre-commit install`.
 
 ## License
-
 This code is released under an [MIT License](LICENSE).
