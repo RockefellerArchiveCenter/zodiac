@@ -47,19 +47,21 @@
         {% if recent_errors %}
           {% for result in recent_errors %}
             <div class="error">
-              <a href="{% url 'results-detail' pk=result.id %}">
                 <div class="col-md-12">
                   <div class="col-md-4">
-                    <p class="service-title">{{result.service.name}}</p>
+                    <a href="{% url 'services-detail' pk=result.service.id %}">
+                      <p class="service-title">{{result.service.name}}</p>
+                    </a>
                     <p>{{result.task_result.date_done|date:"SHORT_DATETIME_FORMAT"}}</p>
                   </div>
                   <div class="col-md-8">
-                    <p>
-                      {% for e in result.error_messages %}{{e}}{% endfor %}
-                    </p>
+                    <a href="{% url 'results-detail' pk=result.id %}">
+                      <p>
+                        {% for e in result.error_messages %}{{e}}{% endfor %}
+                      </p>
+                    </a>
                   </div>
                 </div>
-              </a>
             </div>
           {% endfor %}
         {% else %}
