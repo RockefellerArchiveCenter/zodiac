@@ -9,7 +9,7 @@ from zodiac import settings
 from .models import (Application, RequestLog, ServiceRegistry, Source,
                      TaskResult, User)
 from .signals import on_task_postrun, on_task_prerun
-from .tasks import delete_successful, queue_callbacks
+from .tasks import delete_successful, queue_callbacks, trigger_first_services
 
 
 class GatewayTestCase(TestCase):
@@ -31,6 +31,10 @@ class GatewayTestCase(TestCase):
     def test_delete_tasks(self):
         deleted = delete_successful()
         self.assertIsNot(deleted, False)
+
+    def test_trigger_first_services(self):
+        triggered = trigger_first_services()
+        self.assertTrue(isinstance(triggered, dict))
 
     @patch('gateway.signals.update_service_status')
     def test_signals(self, mock_update_service_status):
