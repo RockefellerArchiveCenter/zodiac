@@ -67,7 +67,7 @@ def delete_successful():
 @shared_task()
 def discover_bags_zorya():
     """Calls the Discover Bags service in Zorya, if it exists."""
-    if ServiceRegistry.objects.get(
+    if ServiceRegistry.objects.filter(
             is_active=True,
             application__is_active=True,
             has_active_task=False,
