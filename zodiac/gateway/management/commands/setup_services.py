@@ -205,6 +205,13 @@ SERVICES = [
         "description": "Sends information about updated transfers.",
         "external_uri": "update-transfers",
         "service_route": "send-update",
+    },
+    {
+        "name": "Create Package",
+        "application": "Gemini",
+        "description": "Creates a package to be downloaded from Archivematica.",
+        "external_uri": "create-package",
+        "service_route": "packages",
     }
 ]
 
