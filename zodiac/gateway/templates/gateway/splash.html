@@ -6,7 +6,7 @@
 
 {% block content %}
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-12">
     <div class="box box-primary">
       <div class="box-header with-border">
         <h2 class="box-title">Applications</h2>
@@ -38,7 +38,7 @@
     </div>
   </div>
 
-  <div class="col-md-6">
+  <div class="col-md-12">
     <div class="box box-primary">
       <div class="box-header with-border">
         <h2 class="box-title">Recent Errors</h2>
@@ -49,9 +49,13 @@
             <div class="error">
                 <div class="col-md-12">
                   <div class="col-md-4">
+                    {% if result.service %}
                     <a href="{% url 'services-detail' pk=result.service.id %}">
                       <p class="service-title">{{result.service.name}}</p>
                     </a>
+                    {% else %}
+                    <p class="service-title">no service</p>
+                    {% endif %}
                     <p>{{result.task_result.date_done|date:"SHORT_DATETIME_FORMAT"}}</p>
                   </div>
                   <div class="col-md-8">
@@ -71,67 +75,4 @@
     </div>
   </div>
 </div>
-
-<div class="row">
-  <div class="col-md-12">
-    <div class="box box-primary">
-      <div class="box-header with-border">
-        <h2 class="box-title">Services</h2>
-      </div>
-      <div class="box-body">
-        <div class="graph">
-          <svg width="100%"><g></g></svg>
-        </div>
-    </div>
-  </div>
-</div>
 {% endblock %}
-
-{% block extra_js %}
-<script type="text/javascript">
-  $(document).ready(function() {
-    // Create a new directed graph
-    var g = new dagreD3.graphlib.Graph().setGraph({});
-    g.graph().rankDir = 'LR';
-    g.graph().ranksep = '20'
-
-    colors = {
-      "Aquarius": "lightblue",
-      "Aurora": "lightcyan",
-      "Fornax": "lightpink",
-      "Gemini": "lightgreen",
-      "Pisces": "sandybrown",
-      "Ursa Major": "lightcoral"
-    }
-
-    // Automatically label each of the nodes
-    {% for s in services %}
-      g.setNode("{{s.name}}", { label: "{{s.name}}", application: "{{s.application.name}}"});
-    {% endfor %}
-
-    // Set up the edges
-    {% for s in services %}
-      {% if s.callback_service %}g.setEdge("{{s.name}}", "{{s.callback_service.name}}", { label: "" });{% endif %}
-    {% endfor %}
-
-    // Set some general styles
-    g.nodes().forEach(function(v) {
-      var node = g.node(v);
-      var color = colors[node['application']]
-      node['style'] = "fill:" + color
-      node.rx = node.ry = 5;
-    });
-
-    var svg = d3.select("svg"),
-        inner = svg.select("g");
-
-    // Create the renderer
-    var render = new dagreD3.render();
-
-    // Run the renderer. This is what draws the final graph.
-    render(inner, g)
-    svg.attr('height', g.graph().height);
-    svg.attr('width', g.graph().width);
-  });
-</script>
-{% endblock extra_js %}

@@ -3,6 +3,9 @@
 {% block h1_title %}
   Result Detail
   <small>{{object.task_result.date_done}}</small>
+  {% if request.user.is_authenticated %}
+  <a class="btn btn-danger pull-right" href="{% url 'results-delete' pk=object.pk %}">Delete Result</a>
+  {% endif %}
 {% endblock %}
 
 {% block content %}

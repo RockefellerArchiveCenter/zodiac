@@ -29,8 +29,12 @@
           <dl>
             <dt>Description</dt>
             <dd>{{object.description}}</dd>
-            <dt>Routes</dt>
-            <dd><code>{{object.method}}</code> requests for <code>api/{{object.external_uri}}</code> will be sent to <code>{{object.service_route}}</code></dd>
+            <dt>Internal Route</dt>
+            <dd><code>/{{object.service_route}}</code></dd>
+            {% if object.external_uri %}
+            <dt>External Route</dt>
+            <dd><code>/api/{{object.external_uri}}</code></dd>
+            {% endif %}
             <dt>Application</dt>
             <dd><a href="{{object.application.get_absolute_url}}">{{object.application.name}}</a></dd>
             <dt>Authentication</dt>
@@ -43,20 +47,9 @@
                 </dd>
               {% endfor %}
             {% endif %}
-            {% if object.callback_service %}
             <hr/>
             <dt>Triggers</dt>
-            <dd>
-              <a href="{{object.callback_service.get_absolute_url}}">{{object.callback_service}}</a>
-            </dd>
-            {% endif %}
-            {% if object.called_by %}<dt>Called by</dt>
-            <dd>
-              {% for called_by in object.called_by %}
-              <a href="{{called_by.get_absolute_url}}">{{called_by}}</a><br/>
-              {% endfor %}
-            </dd>
-            {% endif %}
+            <p>{% if object.has_external_trigger %}External HTTP request{% else %}Internal cron job{% endif %}</p>
           </dl>
         </div>
         {% if request.user.is_authenticated %}
@@ -64,7 +57,9 @@
           <a href="{{ object.get_update_url }}" class="btn btn-primary">Edit Service</a>
           <a href="{% url 'services-delete' pk=object.pk %}" class="btn btn-danger">Delete Service</a>
           <div class="footer-right pull-right">
+            {% if not object.has_external_trigger %}
             <a href="#" id="trigger-service-btn" class="btn btn-success" v-on:click.prevent="triggerService" disabled>Manually Trigger</a>
+            {% endif %}
             <a href="#" id="clear-errors-btn" class="btn btn-warning" v-on:click.prevent="clearErrors">Clear Errors</a>
           </div>
         </div>

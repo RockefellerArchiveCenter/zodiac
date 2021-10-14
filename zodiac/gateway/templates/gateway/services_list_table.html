@@ -4,7 +4,7 @@
     <th>Status</th>
     <th>Application</th>
     <th>Description</th>
-    <th>Callbacks</th>
+    <th>Trigger</th>
   </thead>
   <tbody>
     {% for service in object_list %}
@@ -14,7 +14,7 @@
         <td><a href="{{service.application.get_absolute_url}}">{{service.application.name}}</a></td>
         <td>{{service.description}}</td>
         <td>
-          {% if service.callback_service %}<a href="{{service.callback_service.get_absolute_url}}">{{service.callback_service.name}}</a>{% endif %}
+          {% if service.has_external_trigger %}External HTTP request{% else %}Internal cron job{% endif %}
         </td>
       </tr>
     {% endfor %}
