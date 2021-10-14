@@ -10,3 +10,9 @@
 [submodule "gemini"]
 	path = gemini
 	url = https://github.com/RockefellerArchiveCenter/gemini.git
+[submodule "pictor"]
+	path = pictor
+	url = https://github.com/RockefellerArchiveCenter/pictor.git
+[submodule "zorya"]
+	path = zorya
+	url = https://github.com/RockefellerArchiveCenter/zorya.git
