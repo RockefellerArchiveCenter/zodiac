@@ -34,15 +34,20 @@ def on_task_prerun(task_id=None, task=None, *args, **kwargs):
 
 @task_postrun.connect
 def on_task_postrun(task_id=None, task=None, retval=None, state=None, *args, **kwargs):
-    """Marks service as inactive and creates RequestLog."""
+    """Handles completed tasks.
+
+    Marks service as inactive. If task result is not idle, creates RequestLog."""
     service = update_service_status(kwargs, False)
     if len(kwargs['args']) > 1:
         task_result = TaskResult.objects.get(task_id=task_id)
-        RequestLog.objects.create(
-            service=service,
-            status_code=None,
-            request_url=kwargs['args'][1],
-            async_result_id=task_id,
-            task_result=task_result,
-            task_result_status=get_task_result_status(task_result),
-        )
+        task_result_status = get_task_result_status(task_result)
+        if task_result_status == 'Idle':
+            task_result.delete()
+        else:
+            RequestLog.objects.create(
+                service=service,
+                status_code=None,
+                request_url=kwargs['args'][1],
+                async_result_id=task_id,
+                task_result=task_result,
+                task_result_status=task_result_status)
