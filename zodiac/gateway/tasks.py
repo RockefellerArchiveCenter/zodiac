@@ -75,7 +75,12 @@ def trigger_first_services():
     QUERY_PARAMS = [{"is_active": True, "application__is_active": True,
                      "has_active_task": False,
                      "application__name__icontains": "zorya",
-                     "name__icontains": "discover bags"}]
+                     "name__icontains": "download objects"},
+                    {"is_active": True, "application__is_active": True,
+                     "has_active_task": False,
+                     "application__name__icontains": "pictor",
+                     "name__icontains": "bag preparer"}
+                    ]
 
     completed = {'detail': {'services': []}}
     count = 0
