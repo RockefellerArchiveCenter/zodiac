@@ -41,7 +41,7 @@ def on_task_postrun(task_id=None, task=None, retval=None, state=None, *args, **k
     if len(kwargs['args']) > 1:
         task_result = TaskResult.objects.get(task_id=task_id)
         task_result_status = get_task_result_status(task_result)
-        if task_result_status == 'Idle':
+        if (task_result_status == 'Idle' and not service.has_external_trigger):
             task_result.delete()
         else:
             RequestLog.objects.create(
