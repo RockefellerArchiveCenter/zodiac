@@ -14,7 +14,7 @@
         <td><a href="{{service.application.get_absolute_url}}">{{service.application.name}}</a></td>
         <td>{{service.description}}</td>
         <td>
-          {% if service.has_external_trigger %}External HTTP request{% else %}Internal cron job{% endif %}
+          {% if service.has_external_trigger %}<i class="fa fa-external-link"></i>External HTTP request{% else %}<i class="fa fa-clock-o"></i>Internal cron job{% endif %}
         </td>
       </tr>
     {% endfor %}

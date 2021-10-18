@@ -65,7 +65,7 @@
                   <td>{% include 'gateway/active_label.html' with status=service.service_active %}</td>
                   <td>{{service.description}}</td>
                   <td>
-                    {% if service.has_external_trigger %}External HTTP request{% else %}Internal cron job{% endif %}
+                    {% if service.has_external_trigger %}<i class="fa fa-external-link"></i>External HTTP request{% else %}<i class="fa fa-clock-o"></i>Internal cron job{% endif %}
                   </td>
                 </tr>
               {% endfor %}
