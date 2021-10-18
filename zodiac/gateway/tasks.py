@@ -22,13 +22,16 @@ def queue_services():
 
     The maximum number of services to trigger at once can be changed by
     setting the `MAX_SERVICES` config value. Services which have been triggered
-    least recently are triggered first.
+    least recently are triggered first. Services which are externally triggered
+    are excluded from this task.
     """
     completed = {'detail': {'services': []}}
 
     for registry in ServiceRegistry.objects.filter(
-            is_active=True, has_active_task=False,
-            application__is_active=True).order_by('modified_time')[:settings.MAX_SERVICES]:
+            is_active=True,
+            has_active_task=False,
+            application__is_active=True,
+            has_external_trigger=False).order_by('modified_time')[:settings.MAX_SERVICES]:
         url = render_service_path(registry, '')
         r = queue_request.delay(
             'post',
