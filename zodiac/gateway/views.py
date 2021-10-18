@@ -280,6 +280,13 @@ class ResultsDetailView(DetailView):
 
 
 @method_decorator(login_required, name='dispatch')
+class ResultsDeleteView(DeleteView):
+    template_name = "gateway/delete.html"
+    model = RequestLog
+    success_url = reverse_lazy('results-list')
+
+
+@method_decorator(login_required, name='dispatch')
 class SourcesAddView(CreateView):
     template_name = "gateway/add.html"
     model = Source
