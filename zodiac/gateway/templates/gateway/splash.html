@@ -80,7 +80,7 @@
   <div class="col-md-12">
     <div class="box box-primary">
       <div class="box-header with-border">
-        <h2 class="box-title">Services</h2>
+        <h2 class="box-title">Applications</h2>
       </div>
       <div class="box-body">
         <div class="graph">
@@ -105,14 +105,18 @@
     g.setNode("gemini", { label: "Gemini", style: "fill: lightblue" })
     g.setNode("pictor", { label: "Pictor", style: "fill: lightblue" })
     g.setNode("ursa major", { label: "Ursa Major", style: "fill: lightblue" })
+    g.setNode("zorya", { label: "Zorya", style: "fill: lightblue" })
 
     // External applications
+    g.setNode("aquila", { label: "Aquila", style: "fill: lightgreen" })
     g.setNode("archivematica", { label: "Archivematica", style: "fill: lightgreen" })
     g.setNode("archivesspace", { label: "ArchivesSpace", style: "fill: lightgreen" })
     g.setNode("aurora", { label: "Aurora", style: "fill: lightgreen" })
     g.setNode("fedora", { label: "Fedora", style: "fill: lightgreen" })
 
     // Connections between applications
+    g.setEdge("zorya", "aquila", { label: "" })
+    g.setEdge("zorya", "ursa major", { label: "" })
     g.setEdge("aurora", "ursa major", { label: "" })
     g.setEdge("ursa major", "fornax", { label: "" })
     g.setEdge("ursa major", "pictor", { label: "" })
