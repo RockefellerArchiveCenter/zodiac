@@ -63,5 +63,5 @@ def queue_request(method, url, headers, data, files, params, service_id):
 @shared_task()
 def delete_successful():
     """Deletes expired success messages."""
-    expired_time = timezone.now() - timezone.timedelta(hours=settings.DELETE_SUCCESSFUL_AFTER)
+    expired_time = timezone.now() - timezone.timedelta(days=settings.DELETE_SUCCESSFUL_AFTER)
     TaskResult.objects.filter(status="SUCCESS", date_done__lte=expired_time).delete()

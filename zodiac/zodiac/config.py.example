@@ -18,4 +18,4 @@ CELERY_BROKER_URL = 'pyamqp://guest:guest@my-rabbit:5672//'
 CELERY_RESULT_BACKEND = 'django-db'
 
 MAX_SERVICES = 10 # Maximum number of services to trigger at once
-DELETE_SUCCESSFUL_AFTER = 24 # number of hours after which successful results will be deleted
+DELETE_SUCCESSFUL_AFTER = 7 # number of days after which successful results will be deleted

@@ -260,11 +260,6 @@ APPLICATIONS = [
     }
 ]
 
-TASKS = [
-    {"name": "Process queued callbacks", "task": "gateway.tasks.queue_services"},
-    {"name": "Delete successful results", "task": "gateway.tasks.delete_successful"}
-]
-
 
 class Command(BaseCommand):
     help = "Set up services based on defaults."
@@ -350,13 +345,19 @@ class Command(BaseCommand):
         every_minute, _ = CrontabSchedule.objects.get_or_create(minute='*', hour='*',
                                                                 day_of_week='*', day_of_month='*',
                                                                 month_of_year='*')
-        daily, _ = CrontabSchedule.objects.get_or_create(minute='0', hour='4',
-                                                         day_of_week='*', day_of_month='*',
-                                                         month_of_year='*')
+        weekly, _ = CrontabSchedule.objects.get_or_create(minute='0', hour='4',
+                                                          day_of_week='sun', day_of_month='*',
+                                                          month_of_year='*')
+
+        TASKS = [
+            {"name": "Process queued callbacks", "task": "gateway.tasks.queue_services", "schedule": every_minute},
+            {"name": "Delete successful results", "task": "gateway.tasks.delete_successful", "schedule": weekly}
+        ]
+
         for task in TASKS:
             if not PeriodicTask.objects.filter(
                     name=task["name"], task=task["task"]).exists():
-                PeriodicTask.objects.create(crontab=every_minute, name=task["name"],
+                PeriodicTask.objects.create(crontab=task["schedule"], name=task["name"],
                                             task=task["task"])
 
         print("Tasks scheduled")
