@@ -75,4 +75,63 @@
     </div>
   </div>
 </div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h2 class="box-title">Services</h2>
+      </div>
+      <div class="box-body">
+        <div class="graph">
+          <svg width="100%"><g></g></svg>
+        </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+  $(document).ready(function() {
+    // Create a new directed graph
+    var g = new dagreD3.graphlib.Graph().setGraph({});
+    g.graph().rankDir = 'LR';
+    g.graph().ranksep = '20'
+
+    // Microservice applications
+    g.setNode("aquarius", { label: "Aquarius", style: "fill: lightblue" })
+    g.setNode("fornax", { label: "Fornax", style: "fill: lightblue" })
+    g.setNode("gemini", { label: "Gemini", style: "fill: lightblue" })
+    g.setNode("pictor", { label: "Pictor", style: "fill: lightblue" })
+    g.setNode("ursa major", { label: "Ursa Major", style: "fill: lightblue" })
+
+    // External applications
+    g.setNode("archivematica", { label: "Archivematica", style: "fill: lightgreen" })
+    g.setNode("archivesspace", { label: "ArchivesSpace", style: "fill: lightgreen" })
+    g.setNode("aurora", { label: "Aurora", style: "fill: lightgreen" })
+    g.setNode("fedora", { label: "Fedora", style: "fill: lightgreen" })
+
+    // Connections between applications
+    g.setEdge("aurora", "ursa major", { label: "" })
+    g.setEdge("ursa major", "fornax", { label: "" })
+    g.setEdge("ursa major", "pictor", { label: "" })
+    g.setEdge("fornax", "archivematica", { label: "" })
+    g.setEdge("archivematica", "gemini", { label: "" })
+    g.setEdge("gemini", "fedora", { label: "" })
+    g.setEdge("gemini", "aquarius", { label: "" })
+    g.setEdge("aquarius", "archivesspace", { label: "" })
+
+    var svg = d3.select("svg"),
+        inner = svg.select("g");
+
+    // Create the renderer
+    var render = new dagreD3.render();
+
+    // Run the renderer. This is what draws the final graph.
+    render(inner, g)
+    svg.attr('height', g.graph().height);
+    svg.attr('width', g.graph().width);
+  });
+</script>
+{% endblock extra_js %}
