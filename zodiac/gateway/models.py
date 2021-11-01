@@ -71,42 +71,37 @@ class ServiceRegistry(models.Model):
         ('GET', 'GET'),
         ('POST', 'POST'),
     )
-    name = models.CharField(max_length=128, unique=True)
+    name = models.CharField(max_length=128)
     application = models.ForeignKey(
         Application,
         on_delete=models.CASCADE,
     )
     description = models.TextField()
-    external_uri = models.CharField(max_length=40)
+    external_uri = models.CharField(max_length=40, blank=True, null=True)
     service_route = models.CharField(max_length=40)
     plugin = models.IntegerField(choices=PLUGIN_CHOICE_LIST, default=0)
     sources = models.ManyToManyField(Source, blank=True)
     is_active = models.BooleanField(default=True)
     is_private = models.BooleanField(default=False)
     has_active_task = models.BooleanField(default=False)
+    has_external_trigger = models.BooleanField(default=False)
     method = models.CharField(max_length=10, choices=HTTP_REQUESTS_METHODS)
-    callback_service = models.ForeignKey(
-        'self',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True
-    )
     created_time = models.DateTimeField(auto_now_add=True)
     modified_time = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["application__name", "name"]
 
+    # TODO: validation
+    # - unique together: application__app_host, application__app_port, service_route
+    # - external_uri required when has_external_trigger == True
+
     def __str__(self):
+        return self.name
+
+    @property
+    def full_name(self):
         return "{}: {}".format(self.application.name, self.name)
-
-    @property
-    def called_by(self):
-        return ServiceRegistry.objects.filter(callback_service=self.id)
-
-    @property
-    def is_callback(self):
-        return True if len(ServiceRegistry.objects.filter(callback_service=self.id)) else False
 
     def get_update_url(self):
         return reverse('services-update', args=[self.pk])

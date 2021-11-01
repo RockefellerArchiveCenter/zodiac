@@ -34,7 +34,6 @@ services_registry_fields = [
     'sources',
     'is_private',
     'method',
-    'callback_service',
 ]
 
 
@@ -267,7 +266,7 @@ class ResultsDatatableView(BaseDatatableView):
             async_result_id = result.async_result_id if result.async_result_id else ""
             json_data.append([
                 '<a href="' + str(reverse_lazy('results-detail', kwargs={"pk": result.id})) + '">' + async_result_id + '</a>',
-                '<a href="' + str(reverse_lazy('services-detail', kwargs={"pk": result.service.id})) + '">' + result.service.name + '</a>' if result.service else '',
+                '<a href="' + str(reverse_lazy('services-detail', kwargs={"pk": result.service.id})) + '">' + result.service.full_name + '</a>' if result.service else '',
                 self.get_status_display(result.task_result_status),
                 '<pre>' + self.get_task_result(result) + '</pre>',
                 result.task_result.date_done.astimezone(tz.tzlocal()).strftime('%b %e, %Y %I:%M:%S %p') if result.task_result else '',
@@ -278,6 +277,13 @@ class ResultsDatatableView(BaseDatatableView):
 class ResultsDetailView(DetailView):
     template_name = "gateway/results_detail.html"
     model = RequestLog
+
+
+@method_decorator(login_required, name='dispatch')
+class ResultsDeleteView(DeleteView):
+    template_name = "gateway/delete.html"
+    model = RequestLog
+    success_url = reverse_lazy('results-list')
 
 
 @method_decorator(login_required, name='dispatch')

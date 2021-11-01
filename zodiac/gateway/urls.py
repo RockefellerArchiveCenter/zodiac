@@ -44,4 +44,5 @@ urlpatterns = [
     path('results/', views.ResultsListView.as_view(), name='results-list'),
     path('results-data/', views.ResultsDatatableView.as_view(), name='results-data'),
     path('results/<int:pk>/', views.ResultsDetailView.as_view(), name='results-detail'),
+    path('results/delete/<int:pk>/', views.ResultsDeleteView.as_view(), name='results-delete'),
 ]
