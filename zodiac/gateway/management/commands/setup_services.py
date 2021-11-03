@@ -76,12 +76,22 @@ APPLICATIONS = [
                 "has_external_trigger": True,
             },
             {
+                "name": "Extract SIP",
+                "description": "Extracts compressed SIP.",
+                "service_route": "extract",
+            },
+            {
+                "name": "Restructure SIP",
+                "description": "Restructures SIP for Archivematica.",
+                "service_route": "restructure",
+            },
+            {
                 "name": "Assemble SIP",
-                "description": "Creates Archivematica-compliant SIPs.",
+                "description": "Creates compressed SIP.",
                 "service_route": "assemble",
             },
             {
-                "name": "Create Transfer",
+                "name": "Start Transfer",
                 "description": "Starts and approves a transfer in Archivematica.",
                 "service_route": "start",
             },
