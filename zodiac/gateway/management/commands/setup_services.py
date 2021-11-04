@@ -161,9 +161,14 @@ APPLICATIONS = [
         "health_check_path": "/status",
         "services": [
             {
-                "name": "Prepare Bags",
+                "name": "Prepare Bag",
                 "description": "Prepares bags for derivative creation",
                 "service_route": "prepare",
+            },
+            {
+                "name": "Prepare TIFFs",
+                "description": "Prepares TIFFs for JPEG2000 conversion",
+                "service_route": "prepare-tiff",
             },
             {
                 "name": "Make JPEG200s",
@@ -171,9 +176,19 @@ APPLICATIONS = [
                 "service_route": "make-jp2",
             },
             {
-                "name": "Make PDFs",
+                "name": "Make PDF",
                 "description": "Creates concatenated PDF file from JP2 derivatives",
                 "service_route": "make-pdf",
+            },
+            {
+                "name": "Compress PDF",
+                "description": "Compresses PDF file",
+                "service_route": "compress-pdf",
+            },
+            {
+                "name": "OCR PDF",
+                "description": "Adds OCR layer to PDF",
+                "service_route": "ocr-pdf",
             },
             {
                 "name": "Make IIIF manifest",
