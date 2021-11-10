@@ -277,6 +277,11 @@ APPLICATIONS = [
                 "service_route": "make-package",
             },
             {
+                "name": "Archive Package",
+                "description": "Create TAR of package.",
+                "service_route": "archive-package",
+            },
+            {
                 "name": "Deliver Package",
                 "description": "Deliver package to Ursa Major",
                 "service_route": "deliver-package",
