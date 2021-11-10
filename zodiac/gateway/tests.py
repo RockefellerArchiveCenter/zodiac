@@ -9,7 +9,7 @@ from zodiac import settings
 from .models import (Application, RequestLog, ServiceRegistry, Source,
                      TaskResult, User)
 from .signals import on_task_postrun, on_task_prerun
-from .tasks import delete_successful, queue_callbacks, trigger_first_services
+from .tasks import delete_successful, queue_services
 
 
 class GatewayTestCase(TestCase):
@@ -17,12 +17,12 @@ class GatewayTestCase(TestCase):
     def setUp(self):
         call_command("setup_services", "--reset")
 
-    def test_queue_tasks(self):
-        queued = queue_callbacks()
+    def test_queue_services(self):
+        queued = queue_services()
         self.assertTrue(
-            isinstance(queued, dict), "queue_callbacks() did not return JSON.")
+            isinstance(queued, dict), "queue_services() did not return JSON.")
         self.assertTrue(
-            len(queued["detail"]["callbacks"]) == settings.MAX_SERVICES, "Incorrect number of services called.")
+            len(queued["detail"]["services"]) == settings.MAX_SERVICES, "Incorrect number of services called.")
 
         for service in ServiceRegistry.objects.all():
             trigger = self.client.get(reverse('services-trigger', kwargs={'pk': service.id}))
@@ -31,10 +31,6 @@ class GatewayTestCase(TestCase):
     def test_delete_tasks(self):
         deleted = delete_successful()
         self.assertIsNot(deleted, False)
-
-    def test_trigger_first_services(self):
-        triggered = trigger_first_services()
-        self.assertTrue(isinstance(triggered, dict))
 
     @patch('gateway.signals.update_service_status')
     def test_signals(self, mock_update_service_status):
@@ -55,7 +51,7 @@ class GatewayTestCase(TestCase):
 
     def test_gateway_views(self):
         for service in ServiceRegistry.objects.filter(
-                plugin=ServiceRegistry.REMOTE_AUTH).exclude(application__name="Aurora"):
+                plugin=ServiceRegistry.REMOTE_AUTH, external_uri__isnull=False).exclude(application__name="Aurora"):
             url = "http://localhost/api/{}/{}".format(service.external_uri.rstrip("/"), service.service_route)
             resp = self.client.post(url)
             self.assertEqual(resp.status_code, 200, "{} returned an error: {}".format(service, resp.json()))
