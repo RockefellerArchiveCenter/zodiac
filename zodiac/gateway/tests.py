@@ -121,3 +121,10 @@ class GatewayTestCase(TestCase):
         self.assertEqual(
             len(ServiceRegistry.objects.all()), initial_len - 1,
             "More than one service was deleted.")
+
+    def test_error_messages(self):
+        """Tests the error_messages model method of RequestLog"""
+        task_result = TaskResult.objects.create(result="{\"exc_message\": [\"foo\", {\"detail\": \"bar\"}]}")
+        service = random.choice(ServiceRegistry.objects.all())
+        request_log = RequestLog.objects.create(service=service, task_result=task_result)
+        self.assertEqual(request_log.error_messages(), ["foo", "bar"])
