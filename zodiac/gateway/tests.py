@@ -8,7 +8,8 @@ from zodiac import settings
 
 from .models import (Application, RequestLog, ServiceRegistry, Source,
                      TaskResult, User)
-from .signals import on_task_postrun, on_task_prerun
+from .signals import (get_task_result_status, on_task_postrun, on_task_prerun,
+                      update_service_status)
 from .tasks import delete_successful, queue_services
 from .views_library import render_service_path
 
@@ -37,8 +38,7 @@ class GatewayTestCase(TestCase):
                 files={},
                 headers={'content-type': 'application/json'},
                 params={},
-                service_id=service.pk
-            )
+                service_id=service.pk)
 
     def test_active_task(self):
         """Ensures a service with an active task is not triggered."""
@@ -54,21 +54,86 @@ class GatewayTestCase(TestCase):
         self.assertIsNot(deleted, False)
 
     @patch('gateway.signals.update_service_status')
-    def test_signals(self, mock_update_service_status):
-        task = TaskResult.objects.create()
+    def test_on_task_prerun(self, mock_update_service_status):
+        """Asserts that signals call the appropriate methods."""
+        task = TaskResult.objects.create(task_id=1)
         service = random.choice(ServiceRegistry.objects.all())
 
         on_task_prerun(task_id=task.id, kwargs={"service_id": service.pk})
         mock_update_service_status.assert_called_once()
         mock_update_service_status.assert_called_with({"kwargs": {"service_id": service.pk}}, True)
 
-        mock_update_service_status.reset_mock()
+    @patch('gateway.signals.update_service_status')
+    @patch('gateway.signals.get_task_result_status')
+    def test_on_task_postrun(self, mock_get_task_result_status, mock_update_service_status):
+        task = TaskResult.objects.create(task_id=2)
+        service = random.choice(ServiceRegistry.objects.filter(has_external_trigger=False))
 
-        task.status = "SUCCESS"
-        task.save()
-        on_task_postrun(task_id=task.id, kwargs={"service_id": service.pk}, args=[{"detail": "success"}])
+        mock_get_task_result_status.return_value = "Idle"
+        mock_update_service_status.return_value = service
+        previous_len = len(RequestLog.objects.all())
+        on_task_postrun(task_id=task.task_id, kwargs={"service_id": service.pk}, args=[{"detail": "success"}])
         mock_update_service_status.assert_called_once()
-        mock_update_service_status.assert_called_with({"kwargs": {"service_id": service.pk}, "args": [{"detail": "success"}]}, False)
+        mock_update_service_status.assert_called_with(
+            {"kwargs": {"service_id": service.pk},
+             "args": [{"detail": "success"}]},
+            False)
+        self.assertEqual(mock_get_task_result_status.call_count, 0)
+        self.assertEqual(len(RequestLog.objects.all()), previous_len)
+        mock_update_service_status.reset_mock()
+        mock_get_task_result_status.reset_mock()
+
+        on_task_postrun(
+            task_id=task.task_id,
+            kwargs={"service_id": service.pk},
+            args=[{"detail": "success"}, service.service_route])
+        mock_update_service_status.assert_called_once()
+        mock_update_service_status.assert_called_with(
+            {"kwargs": {"service_id": service.pk},
+             "args": [{"detail": "success"}, service.service_route]},
+            False)
+        mock_get_task_result_status.assert_called_once()
+        self.assertEqual(len(RequestLog.objects.all()), previous_len)
+        mock_update_service_status.reset_mock()
+        mock_get_task_result_status.reset_mock()
+
+        task = TaskResult.objects.create(task_id=3)  # need to recreate here since previous test deleted the task
+        mock_get_task_result_status.return_value = "Success"
+        on_task_postrun(
+            task_id=task.task_id,
+            kwargs={"service_id": service.pk},
+            args=[{"detail": "success"}, service.service_route])
+        mock_update_service_status.assert_called_once()
+        mock_update_service_status.assert_called_with(
+            {"kwargs": {"service_id": service.pk},
+             "args": [{"detail": "success"}, service.service_route]},
+            False)
+        mock_get_task_result_status.assert_called_once()
+        self.assertEqual(len(RequestLog.objects.all()), previous_len + 1)
+        mock_update_service_status.reset_mock()
+        mock_get_task_result_status.reset_mock()
+
+    def test_update_service_status(self):
+        """Asserts the update_service_status signal correctly updates a service."""
+        updated = update_service_status({"kwargs": {}}, True)
+        self.assertEqual(updated, None)
+        service = random.choice(ServiceRegistry.objects.all())
+        updated = update_service_status({"kwargs": {"service_id": service.pk}}, True)
+        self.assertTrue(isinstance(updated, ServiceRegistry))
+        self.assertEqual(updated.has_active_task, True)
+
+    def test_get_task_result_status(self):
+        """Asserts the get_task_result_status signal returns expected values."""
+        task_result = TaskResult.objects.create(status="FAILURE")
+        self.assertEqual(get_task_result_status(task_result), "Error")
+
+        task_result.status = "SUCCESS"
+        task_result.result = "{}"
+        self.assertEqual(get_task_result_status(task_result), "Idle")
+
+        task_result.status = "SUCCESS"
+        task_result.result = "{\"count\": 1}"
+        self.assertEqual(get_task_result_status(task_result), "Success")
 
     @patch("gateway.tasks.queue_request.delay")
     def test_gateway_views(self, mock_queue):
@@ -152,3 +217,6 @@ class GatewayTestCase(TestCase):
         service = random.choice(ServiceRegistry.objects.all())
         request_log = RequestLog.objects.create(service=service, task_result=task_result)
         self.assertEqual(request_log.error_messages(), ["foo", "bar"])
+
+    def tearDown(self):
+        TaskResult.objects.all().delete()
