@@ -10,6 +10,7 @@ from .models import (Application, RequestLog, ServiceRegistry, Source,
                      TaskResult, User)
 from .signals import on_task_postrun, on_task_prerun
 from .tasks import delete_successful, queue_services
+from .views_library import render_service_path
 
 
 class GatewayTestCase(TestCase):
@@ -17,7 +18,8 @@ class GatewayTestCase(TestCase):
     def setUp(self):
         call_command("setup_services", "--reset")
 
-    def test_queue_services(self):
+    @patch("gateway.tasks.queue_request.delay")
+    def test_queue_services(self, mock_queue):
         queued = queue_services()
         self.assertTrue(
             isinstance(queued, dict), "queue_services() did not return JSON.")
@@ -27,6 +29,25 @@ class GatewayTestCase(TestCase):
         for service in ServiceRegistry.objects.all():
             trigger = self.client.get(reverse('services-trigger', kwargs={'pk': service.id}))
             self.assertEqual(trigger.status_code, 200, "Error triggering service: {}".format(trigger.json()))
+            self.assertEqual(trigger.json(), {"SUCCESS": 1})
+            mock_queue.assert_called_with(
+                'post',
+                render_service_path(service, ""),
+                data={},
+                files={},
+                headers={'content-type': 'application/json'},
+                params={},
+                service_id=service.pk
+            )
+
+    def test_active_task(self):
+        """Ensures a service with an active task is not triggered."""
+        service = random.choice(ServiceRegistry.objects.all())
+        service.has_active_task = True
+        service.save()
+        trigger = self.client.get(reverse('services-trigger', kwargs={'pk': service.id}))
+        self.assertEqual(trigger.status_code, 200, "Error triggering service with active task: {}".format(trigger.json()))
+        self.assertEqual(trigger.json(), {"SUCCESS": 0})
 
     def test_delete_tasks(self):
         deleted = delete_successful()
@@ -49,12 +70,15 @@ class GatewayTestCase(TestCase):
         mock_update_service_status.assert_called_once()
         mock_update_service_status.assert_called_with({"kwargs": {"service_id": service.pk}, "args": [{"detail": "success"}]}, False)
 
-    def test_gateway_views(self):
+    @patch("gateway.tasks.queue_request.delay")
+    def test_gateway_views(self, mock_queue):
         for service in ServiceRegistry.objects.filter(
                 plugin=ServiceRegistry.REMOTE_AUTH, external_uri__isnull=False).exclude(application__name="Aurora"):
-            url = "http://localhost/api/{}/{}".format(service.external_uri.rstrip("/"), service.service_route)
-            resp = self.client.post(url)
+            url = "http://localhost/api/{}/".format(service.external_uri.rstrip("/"))
+            resp = self.client.post(url, data={"foo": "bar"}, headers={"Content-Type": "application/json"})
             self.assertEqual(resp.status_code, 200, "{} returned an error: {}".format(service, resp.json()))
+            self.assertEqual(mock_queue.call_args[0], ("post", render_service_path(service, "")))
+            self.assertEqual(mock_queue.call_args[1]["data"], {"foo": ["bar"]})
 
     def test_missing_service(self):
         url = "http://localhost/api/missing/not-here"
