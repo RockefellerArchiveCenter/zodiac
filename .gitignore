@@ -4,6 +4,7 @@ env/
 *.pot
 *.py[co]
 .tox/
+.coverage
 __pycache__
 MANIFEST
 docs/_build/

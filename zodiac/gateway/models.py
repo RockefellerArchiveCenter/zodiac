@@ -58,14 +58,10 @@ class Application(models.Model):
 
 class ServiceRegistry(models.Model):
     REMOTE_AUTH = 0
-    BASIC_AUTH = 1
     KEY_AUTH = 2
-    SERVER_AUTH = 3
     PLUGIN_CHOICE_LIST = (
         (REMOTE_AUTH, _('Remote auth')),
-        (BASIC_AUTH, _('Basic auth')),
         (KEY_AUTH, _('Key auth')),
-        (SERVER_AUTH, _('Server auth'))
     )
     HTTP_REQUESTS_METHODS = (
         ('GET', 'GET'),
