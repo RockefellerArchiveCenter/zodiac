@@ -1,21 +1,13 @@
-DEBUG = True
-
-ALLOWED_HOSTS = ['localhost', 'zodiac-web']
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'HOST': 'zodiac-db',
-        'PORT': 5432,
-    }
-}
-
-STATIC_ROOT = '/static'
-
-CELERY_BROKER_URL = 'pyamqp://guest:guest@my-rabbit:5672//'
-CELERY_RESULT_BACKEND = 'django-db'
-
-MAX_SERVICES = 10 # Maximum number of services to trigger at once
-DELETE_SUCCESSFUL_AFTER = 7 # number of days after which successful results will be deleted
+DJANGO_DEBUG = True  # run Django in debug mode, which outputs stack traces to the UI, set to False for production (boolean)
+DJANGO_SECRET_KEY = "tvjqd*-^rr*dfjajo-e3y6uw!qij^@x0+i0hac2+58d2b7u^y6"  # used by Django to create hashes (string)
+DJANGO_ALLOWED_HOSTS = ["localhost", "zodiac-web"]  # hosts Scorpio will respond to (list of strings)
+SQL_ENGINE = "django.db.backends.postgresql"  # the database engine used by Scorpio (string, one of django.db.backends)
+SQL_DATABASE = "postgres"  # name of the application database (string)
+SQL_USER = "postgres"  # name of the application database user (string)
+SQL_PASSWORD = "postgres"  # password for the application database (string)
+SQL_HOST = "zodiac-db"  # host for the application database (string)
+SQL_PORT = 5432  # port on which the application database can be reached (integer)
+CELERY_BROKER_URL = 'pyamqp://guest:guest@my-rabbit:5672//'  # Default broker URL. This must be a URL in the form of: transport://userid:password@hostname:port/virtual_host
+CELERY_RESULT_BACKEND = 'django-db'  # The backend used to store task results (tombstones)
+CELERY_MAX_SERVICES = 10  # Maximum number of services to trigger at once
+CELERY_DELETE_SUCCESSFUL_AFTER = 7  # number of days after which successful results will be deleted
