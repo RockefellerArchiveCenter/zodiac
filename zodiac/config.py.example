@@ -8,6 +8,5 @@ SQL_PASSWORD = "postgres"  # password for the application database (string)
 SQL_HOST = "zodiac-db"  # host for the application database (string)
 SQL_PORT = 5432  # port on which the application database can be reached (integer)
 CELERY_BROKER_URL = 'pyamqp://guest:guest@my-rabbit:5672//'  # Default broker URL. This must be a URL in the form of: transport://userid:password@hostname:port/virtual_host
-CELERY_RESULT_BACKEND = 'django-db'  # The backend used to store task results (tombstones)
 CELERY_MAX_SERVICES = 10  # Maximum number of services to trigger at once
 CELERY_DELETE_SUCCESSFUL_AFTER = 7  # number of days after which successful results will be deleted
