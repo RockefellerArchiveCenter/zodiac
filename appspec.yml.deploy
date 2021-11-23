@@ -1,0 +1,24 @@
+version: 0.0
+os: linux
+files:
+  - source: ./
+    destination: ${ROOT_DIR}
+hooks:
+  ApplicationStop:
+    - location: deploy_scripts/stop_celery.sh
+      timeout: 30
+  AfterInstall:
+    - location: deploy_scripts/set_permissions.sh
+      timeout: 30
+    - location: deploy_scripts/install_dependencies_django.sh
+      timeout: 300
+    - location: deploy_scripts/run_management_commands_django.sh
+      timeout: 300
+  ApplicationStart:
+    - location: deploy_scripts/restart_httpd.sh
+      timeout: 20
+    - location: deploy_scripts/start_celery.sh
+      timeout: 30
+  ValidateService:
+    - location: deploy_scripts/curl_index.sh
+      timeout: 10
