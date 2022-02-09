@@ -1,5 +1,10 @@
+import time
+from contextlib import contextmanager
+
 import requests
 from celery import shared_task
+from celery.utils.log import get_task_logger
+from django.core.cache import cache
 from django.utils import timezone
 from django_celery_results.models import TaskResult
 from zodiac import settings
@@ -16,8 +21,24 @@ method_map = {
 }
 
 
-@shared_task()
-def queue_services():
+logger = get_task_logger(__name__)
+
+LOCK_EXPIRE = 60 * 15  # Lock expires in 15 minutes
+
+
+@contextmanager
+def memcache_lock(lock_id, oid):
+    timeout_at = time.monotonic() + LOCK_EXPIRE - 3
+    status = cache.add(lock_id, oid, LOCK_EXPIRE)
+    try:
+        yield status
+    finally:
+        if time.monotonic() < timeout_at and status:
+            cache.delete(lock_id)
+
+
+@shared_task(bind=True)
+def queue_services(self):
     """Queues tasks for regularly scheduled services.
 
     The maximum number of services to trigger at once can be changed by
@@ -33,17 +54,19 @@ def queue_services():
             application__is_active=True,
             has_external_trigger=False).order_by('modified_time')[:settings.MAX_SERVICES]:
         url = render_service_path(registry, '')
-        r = queue_request.delay(
-            'post',
-            url,
-            headers={'Content-Type': 'application/json'},
-            data=None,
-            files=None,
-            params={},
-            service_id=registry.id
-        )
-        if r:
-            completed['detail']['services'].append({registry.name: r.id})
+        with memcache_lock(registry.name, self.app.oid) as acquired:
+            if acquired:
+                r = queue_request.delay(
+                    'post',
+                    url,
+                    headers={'Content-Type': 'application/json'},
+                    data=None,
+                    files=None,
+                    params={},
+                    service_id=registry.id
+                )
+                if r:
+                    completed['detail']['services'].append({registry.name: r.id})
     return completed
 
 
