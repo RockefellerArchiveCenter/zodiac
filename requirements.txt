@@ -4,7 +4,7 @@
 #
 #    pip-compile
 #
-amqp==5.0.7
+amqp==5.0.9
     # via kombu
 asgiref==3.4.1
     # via django
@@ -19,7 +19,7 @@ celery==5.1.2
     #   django-celery-results
 certifi==2021.10.8
     # via requests
-charset-normalizer==2.0.9
+charset-normalizer==2.0.11
     # via requests
 click==7.1.2
     # via
@@ -33,7 +33,7 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.2.0
     # via celery
-django==3.2.10
+django==3.2.12
     # via
     #   -r requirements.in
     #   django-celery-beat
@@ -47,17 +47,17 @@ django-crispy-forms==1.13.0
     # via -r requirements.in
 django-datatables-view==1.19.1
     # via -r requirements.in
-django-timezone-field==4.2.1
+django-timezone-field==4.2.3
     # via django-celery-beat
 djangorestframework==3.12.4
     # via -r requirements.in
 idna==3.3
     # via requests
-importlib-metadata==4.8.2
+importlib-metadata==4.8.3
     # via kombu
 kombu==5.1.0
     # via celery
-prompt-toolkit==3.0.24
+prompt-toolkit==3.0.27
     # via click-repl
 psycopg2-binary==2.9.1
     # via -r requirements.in
@@ -84,7 +84,7 @@ typing-extensions==4.0.1
     # via
     #   asgiref
     #   importlib-metadata
-urllib3==1.26.7
+urllib3==1.26.8
     # via requests
 vine==5.0.0
     # via
