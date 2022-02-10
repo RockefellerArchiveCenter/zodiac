@@ -3,7 +3,6 @@ from contextlib import contextmanager
 
 import requests
 from celery import shared_task
-from celery.utils.log import get_task_logger
 from django.core.cache import cache
 from django.utils import timezone
 from django_celery_results.models import TaskResult
@@ -21,9 +20,7 @@ method_map = {
 }
 
 
-logger = get_task_logger(__name__)
-
-LOCK_EXPIRE = 60 * 15  # Lock expires in 15 minutes
+LOCK_EXPIRE = 60 * 10  # Lock expires in 10 minutes
 
 
 @contextmanager
