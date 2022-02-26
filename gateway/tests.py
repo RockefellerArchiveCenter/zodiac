@@ -4,6 +4,7 @@ from unittest.mock import patch
 from django.core.management import call_command
 from django.test import TestCase
 from django.urls import reverse
+
 from zodiac import settings
 
 from .models import (Application, RequestLog, ServiceRegistry, Source,
@@ -188,7 +189,7 @@ class GatewayTestCase(TestCase):
         datatable_resp = self.client.get(reverse("results-data"))
         self.assertEqual(
             datatable_resp.status_code, 200,
-            "results-data returned error:".format(datatable_resp.json()))
+            "results-data returned error: {}".format(datatable_resp.json()))
         self.assertTrue(isinstance(
             datatable_resp.json()["data"], list),
             "Expected `data` to be a list, got {} instead".format(type(datatable_resp.json()["data"])))

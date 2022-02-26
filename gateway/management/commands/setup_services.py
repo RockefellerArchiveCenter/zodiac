@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 from django_celery_beat.models import CrontabSchedule, PeriodicTask
+
 from gateway.models import Application, ServiceRegistry, Source, User
 
 SUPERUSERS = [
