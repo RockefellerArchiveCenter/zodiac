@@ -6,6 +6,7 @@ from celery import shared_task
 from django.core.cache import cache
 from django.utils import timezone
 from django_celery_results.models import TaskResult
+
 from zodiac import settings
 
 from .models import ServiceRegistry
@@ -51,7 +52,7 @@ def queue_services(self):
             application__is_active=True,
             has_external_trigger=False).order_by('modified_time')[:settings.MAX_SERVICES]:
         url = render_service_path(registry, '')
-        with memcache_lock(registry.name, self.app.oid) as acquired:
+        with memcache_lock(registry.name.replace(" ", "_"), self.app.oid) as acquired:
             if acquired:
                 r = queue_request.delay(
                     'post',
