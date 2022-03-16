@@ -30,7 +30,7 @@ def get_health_check_status(application):
                     application.app_host,
                     application.app_port,
                     application.health_check_path.lstrip("/").rstrip("/"))).json()
-            status = True if resp['health']['ping']['pong'] else False
+            status = True if resp['pong'] else False
         except Exception:
             status = None
     return status
