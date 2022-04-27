@@ -54,17 +54,15 @@ def queue_services(self):
         url = render_service_path(registry, '')
         with memcache_lock(registry.name.replace(" ", "_"), self.app.oid) as acquired:
             if acquired:
-                r = queue_request.delay(
+                queue_request.delay(
                     'post',
                     url,
                     headers={'Content-Type': 'application/json'},
                     data=None,
                     files=None,
                     params={},
-                    service_id=registry.id
-                )
-                if r:
-                    completed['detail']['services'].append({registry.name: r.id})
+                    service_id=registry.id)
+                completed['detail']['services'].append(registry.name)
     return completed
 
 
