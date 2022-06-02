@@ -5,6 +5,9 @@ from django.core.management import call_command
 from django.test import TestCase
 from django.urls import reverse
 
+from zodiac import settings
+
+from .cron import QueueRequests
 from .models import (Application, RequestLog, ServiceRegistry, Source,
                      TaskResult, User)
 from .signals import (get_task_result_status, on_task_postrun, on_task_prerun,
@@ -12,34 +15,21 @@ from .signals import (get_task_result_status, on_task_postrun, on_task_prerun,
 from .tasks import delete_successful
 from .views_library import render_service_path
 
-# from zodiac import settings
+
+class CronTestCase(TestCase):
+
+    def test_queue_services(self, mock_queue):
+        queued = QueueRequests().do()
+        self.assertTrue(
+            isinstance(queued, dict), "queue_services() did not return JSON.")
+        self.assertTrue(
+            len(queued["detail"]["services"]) == settings.MAX_SERVICES, "Incorrect number of services called.")
 
 
 class GatewayTestCase(TestCase):
 
     def setUp(self):
         call_command("setup_services", "--reset")
-
-    # @patch("gateway.tasks.queue_request.delay")
-    # def test_queue_services(self, mock_queue):
-    #     queued = queue_services()
-    #     self.assertTrue(
-    #         isinstance(queued, dict), "queue_services() did not return JSON.")
-    #     self.assertTrue(
-    #         len(queued["detail"]["services"]) == settings.MAX_SERVICES, "Incorrect number of services called.")
-    #
-    #     for service in ServiceRegistry.objects.all():
-    #         trigger = self.client.get(reverse('services-trigger', kwargs={'pk': service.id}))
-    #         self.assertEqual(trigger.status_code, 200, "Error triggering service: {}".format(trigger.json()))
-    #         self.assertEqual(trigger.json(), {"SUCCESS": 1})
-    #         mock_queue.assert_called_with(
-    #             'post',
-    #             render_service_path(service, ""),
-    #             data={},
-    #             files={},
-    #             headers={'content-type': 'application/json'},
-    #             params={},
-    #             service_id=service.pk)
 
     def test_active_task(self):
         """Ensures a service with an active task is not triggered."""

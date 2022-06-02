@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_celery_results',
     'django_celery_beat',
     'crispy_forms',
+    'django_cron',
 ]
 
 MIDDLEWARE = [
@@ -149,3 +150,10 @@ DELETE_SUCCESSFUL_AFTER = config.CELERY_DELETE_SUCCESSFUL_AFTER
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+# Django cron settings
+CRON_CLASSES = [
+    "gateway.cron.QueueRequests",
+]
+DJANGO_CRON_LOCK_BACKEND = "django_cron.backends.lock.file.FileLock"
+DJANGO_CRON_LOCKFILE_PATH = config.DJANGO_CRON_LOCKFILE_PATH

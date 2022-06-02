@@ -1,3 +1,4 @@
+DJANGO_CRON_LOCKFILE_PATH = "/tmp/pisces_cron/"  # absolute path to store lockfiles for running cron jobs (string)
 DJANGO_DEBUG = True  # run Django in debug mode, which outputs stack traces to the UI, set to False for production (boolean)
 DJANGO_SECRET_KEY = "tvjqd*-^rr*dfjajo-e3y6uw!qij^@x0+i0hac2+58d2b7u^y6"  # used by Django to create hashes (string)
 DJANGO_ALLOWED_HOSTS = ["localhost", "zodiac-web"]  # hosts Scorpio will respond to (list of strings)
