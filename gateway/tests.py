@@ -18,12 +18,26 @@ from .views_library import render_service_path
 
 class CronTestCase(TestCase):
 
+    @patch("gateway.tasks.queue_request.delay")
     def test_queue_services(self, mock_queue):
         queued = QueueRequests().do()
         self.assertTrue(
             isinstance(queued, dict), "queue_services() did not return JSON.")
         self.assertTrue(
             len(queued["detail"]["services"]) == settings.MAX_SERVICES, "Incorrect number of services called.")
+
+        for service in ServiceRegistry.objects.all():
+            trigger = self.client.get(reverse('services-trigger', kwargs={'pk': service.id}))
+            self.assertEqual(trigger.status_code, 200, "Error triggering service: {}".format(trigger.json()))
+            self.assertEqual(trigger.json(), {"SUCCESS": 1})
+            mock_queue.assert_called_with(
+                'post',
+                render_service_path(service, ""),
+                data={},
+                files={},
+                headers={'content-type': 'application/json'},
+                params={},
+                service_id=service.pk)
 
 
 class GatewayTestCase(TestCase):
