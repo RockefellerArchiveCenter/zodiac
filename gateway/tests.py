@@ -18,6 +18,9 @@ from .views_library import render_service_path
 
 class CronTestCase(TestCase):
 
+    def setUp(self):
+        call_command("setup_services", "--reset")
+
     @patch("gateway.tasks.queue_request.delay")
     def test_queue_services(self, mock_queue):
         queued = QueueRequests().do()
