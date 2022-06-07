@@ -7,6 +7,8 @@ hooks:
   ApplicationStop:
     - location: deploy_scripts/stop_celery.sh
       timeout: 30
+    - location: deploy_scripts/stop_cron.sh
+      timeout: 30
   AfterInstall:
     - location: deploy_scripts/set_permissions.sh
       timeout: 30
@@ -19,6 +21,8 @@ hooks:
       timeout: 20
     - location: deploy_scripts/start_celery.sh
       timeout: 30
+    - location: deploy_scripts/start_crond.sh
+      timeout: 20
   ValidateService:
     - location: deploy_scripts/curl_index.sh
       timeout: 10
