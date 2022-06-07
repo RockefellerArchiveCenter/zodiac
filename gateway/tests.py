@@ -1,3 +1,4 @@
+import json
 import random
 from unittest.mock import patch
 
@@ -25,9 +26,9 @@ class CronTestCase(TestCase):
     def test_queue_services(self, mock_queue):
         queued = QueueRequests().do()
         self.assertTrue(
-            isinstance(queued, dict), "queue_services() did not return JSON.")
+            isinstance(queued, str), "queue_services() did not return a string.")
         self.assertTrue(
-            len(queued["detail"]["services"]) == settings.MAX_SERVICES, "Incorrect number of services called.")
+            len(json.loads(queued)["detail"]["services"]) == settings.MAX_SERVICES, "Incorrect number of services called.")
 
         for service in ServiceRegistry.objects.all():
             trigger = self.client.get(reverse('services-trigger', kwargs={'pk': service.id}))

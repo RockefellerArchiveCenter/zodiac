@@ -1,3 +1,5 @@
+import json
+
 from django_cron import CronJobBase, Schedule
 
 from zodiac import settings
@@ -37,4 +39,4 @@ class QueueRequests(CronJobBase):
                 params={},
                 service_id=registry.id)
             completed['detail']['services'].append(registry.name)
-        return completed
+        return json.dumps(completed)
