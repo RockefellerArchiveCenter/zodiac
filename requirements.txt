@@ -31,14 +31,14 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.2.0
     # via celery
-django==4.0.7
+django==4.0.8
     # via
     #   -r requirements.in
     #   django-celery-beat
     #   django-cron
     #   django-datatables-view
     #   djangorestframework
-django-celery-beat==2.3.0
+django-celery-beat==2.4.0
     # via -r requirements.in
 django-celery-results==2.4.0
     # via -r requirements.in
@@ -58,7 +58,7 @@ kombu==5.2.4
     # via celery
 prompt-toolkit==3.0.31
     # via click-repl
-psycopg2-binary==2.9.3
+psycopg2-binary==2.9.5
     # via -r requirements.in
 python-crontab==2.6.0
     # via django-celery-beat
@@ -66,7 +66,7 @@ python-dateutil==2.8.2
     # via
     #   -r requirements.in
     #   python-crontab
-pytz==2022.2.1
+pytz==2022.6
     # via
     #   celery
     #   django-timezone-field
@@ -79,7 +79,7 @@ six==1.16.0
     #   python-dateutil
 sqlparse==0.4.3
     # via django
-tzdata==2022.4
+tzdata==2022.6
     # via django-celery-beat
 urllib3==1.26.12
     # via requests
