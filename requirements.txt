@@ -56,7 +56,7 @@ idna==3.4
     # via requests
 kombu==5.2.4
     # via celery
-prompt-toolkit==3.0.31
+prompt-toolkit==3.0.33
     # via click-repl
 psycopg2-binary==2.9.5
     # via -r requirements.in
@@ -79,9 +79,9 @@ six==1.16.0
     #   python-dateutil
 sqlparse==0.4.3
     # via django
-tzdata==2022.6
+tzdata==2022.7
     # via django-celery-beat
-urllib3==1.26.12
+urllib3==1.26.13
     # via requests
 vine==5.0.0
     # via
