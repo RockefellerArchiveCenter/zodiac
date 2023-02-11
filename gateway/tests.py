@@ -222,10 +222,13 @@ class GatewayTestCase(TestCase):
 
     def test_error_messages(self):
         """Tests the error_messages model method of RequestLog"""
-        task_result = TaskResult.objects.create(result="{\"exc_message\": [\"foo\", {\"detail\": \"bar\"}]}")
-        service = random.choice(ServiceRegistry.objects.all())
-        request_log = RequestLog.objects.create(service=service, task_result=task_result)
-        self.assertEqual(request_log.error_messages(), ["foo", "bar"])
+        for task_id, result, expected in [
+                (1, "{\"exc_message\": [\"foo\", {\"detail\": \"bar\"}]}", ["foo", "bar"]),
+                (2, "{\"exc_message\": [\"<Response [500]>\"]}", ["<Response [500]>: Internal Server Error"])]:
+            task_result = TaskResult.objects.create(task_id=task_id, result=result)
+            service = random.choice(ServiceRegistry.objects.all())
+            request_log = RequestLog.objects.create(service=service, task_result=task_result)
+            self.assertEqual(request_log.error_messages, expected)
 
     def tearDown(self):
         TaskResult.objects.all().delete()
