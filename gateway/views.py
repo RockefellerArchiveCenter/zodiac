@@ -1,4 +1,5 @@
 import json
+from http.client import responses
 
 from dateutil import tz
 from django.contrib.auth.decorators import login_required
@@ -246,8 +247,9 @@ class ResultsDatatableView(BaseDatatableView):
         task_result = ''
         if result.task_result:
             task_result = result.task_result.result
-            if 'exc_message' in result.task_result.result:
-                task_result = str(json.loads(result.task_result.result).get('exc_message')[0])
+            # Handle HTTP errors
+            if len(result.errors):
+                task_result = "\n".join(result.errors)
         return task_result
 
     def get_status_display(self, status):

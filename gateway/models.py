@@ -1,4 +1,5 @@
 import json
+from http.client import responses
 
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
@@ -134,13 +135,19 @@ class RequestLog(models.Model):
     task_result = models.ForeignKey(TaskResult, on_delete=models.CASCADE, blank=True, null=True, related_name='request_log')
     task_result_status = models.CharField(max_length=100, choices=(('success', 'Success'), ('error', 'Error'), ('idle', 'Idle')), blank=True, null=True)
 
+    @property
     def error_messages(self):
+        #todo fix it here.
         errors = []
         if self.task_result:
             for e in json.loads(self.task_result.result).get('exc_message'):
                 try:
                     emess = e.get('detail')
                 except BaseException:
-                    emess = e
+                    try:
+                        code = int(e[e.find("[")+1:e.find("]")])
+                        emess = f"{e}: {responses[code]}"
+                    except:
+                        emess = e
                 errors.append(emess)
         return errors
