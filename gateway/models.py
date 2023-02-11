@@ -145,8 +145,8 @@ class RequestLog(models.Model):
                     emess = e.get('detail')
                 except BaseException:
                     try:
-                        code = int(e[e.find("[") + 1:e.find("]")]).replace("<", "").replace(">", "")
-                        emess = f"{e}: {responses[code]}"
+                        code = int(e[e.find("[") + 1:e.find("]")])
+                        emess = f"{e}: {responses[code]}".replace("<", "").replace(">", "")
                     except BaseException:
                         emess = e
                 errors.append(emess)

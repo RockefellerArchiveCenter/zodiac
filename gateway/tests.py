@@ -224,7 +224,7 @@ class GatewayTestCase(TestCase):
         """Tests the error_messages model method of RequestLog"""
         for task_id, result, expected in [
                 (1, "{\"exc_message\": [\"foo\", {\"detail\": \"bar\"}]}", ["foo", "bar"]),
-                (2, "{\"exc_message\": [\"<Response [500]>\"]}", ["<Response [500]>: Internal Server Error"])]:
+                (2, "{\"exc_message\": [\"<Response [500]>\"]}", ["Response [500]: Internal Server Error"])]:
             task_result = TaskResult.objects.create(task_id=task_id, result=result)
             service = random.choice(ServiceRegistry.objects.all())
             request_log = RequestLog.objects.create(service=service, task_result=task_result)
