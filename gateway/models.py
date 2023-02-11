@@ -140,7 +140,7 @@ class RequestLog(models.Model):
         # todo fix it here.
         errors = []
         if self.task_result:
-            for e in json.loads(self.task_result.result).get('exc_message'):
+            for e in json.loads(self.task_result.result).get('exc_message', []):
                 try:
                     emess = e.get('detail')
                 except BaseException:
