@@ -229,6 +229,6 @@ class GatewayTestCase(TestCase):
             service = random.choice(ServiceRegistry.objects.all())
             request_log = RequestLog.objects.create(service=service, task_result=task_result)
             self.assertEqual(request_log.error_messages, expected)
-        
+
     def tearDown(self):
         TaskResult.objects.all().delete()

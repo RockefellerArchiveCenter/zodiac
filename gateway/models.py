@@ -137,7 +137,7 @@ class RequestLog(models.Model):
 
     @property
     def error_messages(self):
-        #todo fix it here.
+        # todo fix it here.
         errors = []
         if self.task_result:
             for e in json.loads(self.task_result.result).get('exc_message'):
@@ -145,9 +145,9 @@ class RequestLog(models.Model):
                     emess = e.get('detail')
                 except BaseException:
                     try:
-                        code = int(e[e.find("[")+1:e.find("]")])
+                        code = int(e[e.find("[") + 1:e.find("]")])
                         emess = f"{e}: {responses[code]}"
-                    except:
+                    except BaseException:
                         emess = e
                 errors.append(emess)
         return errors
