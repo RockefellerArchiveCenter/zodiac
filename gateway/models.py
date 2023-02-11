@@ -140,13 +140,13 @@ class RequestLog(models.Model):
         # todo fix it here.
         errors = []
         if self.task_result:
-            for e in json.loads(self.task_result.result).get('exc_message'):
+            for e in json.loads(self.task_result.result).get('exc_message', []):
                 try:
                     emess = e.get('detail')
                 except BaseException:
                     try:
                         code = int(e[e.find("[") + 1:e.find("]")])
-                        emess = f"{e}: {responses[code]}"
+                        emess = f"{e}: {responses[code]}".replace("<", "").replace(">", "")
                     except BaseException:
                         emess = e
                 errors.append(emess)
