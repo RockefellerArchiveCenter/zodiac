@@ -245,8 +245,8 @@ class ResultsDatatableView(BaseDatatableView):
         if result.task_result:
             task_result = result.task_result.result
             # Handle HTTP errors
-            if len(result.errors):
-                task_result = "\n".join(result.errors)
+            if len(result.error_messages):
+                task_result = "\n".join(result.error_messages)
         return task_result
 
     def get_status_display(self, status):
