@@ -3,6 +3,10 @@ version: '3'
 services:
   zodiac-db:
     image: postgres:14.4
+    environment:
+      - POSTGRES_USER=postgres  # name of the application database user
+      - POSTGRES_PASSWORD=postgres  # name of the application database user
+      - POSTGRES_DB=postgres  # name of the application database
     volumes:
       - zodiacdb:/var/lib/postgresql/data/
     networks:
