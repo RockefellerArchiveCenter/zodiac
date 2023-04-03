@@ -33,7 +33,7 @@ click-repl==0.2.0
     # via celery
 cron-descriptor==1.2.35
     # via django-celery-beat
-django==4.1.7
+django==4.2
     # via
     #   -r requirements.in
     #   django-celery-beat
@@ -61,7 +61,7 @@ kombu==5.2.4
     # via celery
 prompt-toolkit==3.0.38
     # via click-repl
-psycopg2-binary==2.9.5
+psycopg2==2.9.6
     # via -r requirements.in
 python-crontab==2.7.1
     # via django-celery-beat
