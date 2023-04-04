@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Apply database migrations
-../wait-for-it.sh db:5432 --
+./wait-for-it.sh db:5432 --
 
 if [ ! -f zodiac/config.py ]; then
     echo "Creating config file"
