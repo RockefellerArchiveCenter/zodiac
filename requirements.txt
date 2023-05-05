@@ -31,19 +31,16 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.2.0
     # via celery
-cron-descriptor==1.2.35
-    # via django-celery-beat
-django==4.2
+django==4.1.9
     # via
     #   -r requirements.in
     #   django-celery-beat
-    #   django-celery-results
     #   django-cron
     #   django-datatables-view
     #   djangorestframework
-django-celery-beat==2.5.0
+django-celery-beat==2.4
     # via -r requirements.in
-django-celery-results==2.5.0
+django-celery-results==2.4
     # via -r requirements.in
 django-crispy-forms==1.14.0
     # via -r requirements.in
