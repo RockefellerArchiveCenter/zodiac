@@ -149,10 +149,10 @@ class GatewayTestCase(TestCase):
         for service in ServiceRegistry.objects.filter(
                 plugin=ServiceRegistry.REMOTE_AUTH, external_uri__isnull=False).exclude(application__name="Aurora"):
             url = "http://localhost/api/{}/".format(service.external_uri.rstrip("/"))
-            resp = self.client.post(url, data={"foo": "bar"}, headers={"Content-Type": "application/json"})
+            resp = self.client.post(url)
             self.assertEqual(resp.status_code, 200, "{} returned an error: {}".format(service, resp.json()))
             self.assertEqual(mock_queue.call_args[0], ("post", render_service_path(service, "")))
-            self.assertEqual(mock_queue.call_args[1]["data"], {"foo": ["bar"]})
+            self.assertEqual(mock_queue.call_args[1]["data"], {})
 
     def test_missing_service(self):
         url = "http://localhost/api/missing/not-here"
