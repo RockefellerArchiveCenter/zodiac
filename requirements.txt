@@ -10,7 +10,7 @@ asgiref==3.7.2
     # via django
 billiard==4.1.0
     # via celery
-celery==5.3.3
+celery==5.3.4
     # via
     #   -r requirements.in
     #   django-celery-beat
@@ -33,7 +33,7 @@ click-repl==0.3.0
     # via celery
 cron-descriptor==1.4.0
     # via django-celery-beat
-django==4.2.4
+django==4.2.5
     # via
     #   -r requirements.in
     #   django-celery-beat
@@ -71,7 +71,7 @@ python-dateutil==2.8.2
     #   -r requirements.in
     #   celery
     #   python-crontab
-pytz==2023.3
+pytz==2023.3.post1
     # via djangorestframework
 requests==2.31.0
     # via -r requirements.in
