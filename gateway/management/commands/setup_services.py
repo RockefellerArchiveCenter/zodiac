@@ -134,9 +134,19 @@ APPLICATIONS = [
                 "has_external_trigger": True,
             },
             {
+                "name": "Add Data",
+                "description": "Gets information about a package from Archivematica.",
+                "service_route": "add-data",
+            },
+            {
                 "name": "Download Package",
                 "description": "Downloads packages from Archivematica.",
                 "service_route": "download",
+            },
+            {
+                "name": "Parse METS",
+                "description": "Parses data from a METS file.",
+                "service_route": "parse-mets",
             },
             {
                 "name": "Store Package",
