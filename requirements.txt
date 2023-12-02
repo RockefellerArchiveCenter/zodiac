@@ -4,20 +4,20 @@
 #
 #    pip-compile
 #
-amqp==5.1.1
+amqp==5.2.0
     # via kombu
 asgiref==3.7.2
     # via django
-billiard==4.1.0
+billiard==4.2.0
     # via celery
-celery==5.3.4
+celery==5.3.6
     # via
     #   -r requirements.in
     #   django-celery-beat
     #   django-celery-results
-certifi==2023.7.22
+certifi==2023.11.17
     # via requests
-charset-normalizer==3.3.1
+charset-normalizer==3.3.2
     # via requests
 click==8.1.7
     # via
@@ -33,7 +33,7 @@ click-repl==0.3.0
     # via celery
 cron-descriptor==1.4.0
     # via django-celery-beat
-django==4.2.6
+django==4.2.7
     # via
     #   -r requirements.in
     #   django-celery-beat
@@ -52,15 +52,15 @@ django-cron==0.6.0
     # via -r requirements.in
 django-datatables-view==1.20.0
     # via -r requirements.in
-django-timezone-field==6.0.1
+django-timezone-field==6.1.0
     # via django-celery-beat
 djangorestframework==3.14.0
     # via -r requirements.in
-idna==3.4
+idna==3.6
     # via requests
-kombu==5.3.2
+kombu==5.3.4
     # via celery
-prompt-toolkit==3.0.39
+prompt-toolkit==3.0.41
     # via click-repl
 psycopg2==2.9.9
     # via -r requirements.in
@@ -85,12 +85,12 @@ tzdata==2023.3
     # via
     #   celery
     #   django-celery-beat
-urllib3==2.0.7
+urllib3==2.1.0
     # via requests
-vine==5.0.0
+vine==5.1.0
     # via
     #   amqp
     #   celery
     #   kombu
-wcwidth==0.2.9
+wcwidth==0.2.12
     # via prompt-toolkit
