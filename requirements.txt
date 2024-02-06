@@ -31,9 +31,9 @@ click-plugins==1.1.1
     # via celery
 click-repl==0.3.0
     # via celery
-cron-descriptor==1.4.0
+cron-descriptor==1.4.3
     # via django-celery-beat
-django==4.2.8
+django==4.2.9
     # via
     #   -r requirements.in
     #   django-celery-beat
@@ -58,7 +58,7 @@ djangorestframework==3.14.0
     # via -r requirements.in
 idna==3.6
     # via requests
-kombu==5.3.4
+kombu==5.3.5
     # via celery
 prompt-toolkit==3.0.43
     # via click-repl
@@ -71,7 +71,7 @@ python-dateutil==2.8.2
     #   -r requirements.in
     #   celery
     #   python-crontab
-pytz==2023.3.post1
+pytz==2023.4
     # via djangorestframework
 requests==2.31.0
     # via -r requirements.in
@@ -85,12 +85,12 @@ tzdata==2023.4
     # via
     #   celery
     #   django-celery-beat
-urllib3==2.1.0
+urllib3==2.2.0
     # via requests
 vine==5.1.0
     # via
     #   amqp
     #   celery
     #   kombu
-wcwidth==0.2.12
+wcwidth==0.2.13
     # via prompt-toolkit
