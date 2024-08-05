@@ -15,7 +15,7 @@ celery==5.4.0
     #   -r requirements.in
     #   django-celery-beat
     #   django-celery-results
-certifi==2024.6.2
+certifi==2024.7.4
     # via requests
 charset-normalizer==3.3.2
     # via requests
@@ -33,7 +33,7 @@ click-repl==0.3.0
     # via celery
 cron-descriptor==1.4.3
     # via django-celery-beat
-django==4.2.13
+django==4.2.14
     # via
     #   -r requirements.in
     #   django-celery-beat
@@ -52,7 +52,7 @@ django-cron==0.6.0
     # via -r requirements.in
 django-datatables-view==1.20.0
     # via -r requirements.in
-django-timezone-field==6.1.0
+django-timezone-field==7.0
     # via django-celery-beat
 djangorestframework==3.15.2
     # via -r requirements.in
@@ -64,7 +64,7 @@ prompt-toolkit==3.0.47
     # via click-repl
 psycopg2==2.9.9
     # via -r requirements.in
-python-crontab==3.1.0
+python-crontab==3.2.0
     # via django-celery-beat
 python-dateutil==2.9.0.post0
     # via
@@ -75,7 +75,7 @@ requests==2.32.3
     # via -r requirements.in
 six==1.16.0
     # via python-dateutil
-sqlparse==0.5.0
+sqlparse==0.5.1
     # via django
 typing-extensions==4.12.2
     # via asgiref
