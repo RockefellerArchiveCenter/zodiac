@@ -2,8 +2,6 @@
 
 API gateway and administration interface for [Project Electron](https://github.com/RockefellerArchiveCenter/project_electron) microservices, managed via a message queue.
 
-[![Build Status](https://travis-ci.org/RockefellerArchiveCenter/zodiac.svg?branch=base)](https://travis-ci.org/RockefellerArchiveCenter/zodiac)
-
 ## Setup
 
 Install [git](https://git-scm.com/) and clone the repository
