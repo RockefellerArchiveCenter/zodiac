@@ -8,7 +8,7 @@ amqp==5.2.0
     # via kombu
 asgiref==3.8.1
     # via django
-billiard==4.2.0
+billiard==4.2.1
     # via celery
 celery==5.4.0
     # via
@@ -33,7 +33,7 @@ click-repl==0.3.0
     # via celery
 cron-descriptor==1.4.5
     # via django-celery-beat
-django==4.2.15
+django==4.2.16
     # via
     #   -r requirements.in
     #   django-celery-beat
@@ -56,11 +56,11 @@ django-timezone-field==7.0
     # via django-celery-beat
 djangorestframework==3.15.2
     # via -r requirements.in
-idna==3.8
+idna==3.10
     # via requests
-kombu==5.4.0
+kombu==5.4.2
     # via celery
-prompt-toolkit==3.0.47
+prompt-toolkit==3.0.48
     # via click-repl
 psycopg2==2.9.9
     # via -r requirements.in
@@ -79,11 +79,12 @@ sqlparse==0.5.1
     # via django
 typing-extensions==4.12.2
     # via asgiref
-tzdata==2024.1
+tzdata==2024.2
     # via
     #   celery
     #   django-celery-beat
-urllib3==2.2.2
+    #   kombu
+urllib3==2.2.3
     # via requests
 vine==5.1.0
     # via
