@@ -4,7 +4,7 @@
 #
 #    pip-compile
 #
-amqp==5.2.0
+amqp==5.3.1
     # via kombu
 asgiref==3.8.1
     # via django
@@ -75,7 +75,7 @@ requests==2.32.3
     # via -r requirements.in
 six==1.16.0
     # via python-dateutil
-sqlparse==0.5.1
+sqlparse==0.5.2
     # via django
 typing-extensions==4.12.2
     # via asgiref
