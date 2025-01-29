@@ -1,0 +1,38 @@
+[
+  {
+    "message": "Package f78742e5-6af9-4756-a94a-6cd297406d50 was successfully validated.",
+    "outcome": "success",
+    "package_identifier": "f78742e5-6af9-4756-a94a-6cd297406d50",
+    "identifier": "f78742e5-6af9-4756-a94a-6cd297406d51"
+  },
+  {
+    "message": "Package f78742e5-6af9-4756-a94a-6cd297406d50 was successfully validated.",
+    "outcome": "success",
+    "package_identifier": "f78742e5-6af9-4756-a94a-6cd297406d50",
+    "identifier": "f78742e5-6af9-4756-a94a-6cd297406d54"
+  },
+  {
+    "message": "Package f78742e5-6af9-4756-a94a-6cd297406d50 was successfully validated.",
+    "outcome": "success",
+    "package_identifier": "f78742e5-6af9-4756-a94a-6cd297406d51",
+    "identifier": "f78742e5-6af9-4756-a94a-6cd297406d55"
+  },
+  {
+    "message": "Package f78742e5-6af9-4756-a94a-6cd297406d50 was successfully validated.",
+    "outcome": "success",
+    "package_identifier": "f78742e5-6af9-4756-a94a-6cd297406d52",
+    "identifier": "f78742e5-6af9-4756-a94a-6cd297406d56"
+  },
+  {
+    "message": "Package f78742e5-6af9-4756-a94a-6cd297406d50 was successfully validated.",
+    "outcome": "success",
+    "package_identifier": "f78742e5-6af9-4756-a94a-6cd297406d50",
+    "identifier": "f78742e5-6af9-4756-a94a-6cd297406d53"
+  },
+  {
+    "message": "Package f78742e5-6af9-4756-a94a-6cd297406d50 was successfully validated.",
+    "outcome": "success",
+    "package_identifier": "f78742e5-6af9-4756-a94a-6cd297406d50",
+    "identifier": "f78742e5-6af9-4756-a94a-6cd297406d50"
+  }
+]

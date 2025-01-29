@@ -1,0 +1,130 @@
+[
+  {
+    "origin": "digitization",
+    "identifier": "f78742e5-6af9-4756-a94a-6cd297406d51",
+    "rights_statements": [
+      {
+        "copyright_status": "copyrighted",
+        "end_date": "2050-12-31",
+        "rights_basis": "copyright",
+        "determination_date": "2021-06-22",
+        "jurisdiction": "us",
+        "rights_granted": [],
+        "basis_note": "Published work of corporate authorship - copyright term 95 years from date of publication.",
+        "start_date": "1952-01-01"
+      },
+      {
+        "end_date": null,
+        "rights_basis": "other",
+        "other_basis": "donor",
+        "rights_granted": [
+          {
+            "end_date": null,
+            "act": "publish",
+            "granted_note": "",
+            "grant_restriction": "disallow",
+            "start_date": "1952-01-01"
+          }
+        ],
+        "basis_note": "These materials may only be accessed in a reading room setting.",
+        "start_date": "2020-01-01"
+      }
+    ]
+  },
+  {
+    "origin": "digitization",
+    "identifier": "f78742e5-6af9-4756-a94a-6cd297406d52",
+    "rights_statements": [
+      {
+        "copyright_status": "copyrighted",
+        "end_date": "2050-12-31",
+        "rights_basis": "copyright",
+        "determination_date": "2021-06-22",
+        "jurisdiction": "us",
+        "rights_granted": [],
+        "basis_note": "Published work of corporate authorship - copyright term 95 years from date of publication.",
+        "start_date": "1952-01-01"
+      },
+      {
+        "end_date": null,
+        "rights_basis": "other",
+        "other_basis": "donor",
+        "rights_granted": [
+          {
+            "end_date": null,
+            "act": "publish",
+            "granted_note": "",
+            "grant_restriction": "disallow",
+            "start_date": "1952-01-01"
+          }
+        ],
+        "basis_note": "These materials may only be accessed in a reading room setting.",
+        "start_date": "2020-01-01"
+      }
+    ]
+  },
+  {
+    "origin": "digitization",
+    "identifier": "f78742e5-6af9-4756-a94a-6cd297406d53",
+    "rights_statements": [
+      {
+        "copyright_status": "copyrighted",
+        "end_date": "2050-12-31",
+        "rights_basis": "copyright",
+        "determination_date": "2021-06-22",
+        "jurisdiction": "us",
+        "rights_granted": [],
+        "basis_note": "Published work of corporate authorship - copyright term 95 years from date of publication.",
+        "start_date": "1952-01-01"
+      },
+      {
+        "end_date": null,
+        "rights_basis": "other",
+        "other_basis": "donor",
+        "rights_granted": [
+          {
+            "end_date": null,
+            "act": "publish",
+            "granted_note": "",
+            "grant_restriction": "disallow",
+            "start_date": "1952-01-01"
+          }
+        ],
+        "basis_note": "These materials may only be accessed in a reading room setting.",
+        "start_date": "2020-01-01"
+      }
+    ]
+  },
+  {
+    "origin": "digitization",
+    "identifier": "f78742e5-6af9-4756-a94a-6cd297406d50",
+    "rights_statements": [
+      {
+        "copyright_status": "copyrighted",
+        "end_date": "2050-12-31",
+        "rights_basis": "copyright",
+        "determination_date": "2021-06-22",
+        "jurisdiction": "us",
+        "rights_granted": [],
+        "basis_note": "Published work of corporate authorship - copyright term 95 years from date of publication.",
+        "start_date": "1952-01-01"
+      },
+      {
+        "end_date": null,
+        "rights_basis": "other",
+        "other_basis": "donor",
+        "rights_granted": [
+          {
+            "end_date": null,
+            "act": "publish",
+            "granted_note": "",
+            "grant_restriction": "disallow",
+            "start_date": "1952-01-01"
+          }
+        ],
+        "basis_note": "These materials may only be accessed in a reading room setting.",
+        "start_date": "2019-01-01"
+      }
+    ]
+  }
+]
