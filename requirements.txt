@@ -10,7 +10,7 @@ asgiref==3.8.1
     # via django
 billiard==4.2.1
     # via celery
-celery==5.4.0
+celery==5.5.0
     # via
     #   -r requirements.in
     #   django-celery-beat
@@ -33,7 +33,7 @@ click-repl==0.3.0
     # via celery
 cron-descriptor==1.4.5
     # via django-celery-beat
-django==4.2.19
+django==4.2.20
     # via
     #   -r requirements.in
     #   django-celery-beat
@@ -54,11 +54,11 @@ django-datatables-view==1.20.0
     # via -r requirements.in
 django-timezone-field==7.1
     # via django-celery-beat
-djangorestframework==3.15.2
+djangorestframework==3.16.0
     # via -r requirements.in
 idna==3.10
     # via requests
-kombu==5.4.2
+kombu==5.5.2
     # via celery
 prompt-toolkit==3.0.50
     # via click-repl
@@ -77,11 +77,10 @@ six==1.17.0
     # via python-dateutil
 sqlparse==0.5.3
     # via django
-typing-extensions==4.12.2
+typing-extensions==4.13.0
     # via asgiref
-tzdata==2025.1
+tzdata==2025.2
     # via
-    #   celery
     #   django-celery-beat
     #   kombu
 urllib3==2.3.0
