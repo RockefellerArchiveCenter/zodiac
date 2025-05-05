@@ -10,12 +10,12 @@ asgiref==3.8.1
     # via django
 billiard==4.2.1
     # via celery
-celery==5.5.0
+celery==5.5.2
     # via
     #   -r requirements.in
     #   django-celery-beat
     #   django-celery-results
-certifi==2025.1.31
+certifi==2025.4.26
     # via requests
 charset-normalizer==3.4.1
     # via requests
@@ -42,9 +42,9 @@ django==4.2.20
     #   django-datatables-view
     #   django-timezone-field
     #   djangorestframework
-django-celery-beat==2.7.0
+django-celery-beat==2.8.0
     # via -r requirements.in
-django-celery-results==2.5.1
+django-celery-results==2.6.0
     # via -r requirements.in
 django-crispy-forms==1.14.0
     # via -r requirements.in
@@ -58,9 +58,9 @@ djangorestframework==3.16.0
     # via -r requirements.in
 idna==3.10
     # via requests
-kombu==5.5.2
+kombu==5.5.3
     # via celery
-prompt-toolkit==3.0.50
+prompt-toolkit==3.0.51
     # via click-repl
 psycopg2==2.9.10
     # via -r requirements.in
@@ -77,13 +77,13 @@ six==1.17.0
     # via python-dateutil
 sqlparse==0.5.3
     # via django
-typing-extensions==4.13.0
+typing-extensions==4.13.2
     # via asgiref
 tzdata==2025.2
     # via
     #   django-celery-beat
     #   kombu
-urllib3==2.3.0
+urllib3==2.4.0
     # via requests
 vine==5.1.0
     # via
