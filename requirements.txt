@@ -10,12 +10,12 @@ asgiref==3.8.1
     # via django
 billiard==4.2.1
     # via celery
-celery==5.5.2
+celery==5.5.3
     # via
     #   -r requirements.in
     #   django-celery-beat
     #   django-celery-results
-certifi==2025.4.26
+certifi==2025.6.15
     # via requests
 charset-normalizer==3.4.2
     # via requests
@@ -27,13 +27,13 @@ click==8.2.1
     #   click-repl
 click-didyoumean==0.3.1
     # via celery
-click-plugins==1.1.1
+click-plugins==1.1.1.2
     # via celery
 click-repl==0.3.0
     # via celery
 cron-descriptor==1.4.5
     # via django-celery-beat
-django==4.2.21
+django==4.2.23
     # via
     #   -r requirements.in
     #   django-celery-beat
@@ -58,8 +58,10 @@ djangorestframework==3.16.0
     # via -r requirements.in
 idna==3.10
     # via requests
-kombu==5.5.3
+kombu==5.5.4
     # via celery
+packaging==25.0
+    # via kombu
 prompt-toolkit==3.0.51
     # via click-repl
 psycopg2==2.9.10
@@ -71,19 +73,19 @@ python-dateutil==2.9.0.post0
     #   -r requirements.in
     #   celery
     #   python-crontab
-requests==2.32.3
+requests==2.32.4
     # via -r requirements.in
 six==1.17.0
     # via python-dateutil
 sqlparse==0.5.3
     # via django
-typing-extensions==4.13.2
+typing-extensions==4.14.0
     # via asgiref
 tzdata==2025.2
     # via
     #   django-celery-beat
     #   kombu
-urllib3==2.4.0
+urllib3==2.5.0
     # via requests
 vine==5.1.0
     # via
