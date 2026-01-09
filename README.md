@@ -1,5 +1,7 @@
 # zodiac
 
+**This application has been marked as read-only and is no longer actively maintained or supported. Application functionality has been reimplemented in the [zodiac_backend](https://github.com/RockefellerArchiveCenter/zodiac_backend) and [zodiac_frontend](https://github.com/RockefellerArchiveCenter/zodiac_frontend) applications.**
+
 API gateway and administration interface for [Project Electron](https://github.com/RockefellerArchiveCenter/project_electron) microservices, managed via a message queue.
 
 ## Setup
